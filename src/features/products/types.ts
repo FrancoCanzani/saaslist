@@ -35,7 +35,9 @@ export interface Product {
   user_id: string;
   upvotes_count: number;
   comments_count: number;
-  is_upvoted?: boolean; 
+  reviews_count: number;
+  is_upvoted?: boolean;
+  founder_name?: string;
   created_at: string;
   updated_at: string;
 }
@@ -76,3 +78,27 @@ export interface Comment {
 }
 
 export type SortOption = 'newest' | 'oldest' | 'most_replies';
+
+export interface Review {
+  id: string;
+  product_id: string;
+  user_id: string;
+  rating: 1 | 2 | 3 | 4 | 5;
+  title: string | null;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  user: {
+    name: string;
+    avatar_url: string | null;
+  };
+}
+
+export interface ReviewFormData {
+  rating: 1 | 2 | 3 | 4 | 5;
+  title?: string;
+  content: string;
+  product_id: string;
+}
+
+export type ReviewSortOption = 'newest' | 'highest' | 'lowest';

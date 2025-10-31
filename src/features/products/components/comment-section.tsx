@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -82,9 +83,11 @@ export default function CommentSection({
           <CommentForm productId={productId} onSuccess={handleCommentSuccess} />
         </div>
       ) : (
-        <div className="mb-8 p-4 border rounded-lg bg-muted/50 text-center text-sm text-muted-foreground">
-          Please log in to comment
-        </div>
+        <Alert>
+          <AlertDescription className="mx-auto">
+            Please log in to comment
+          </AlertDescription>
+        </Alert>
       )}
 
       {commentTree.length > 0 ? (
@@ -94,9 +97,11 @@ export default function CommentSection({
           productId={productId}
         />
       ) : (
-        <div className="border-dashed border p-4 rounded-xl text-muted-foreground italic text-center text-sm">
-          <p>No comments yet. Be the first to share your thoughts!</p>
-        </div>
+        <Alert>
+          <AlertDescription className="mx-auto">
+            No comments yet. Be the first to share your thoughts!
+          </AlertDescription>
+        </Alert>
       )}
     </div>
   );

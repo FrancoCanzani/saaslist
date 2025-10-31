@@ -3,7 +3,7 @@ export interface TagCategory {
   tags: string[];
 }
 
-export const TAG_CATEGORIES: TagCategory[] = [
+export const tags: TagCategory[] = [
   {
     name: "AI & Assistants",
     tags: [

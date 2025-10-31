@@ -21,7 +21,11 @@ export default async function Header() {
       <div className="flex items-center gap-4">
         {user ? (
           <>
-            <Button className="font-medium" size={"sm"} variant={"secondary"}>
+            <Button
+              className="font-medium bg-red-600 hover:bg-red-500 text-white"
+              size={"sm"}
+              variant={"secondary"}
+            >
               <Link
                 href={"/products/new"}
                 className="flex items-center justify-center gap-x-1"

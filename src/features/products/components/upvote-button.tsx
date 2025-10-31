@@ -8,7 +8,24 @@ import { toast } from "sonner";
 import { handleUpvoteAction } from "../actions";
 import { Product } from "../types";
 
-export default function UpvoteButton({ product }: { product: Product }) {
+export default function UpvoteButton({
+  product,
+  label,
+  size = "sm",
+}: {
+  product: Product;
+  label?: string;
+  size:
+    | "xs"
+    | "sm"
+    | "default"
+    | "lg"
+    | "icon"
+    | "icon-sm"
+    | "icon-lg"
+    | null
+    | undefined;
+}) {
   const [isPending, startTransition] = useTransition();
 
   const [optimisticProduct, addOptimisticProduct] = useOptimistic(
@@ -30,7 +47,7 @@ export default function UpvoteButton({ product }: { product: Product }) {
   async function handleUpvote(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     startTransition(async () => {
       addOptimisticProduct(!optimisticProduct.is_upvoted);
 
@@ -51,7 +68,7 @@ export default function UpvoteButton({ product }: { product: Product }) {
   return (
     <Button
       variant={"secondary"}
-      size={"sm"}
+      size={size}
       className={cn(
         "text-xs font-medium",
         optimisticProduct.is_upvoted
@@ -60,6 +77,7 @@ export default function UpvoteButton({ product }: { product: Product }) {
       )}
       onClick={handleUpvote}
     >
+      {label && label}
       <Triangle
         className={`size-3 ${optimisticProduct.is_upvoted ? "fill-current" : ""} ${
           isPending ? "animate-pulse" : ""

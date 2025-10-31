@@ -78,12 +78,12 @@ export default function CommentItem({
   return (
     <div
       className={cn(
-        "border-x border-b rounded-r-md rounded-b-md p-2 transition-colors group-hover/thread:bg-gray-50",
-        showTopBorder && "border-t rounded-t-md",
+        "border-x border-b rounded-r-xl rounded-b-xl p-3 transition-colors group-hover/thread:bg-gray-50",
+        showTopBorder && "border-t rounded-t-xl",
         isReply && "border-l",
       )}
     >
-      <div className="flex gap-2 py-2">
+      <div className="flex gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
             <div className="gap-2 flex items-center justify-start">

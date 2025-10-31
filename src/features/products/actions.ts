@@ -1,10 +1,10 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { Product, Comment } from "./types";
+import { Product, Comment, Review } from "./types";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "@/utils/types";
-import { commentSchema } from "./schemas";
+import { commentSchema, reviewSchema } from "./schemas";
 
 export async function handleUpvoteAction(
   product: Product
@@ -244,6 +244,112 @@ export async function flagCommentAction(
     return { success: true, action: "flagged" };
   } catch (error) {
     console.error("Flag comment error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function createReviewAction(data: {
+  rating: number;
+  title?: string;
+  content: string;
+  product_id: string;
+}): Promise<ActionResponse<Review>> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to leave a review");
+    }
+
+    const validated = reviewSchema.parse(data);
+
+    const { data: existingReview } = await supabase
+      .from("reviews")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("product_id", validated.product_id)
+      .single();
+
+    if (existingReview) {
+      throw new Error("You have already reviewed this product");
+    }
+
+    const { data: review, error } = await supabase
+      .from("reviews")
+      .insert({
+        rating: validated.rating,
+        title: validated.title || null,
+        content: validated.content,
+        product_id: validated.product_id,
+        user_id: user.id,
+      })
+      .select(
+        `
+        *,
+        user:profiles!reviews_user_id_fkey(name, avatar_url)
+      `
+      )
+      .single();
+
+    if (error) {
+      throw new Error("Failed to create review");
+    }
+
+    revalidatePath(`/products/${validated.product_id}`);
+    revalidatePath("/");
+    revalidatePath("/browse");
+    return { success: true, data: review, action: "created" };
+  } catch (error) {
+    console.error("Create review error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function deleteReviewAction(
+  reviewId: string,
+  productId: string
+): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to delete reviews");
+    }
+
+    const { data: existingReview } = await supabase
+      .from("reviews")
+      .select("user_id")
+      .eq("id", reviewId)
+      .single();
+
+    if (!existingReview || existingReview.user_id !== user.id) {
+      throw new Error("You can only delete your own reviews");
+    }
+
+    const { error } = await supabase.from("reviews").delete().eq("id", reviewId);
+
+    if (error) {
+      throw new Error("Failed to delete review");
+    }
+
+    revalidatePath(`/products/${productId}`);
+    revalidatePath("/");
+    revalidatePath("/browse");
+    return { success: true, action: "deleted" };
+  } catch (error) {
+    console.error("Delete review error:", error);
     if (error instanceof Error) {
       throw error;
     }

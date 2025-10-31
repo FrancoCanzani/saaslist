@@ -1,13 +1,13 @@
 import CategoryProducts from "@/features/browse/components/category-products";
 import { Product } from "@/features/products/types";
-import { TAG_CATEGORIES } from "@/utils/constants";
+import { tags } from "@/utils/constants";
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 
 export const revalidate = 600;
 
 export async function generateStaticParams() {
-  return TAG_CATEGORIES.map((category) => ({
+  return tags.map((category) => ({
     category: category.name.toLowerCase().replace(/\s+/g, "-"),
   }));
 }
@@ -24,7 +24,7 @@ export default async function CategoryPage({
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-  const category = TAG_CATEGORIES.find(
+  const category = tags.find(
     (cat) => cat.name.toLowerCase() === categoryName.toLowerCase(),
   );
 

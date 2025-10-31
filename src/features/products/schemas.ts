@@ -53,3 +53,19 @@ export const commentSchema = z.object({
 
 export type CommentFormData = z.infer<typeof commentSchema>;
 
+export const reviewSchema = z.object({
+  rating: z.number()
+    .int()
+    .min(1, 'Rating must be at least 1 star')
+    .max(5, 'Rating must be at most 5 stars'),
+  title: z.string()
+    .max(100, 'Title must be at most 100 characters')
+    .optional(),
+  content: z.string()
+    .min(50, 'Review must be at least 50 characters')
+    .max(2000, 'Review is too long (max 2000 characters)'),
+  product_id: z.uuid(),
+});
+
+export type ReviewFormDataSchema = z.infer<typeof reviewSchema>;
+

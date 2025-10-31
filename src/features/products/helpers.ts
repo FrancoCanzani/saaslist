@@ -1,4 +1,4 @@
-import { Comment } from "./types";
+import { Comment, Review, ReviewSortOption, SortOption } from "./types";
 
 export function buildCommentTree(comments: Comment[]): Comment[] {
   const commentMap = new Map<string, Comment>();
@@ -68,6 +68,30 @@ export function sortComments(
       comment.replies = sortComments(comment.replies, sortBy);
     }
   });
+
+  return sorted;
+}
+
+export function sortReviews(
+  reviews: Review[],
+  sortBy: ReviewSortOption,
+): Review[] {
+  const sorted = [...reviews];
+
+  switch (sortBy) {
+    case "newest":
+      sorted.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
+      break;
+    case "highest":
+      sorted.sort((a, b) => b.rating - a.rating);
+      break;
+    case "lowest":
+      sorted.sort((a, b) => a.rating - b.rating);
+      break;
+  }
 
   return sorted;
 }

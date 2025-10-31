@@ -30,11 +30,13 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="max-w-3xl mx-auto">
+    <div className="p-6">
+      <div className="max-w-5xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-medium">Submit a Product</h1>
-          <p className="text-sm">Share your SaaS with the community</p>
+          <h1 className="text-xl font-medium">Submit a Product</h1>
+          <p className="text-sm text-muted-foreground">
+            Share your SaaS with the community
+          </p>
         </div>
 
         <ProductForm

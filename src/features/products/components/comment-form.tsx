@@ -48,9 +48,7 @@ export default function CommentForm({
     content: initialContent,
     editorProps: {
       attributes: {
-        class: isEditMode
-          ? "prose max-w-none focus:outline-none min-h-[80px] p-4 text-sm"
-          : "prose max-w-none focus:outline-none min-h-[80px] focus:min-h-[150px] p-4 text-sm transition-[min-height] duration-300 ease-in-out",
+        class: "prose max-w-none focus:outline-none min-h-[100px] p-4 text-sm",
       },
     },
     onUpdate: ({ editor }) => {

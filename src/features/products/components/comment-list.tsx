@@ -23,7 +23,7 @@ export default function CommentList({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {comments.map((comment, index) => (
         <div key={comment.id} className="group/thread">
           <CommentItem

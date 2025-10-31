@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProductTags } from "@/features/browse/api";
-import { TAG_CATEGORIES } from "@/utils/constants";
+import { tags } from "@/utils/constants";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export const revalidate = 600;
 export default async function BrowsePage() {
   const products = await getProductTags();
 
-  const categoryStats = TAG_CATEGORIES.map((category) => {
+  const categoryStats = tags.map((category) => {
     const count =
       products?.filter((product) =>
         product.tags.some((tag: string) =>

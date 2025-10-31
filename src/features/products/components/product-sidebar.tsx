@@ -3,9 +3,18 @@
 import { Button } from "@/components/ui/button";
 import UpvoteButton from "@/features/products/components/upvote-button";
 import { Product } from "@/features/products/types";
+import { tags } from "@/utils/constants";
 import { copyToClipboard } from "@/utils/helpers";
 import { formatDistanceToNowStrict } from "date-fns";
+import Link from "next/link";
 import { toast } from "sonner";
+
+function getCategoryForTag(tag: string) {
+  const category = tags.find((cat) =>
+    cat.tags.some((t) => t.toLowerCase() === tag.toLowerCase()),
+  );
+  return category ? category.name.toLowerCase().replace(/\s+/g, "-") : null;
+}
 
 export default function ProductSidebar({ product }: { product: Product }) {
   async function handleCopyLink() {
@@ -21,51 +30,73 @@ export default function ProductSidebar({ product }: { product: Product }) {
 
   return (
     <div className="w-80 shrink-0 space-y-6">
-      <h4 className="font-medium mb-3">
-        Launched{" "}
-        {formatDistanceToNowStrict(new Date(product.created_at), {
-          addSuffix: true,
-        })}
-      </h4>
+      <div>
+        <h4 className="font-medium">
+          Launched{" "}
+          {formatDistanceToNowStrict(new Date(product.created_at), {
+            addSuffix: true,
+          })}
+        </h4>
+      </div>
+
       <div className="flex gap-2">
-        <Button asChild variant={"outline"} className="">
-          <a
-            href={product.website_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+        <Button asChild variant={"outline"} className="" size={"sm"}>
+          <a href={product.website_url} target="_blank" rel="noopener">
             Visit Website
           </a>
         </Button>
-        <UpvoteButton product={product} />
+        <UpvoteButton product={product} label="Upvote" size="sm" />
       </div>
 
       <div>
-        <h4 className="font-semibold mb-3 text-sm">Labels</h4>
+        <h4 className="font-semibold mb-2 text-sm">Labels</h4>
         <div className="space-x-1">
-          {product.tags.slice(0, 3).map((tag: string, index: number) => (
-            <span
-              className="hover:underline text-sm bg-gray-100 px-1.5 py-0.5 rounded capitalize cursor-default"
-              key={index}
-            >
-              {tag}
-            </span>
-          ))}
+          {product.tags.slice(0, 3).map((tag: string, index: number) => {
+            const categorySlug = getCategoryForTag(tag);
+            return categorySlug ? (
+              <Link
+                href={`/browse/${categorySlug}`}
+                className="hover:underline text-sm bg-gray-100 px-1.5 py-0.5 rounded capitalize cursor-pointer inline-block"
+                key={index}
+              >
+                {tag}
+              </Link>
+            ) : (
+              <span
+                className="text-sm bg-gray-100 px-1.5 py-0.5 rounded capitalize inline-block"
+                key={index}
+              >
+                {tag}
+              </span>
+            );
+          })}
         </div>
       </div>
+
+      {product.founder_name && (
+        <div>
+          <h4 className="font-semibold mb-2 text-sm">Founder</h4>
+          <Link
+            href={`/founder/${product.user_id}`}
+            className="text-sm font-medium hover:underline"
+          >
+            {product.founder_name}
+          </Link>
+        </div>
+      )}
 
       {(product.twitter_url ||
         product.linkedin_url ||
         product.product_hunt_url) && (
-        <div className="border rounded-lg p-4">
-          <h4 className="font-semibold mb-3 text-sm">Socials</h4>
+        <div>
+          <h4 className="font-semibold mb-2 text-sm">Socials</h4>
           <div className="flex gap-2">
             {product.twitter_url && (
               <a
                 href={product.twitter_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                className="size-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
                 title="Twitter"
               >
                 <svg
@@ -82,7 +113,7 @@ export default function ProductSidebar({ product }: { product: Product }) {
                 href={product.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                className="size-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
                 title="LinkedIn"
               >
                 <svg
@@ -99,7 +130,7 @@ export default function ProductSidebar({ product }: { product: Product }) {
                 href={product.product_hunt_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                className="size-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
                 title="Product Hunt"
               >
                 <svg
@@ -115,27 +146,9 @@ export default function ProductSidebar({ product }: { product: Product }) {
         </div>
       )}
 
-      <div className="">
-        <h4 className="font-semibold mb-3 text-sm">Team</h4>
-        <div className="flex -space-x-2">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white flex items-center justify-center text-white text-sm font-medium">
-            JD
-          </div>
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-white flex items-center justify-center text-white text-sm font-medium">
-            AS
-          </div>
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 border-2 border-white flex items-center justify-center text-white text-sm font-medium">
-            MK
-          </div>
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 border-2 border-white flex items-center justify-center text-white text-sm font-medium">
-            LC
-          </div>
-        </div>
-      </div>
-
       {product.repo_url && (
         <div className="border rounded-lg p-4">
-          <h4 className="font-semibold mb-3 text-sm">Open Source</h4>
+          <h4 className="font-semibold mb-2 text-sm">Open Source</h4>
           <a
             href={product.repo_url}
             target="_blank"

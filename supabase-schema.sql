@@ -30,6 +30,7 @@ CREATE TABLE products (
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
   upvotes_count INTEGER DEFAULT 0,
   comments_count INTEGER DEFAULT 0,
+  reviews_count INTEGER DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -115,6 +116,39 @@ CREATE TRIGGER update_comments_count_trigger
   AFTER INSERT OR DELETE ON comments
   FOR EACH ROW EXECUTE FUNCTION update_comments_count();
 
+CREATE TABLE reviews (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  product_id UUID REFERENCES products(id) ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  title TEXT,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(user_id, product_id)
+);
+
+CREATE OR REPLACE FUNCTION update_reviews_count()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    UPDATE products 
+    SET reviews_count = reviews_count + 1 
+    WHERE id = NEW.product_id;
+    RETURN NEW;
+  ELSIF TG_OP = 'DELETE' THEN
+    UPDATE products 
+    SET reviews_count = reviews_count - 1 
+    WHERE id = OLD.product_id;
+    RETURN OLD;
+  END IF;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_reviews_count_trigger
+  AFTER INSERT OR DELETE ON reviews
+  FOR EACH ROW EXECUTE FUNCTION update_reviews_count();
 
 CREATE TABLE newsletter_subscriptions (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
