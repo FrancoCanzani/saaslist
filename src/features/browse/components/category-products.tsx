@@ -2,7 +2,7 @@
 
 import { Product } from "@/features/products/types";
 import { TagCategory } from "@/utils/constants";
-import { useQueryState } from "nuqs";
+import { useQueryState, parseAsString } from "nuqs";
 import { useMemo } from "react";
 import ProductCard from "@/features/products/components/product-card";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,8 @@ export default function CategoryProducts({
     clearOnDefault: true,
   });
 
+  const [tag, setTag] = useQueryState("tag", parseAsString.withDefault(""));
+
   const fuse = useMemo(
     () =>
       new Fuse(products, {
@@ -40,16 +42,46 @@ export default function CategoryProducts({
   );
 
   const filteredProducts = useMemo(() => {
-    if (!search || !search.trim()) {
-      return products;
+    let filtered = products;
+
+    if (tag && tag.trim()) {
+      filtered = filtered.filter((product) =>
+        product.tags?.some(
+          (productTag) =>
+            productTag.toLowerCase() === tag.toLowerCase()
+        )
+      );
     }
 
-    const results = fuse.search(search.trim());
-    return results.map((result) => result.item);
-  }, [products, search, fuse]);
+    if (search && search.trim()) {
+      const fuse = new Fuse(filtered, {
+        keys: [
+          { name: "name", weight: 0.5 },
+          { name: "tagline", weight: 0.3 },
+          { name: "tags", weight: 0.2 },
+        ],
+        threshold: 0.3,
+        includeScore: true,
+        minMatchCharLength: 1,
+      });
+      const results = fuse.search(search.trim());
+      return results.map((result) => result.item);
+    }
+
+    return filtered;
+  }, [products, search, tag]);
 
   const handleClearSearch = () => {
     setSearch(null);
+  };
+
+  const handleClearTag = () => {
+    setTag("");
+  };
+
+  const handleClearAll = () => {
+    setSearch(null);
+    setTag("");
   };
 
   return (
@@ -69,30 +101,54 @@ export default function CategoryProducts({
               className="w-full"
             />
           </div>
-          {search && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleClearSearch}
-              className="shrink-0"
-            >
-              <X className="size-4 mr-2" />
-              Clear search
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {search && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleClearSearch}
+                className="shrink-0"
+              >
+                <X className="size-4 mr-2" />
+                Clear search
+              </Button>
+            )}
+            {tag && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleClearTag}
+                className="shrink-0"
+              >
+                <X className="size-4 mr-2" />
+                Clear tag filter
+              </Button>
+            )}
+            {(search || tag) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleClearAll}
+                className="shrink-0"
+              >
+                Clear all
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="mt-4 text-sm text-muted-foreground">
           {filteredProducts.length}{" "}
           {filteredProducts.length === 1 ? "product" : "products"}
+          {tag && ` with tag "${tag}"`}
           {search && ` matching "${search}"`}
         </div>
       </div>
 
       {filteredProducts.length === 0 ? (
         <div className="border-dashed border p-8 rounded-xl text-muted-foreground text-center">
-          {search
-            ? `No products found matching "${search}"`
+          {search || tag
+            ? `No products found ${tag ? `with tag "${tag}"` : ""} ${search ? `matching "${search}"` : ""}`
             : "No products found in this category"}
         </div>
       ) : (

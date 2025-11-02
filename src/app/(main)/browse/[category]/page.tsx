@@ -38,9 +38,6 @@ export default async function CategoryPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const categoryTagsLower = category.tags.map((tag) => tag.toLowerCase());
-  const orFilter = categoryTagsLower.map((tag) => `tags.cs.{${tag}}`).join(",");
-
   const { data: products, error } = await supabase
     .from("products")
     .select(
@@ -49,8 +46,9 @@ export default async function CategoryPage({
       upvotes!left(user_id)
     `,
     )
-    .or(orFilter)
     .order("created_at", { ascending: false });
+
+  const categoryTagsLower = category.tags.map((tag) => tag.toLowerCase());
 
   const categoryProducts = (products || [])
     .filter((product: any) => {

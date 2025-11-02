@@ -15,15 +15,12 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import { productSchema } from "../schemas";
-import { LabelSelector } from "./label-selector";
+import TagSelector from "./tag-selector";
 
 interface ProductFormProps {
   onSubmit: (data: z.infer<typeof productSchema>) => Promise<void>;
@@ -68,14 +65,14 @@ export function ProductForm({
 
   return (
     <div>
-      <div className="flex gap-8">
+      <div className="flex gap-4">
         <nav className="hidden md:block w-48 shrink-0 sticky top-24 h-fit">
           <div className="space-y-1">
             {sections.map((section) => (
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="block w-full text-left p-2 text-sm text-gray-600 hover:text-gray-900"
+                className="block w-full text-left p-1.5 text-sm text-gray-600 hover:text-gray-900"
               >
                 {section.label}
               </a>
@@ -90,8 +87,8 @@ export function ProductForm({
             form.handleSubmit();
           }}
         >
-          <FieldGroup className="gap-10">
-            <div id="main-info" className="scroll-mt-24 space-y-10">
+          <FieldGroup>
+            <div id="main-info" className="scroll-mt-24 space-y-6">
               <form.Field
                 name="name"
                 validators={{
@@ -212,7 +209,7 @@ export function ProductForm({
 
                   return (
                     <Field>
-                      <FieldLabel>Platform Availability *</FieldLabel>
+                      <FieldLabel>Platforms *</FieldLabel>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                         {platformOptions.map((option) => (
                           <Label
@@ -231,7 +228,7 @@ export function ProductForm({
                           </Label>
                         ))}
                       </div>
-                      <FieldDescription>
+                      <FieldDescription className="text-xs">
                         Select all platforms where your product is available
                       </FieldDescription>
                       {isInvalid && (
@@ -256,7 +253,7 @@ export function ProductForm({
                           className="w-4 h-4"
                         />
                         <FieldLabel htmlFor="is_open_source">
-                          Is this open source?
+                          Is your product open source?
                         </FieldLabel>
                       </Field>
 
@@ -328,7 +325,7 @@ export function ProductForm({
                         aria-invalid={isInvalid}
                         placeholder="Tell us about your product, its features, and what makes it unique..."
                       />
-                      <FieldDescription>
+                      <FieldDescription className="text-xs">
                         Detailed description (50-1000 characters)
                       </FieldDescription>
                       {isInvalid && (
@@ -351,7 +348,7 @@ export function ProductForm({
                   return (
                     <Field>
                       <FieldLabel>Launch Tags * (up to 3)</FieldLabel>
-                      <LabelSelector
+                      <TagSelector
                         selectedTags={field.state.value}
                         onTagsChange={(tags) => field.handleChange(tags)}
                         maxTags={3}
@@ -367,7 +364,7 @@ export function ProductForm({
 
             <FieldSeparator />
 
-            <div id="images-media" className="scroll-mt-24 space-y-10">
+            <div id="images-media" className="scroll-mt-24 space-y-6">
               <form.Field
                 name="logo_url"
                 validators={{
@@ -410,7 +407,7 @@ export function ProductForm({
                             }}
                             className="w-full text-sm"
                           />
-                          <FieldDescription>
+                          <FieldDescription className="text-xs">
                             Upload will be available soon
                           </FieldDescription>
                         </div>
@@ -451,7 +448,7 @@ export function ProductForm({
 
             <FieldSeparator />
 
-            <div id="pricing" className="scroll-mt-24 space-y-10">
+            <div id="pricing" className="scroll-mt-24 space-y-6">
               <form.Field
                 name="pricing_model"
                 validators={{
@@ -461,7 +458,7 @@ export function ProductForm({
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
-                  
+
                   const pricingOptions = [
                     {
                       id: "free",
@@ -483,7 +480,7 @@ export function ProductForm({
                   return (
                     <FieldSet>
                       <FieldLegend>Pricing Model *</FieldLegend>
-                      <FieldDescription>
+                      <FieldDescription className="text-xs">
                         How do you monetize your product?
                       </FieldDescription>
                       <RadioGroup
@@ -506,7 +503,7 @@ export function ProductForm({
                             >
                               <FieldContent>
                                 <FieldTitle>{option.title}</FieldTitle>
-                                <FieldDescription>
+                                <FieldDescription className="text-xs">
                                   {option.description}
                                 </FieldDescription>
                               </FieldContent>
@@ -545,7 +542,7 @@ export function ProductForm({
                         onChange={(e) =>
                           field.handleChange(e.target.value || undefined)
                         }
-                        placeholder="SUMMER2024"
+                        placeholder="SUMMER2026"
                       />
                     </Field>
                   );
@@ -555,7 +552,7 @@ export function ProductForm({
 
             <FieldSeparator />
 
-            <div id="social-media" className="scroll-mt-24 space-y-10">
+            <div id="social-media" className="scroll-mt-24 space-y-6">
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Social Media</h3>
 
@@ -644,7 +641,7 @@ export function ProductForm({
           </FieldGroup>
 
           <div className="mt-8 gap-4 flex justify-end">
-            <Button variant={"outline"} type="submit" disabled={isSubmitting}>
+            <Button size={"sm"} type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : "Submit Product"}
             </Button>
           </div>
