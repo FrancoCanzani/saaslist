@@ -1,10 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CommentSection from "@/features/products/components/comment-section";
+import ProductLogo from "@/features/products/components/product-logo";
 import ProductSidebar from "@/features/products/components/product-sidebar";
 import ReviewSection from "@/features/products/components/review-section";
 import { Product } from "@/features/products/types";
 import { createClient } from "@/utils/supabase/server";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
 export default async function ProductPage({
@@ -86,18 +86,11 @@ export default async function ProductPage({
         <main className="flex-1">
           <div className="flex items-start gap-x-6">
             <div className="rounded-md w-10 flex items-center justify-center h-10 bg-gray-100 p-1">
-              {product.logo_url ? (
-                <Image
-                  src={product.logo_url}
-                  alt={`${product.name} logo`}
-                  width={30}
-                  height={30}
-                />
-              ) : (
-                <div className="h-9 w-9 flex items-center font-medium italic justify-center">
-                  {product.name.split("")[0]}
-                </div>
-              )}
+              <ProductLogo
+                logoUrl={product.logo_url}
+                productName={product.name}
+                size={30}
+              />
             </div>
 
             <div className="flex-1">

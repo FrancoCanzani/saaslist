@@ -71,9 +71,8 @@ export default function UpvoteButton({
       size={size}
       className={cn(
         "text-xs font-medium",
-        optimisticProduct.is_upvoted
-          ? "bg-orange-500 hover:bg-orange-600 text-white"
-          : "",
+        optimisticProduct.is_upvoted &&
+          "text-white leading-none bg-linear-to-br from-blue-500 to-blue-700",
       )}
       onClick={handleUpvote}
     >

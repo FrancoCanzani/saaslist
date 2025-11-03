@@ -1,14 +1,15 @@
 "use client";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import ProductCard from "@/features/products/components/product-card";
 import { Product } from "@/features/products/types";
 import { TagCategory } from "@/utils/constants";
-import { useQueryState, parseAsString } from "nuqs";
-import { useMemo } from "react";
-import ProductCard from "@/features/products/components/product-card";
-import { Input } from "@/components/ui/input";
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Fuse from "fuse.js";
+import { X } from "lucide-react";
+import { parseAsString, useQueryState } from "nuqs";
+import { useMemo } from "react";
 
 interface CategoryProductsProps {
   category: TagCategory;
@@ -38,7 +39,7 @@ export default function CategoryProducts({
         includeScore: true,
         minMatchCharLength: 1,
       }),
-    [products]
+    [products],
   );
 
   const filteredProducts = useMemo(() => {
@@ -47,9 +48,8 @@ export default function CategoryProducts({
     if (tag && tag.trim()) {
       filtered = filtered.filter((product) =>
         product.tags?.some(
-          (productTag) =>
-            productTag.toLowerCase() === tag.toLowerCase()
-        )
+          (productTag) => productTag.toLowerCase() === tag.toLowerCase(),
+        ),
       );
     }
 
@@ -85,74 +85,55 @@ export default function CategoryProducts({
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">{category.name}</h1>
-        <p className="text-muted-foreground text-sm mb-6">
-          Explore {category.name.toLowerCase()} products
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-          <div className="relative flex-1 max-w-md">
-            <Input
-              placeholder="Search products..."
-              value={search || ""}
-              onChange={(e) => setSearch(e.target.value || null)}
-              className="w-full"
-            />
-          </div>
-          <div className="flex gap-2">
-            {search && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleClearSearch}
-                className="shrink-0"
-              >
-                <X className="size-4 mr-2" />
-                Clear search
-              </Button>
-            )}
-            {tag && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleClearTag}
-                className="shrink-0"
-              >
-                <X className="size-4 mr-2" />
-                Clear tag filter
-              </Button>
-            )}
-            {(search || tag) && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleClearAll}
-                className="shrink-0"
-              >
-                Clear all
-              </Button>
-            )}
-          </div>
+    <div className="p-8 space-y-8">
+      <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+        <div>
+          <h1 className="text-xl font-medium">{category.name}</h1>
+          <p className="text-muted-foreground text-sm capitalize">
+            Explore {category.name.toLowerCase()} products
+          </p>
         </div>
 
-        <div className="mt-4 text-sm text-muted-foreground">
-          {filteredProducts.length}{" "}
-          {filteredProducts.length === 1 ? "product" : "products"}
-          {tag && ` with tag "${tag}"`}
-          {search && ` matching "${search}"`}
-        </div>
+        <Input
+          placeholder="Search products..."
+          value={search || ""}
+          onChange={(e) => setSearch(e.target.value || null)}
+          className="max-w-md text-xs"
+        />
       </div>
 
-      {filteredProducts.length === 0 ? (
-        <div className="border-dashed border p-8 rounded-xl text-muted-foreground text-center">
-          {search || tag
-            ? `No products found ${tag ? `with tag "${tag}"` : ""} ${search ? `matching "${search}"` : ""}`
-            : "No products found in this category"}
+      {tag && (
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="text-xs text-muted-foreground capitalize">
+            {filteredProducts.length}{" "}
+            {filteredProducts.length === 1 ? "product" : "products"}
+            {tag && ` with tag "${tag}"`}
+            {search && ` matching "${search}"`}
+          </div>
+          {tag && (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={handleClearTag}
+              className="shrink-0"
+            >
+              <X className="size-3" />
+              Clear tag filter
+            </Button>
+          )}
         </div>
+      )}
+
+      {filteredProducts.length === 0 ? (
+        <Alert>
+          <AlertDescription className="mx-auto">
+            {search || tag
+              ? `No products found ${tag ? `with tag "${tag}"` : ""} ${search ? `matching "${search}"` : ""}`
+              : "No products found in this category"}
+          </AlertDescription>
+        </Alert>
       ) : (
-        <div className="space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -161,4 +142,3 @@ export default function CategoryProducts({
     </div>
   );
 }
-

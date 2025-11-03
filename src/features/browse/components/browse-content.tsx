@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { tags } from "@/utils/constants";
 import Fuse from "fuse.js";
@@ -112,49 +113,36 @@ export function BrowseContent({ products }: BrowseContentProps) {
 
   return (
     <div className="p-8 space-y-8">
-      <div>
-        <h1 className="text-xl font-medium">Browse Products</h1>
-        <p className="text-muted-foreground text-sm">
-          Explore products by category
-        </p>
+      <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+        <div>
+          <h1 className="text-xl font-medium">Browse Products</h1>
+          <p className="text-muted-foreground text-sm">
+            Explore products by category
+          </p>
+        </div>
+
+        <Input
+          type="text"
+          placeholder="Search categories and tags..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="max-w-md text-xs"
+        />
       </div>
 
-      <Input
-        type="text"
-        placeholder="Search categories and tags..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="max-w-md"
-      />
-
-      {search && (
-        <div className="text-sm text-muted-foreground">
-          {filteredCategories.length === 0 ? (
-            <p>No matching categories or tags found for &quot;{search}&quot;</p>
-          ) : (
-            <p>
-              Found {filteredCategories.length}{" "}
-              {filteredCategories.length === 1 ? "category" : "categories"}
-            </p>
-          )}
-        </div>
-      )}
-
-      <div className="space-y-8 flex flex-col">
-        {filteredCategories.length === 0 && !search && (
-          <p className="text-muted-foreground text-sm">No products found.</p>
-        )}
-
+      <div className="space-y-8 flex flex-col divide-y">
         {filteredCategories.length === 0 && search && (
-          <div className="border-dashed border p-8 rounded-xl text-muted-foreground text-center">
-            No matching categories or tags found for &quot;{search}&quot;
-          </div>
+          <Alert>
+            <AlertDescription className="mx-auto">
+              No matching categories or tags found for &quot;{search}&quot;
+            </AlertDescription>
+          </Alert>
         )}
 
         {filteredCategories.map((category) => (
           <Link
             href={`/browse/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
-            className="group space-y-2 rounded-md bg-gray-50 p-2 transition-all"
+            className="group space-y-2 p-2.5 transition-all"
             key={category.name}
           >
             <h4 className="w-full flex items-center justify-start gap-x-1">
@@ -170,7 +158,7 @@ export function BrowseContent({ products }: BrowseContentProps) {
                     href={`/browse/${category.name.toLowerCase().replace(/\s+/g, "-")}?tag=${encodeURIComponent(tag.name)}`}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <span className="text-xs hover:underline">
+                    <span className="text-sm hover:underline text-muted-foreground hover:text-primary">
                       {tag.name} ({tag.count})
                     </span>
                   </Link>

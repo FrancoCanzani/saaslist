@@ -1,9 +1,10 @@
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
-import { ArrowUpRight, MessageSquare, Tags } from "lucide-react";
-import Image from "next/image";
+import { MessageSquare, Tags } from "lucide-react";
 import Link from "next/link";
 import { Product } from "../types";
+import ProductLogo from "./product-logo";
 import UpvoteButton from "./upvote-button";
 
 export default async function ProductList({
@@ -68,7 +69,7 @@ export default async function ProductList({
 
   const { data: products, error } = await query
     .order("upvotes_count", { ascending: false })
-    .limit(5);
+    .limit(10);
 
   const processedProducts =
     products?.map((product) => ({
@@ -88,76 +89,68 @@ export default async function ProductList({
 
   if (!processedProducts || processedProducts.length == 0) {
     return (
-      <div>
-        <h2 className="text-xl font-semibold mb-4">{title}</h2>
-        <div className="border-dashed border p-4 rounded-xl text-muted-foreground italic text-center text-sm">
-          Ups! It looks like we have nothing to show here
-        </div>
+      <div className="space-y-6">
+        <h2 className="text-xl font-semibold">{title}</h2>
+        <Alert>
+          <AlertDescription className="mx-auto">
+            Ups! It looks like we have nothing to show here{" "}
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
-      <div>
-        {processedProducts.map((product: Product) => (
+    <div className="space-y-6">
+      <h2 className="text-xl leading-tight font-medium">{title}</h2>
+      <div className="flex flex-col space-y-6">
+        {processedProducts.map((product: Product, index) => (
           <Link key={product.id} href={`/products/${product.id}`}>
-            <div className="duration-100 mb-2 ease-out outline-transparent not-disabled:cursor-pointer hover:not-disabled:outline-[3px] hover:not-disabled:outline-border/50 hover:not-disabled:border-ring focus-visible:outline-[3px] focus-visible:outline-border/50 focus-visible:border-ring group relative flex items-center gap-3 w-full border bg-card px-3 py-2 rounded-xl hover:bg-yellow-200">
-              <div className="rounded-md w-8 flex items-center justify-center h-8 bg-gray-100 p-1">
-                {product.logo_url ? (
-                  <Image
-                    src={product.logo_url}
-                    alt={`${product.name} logo`}
-                    width={20}
-                    height={20}
-                  />
-                ) : (
-                  <div className="h-9 w-9 flex items-center font-medium italic justify-center">
-                    {product.name.split("")[0]}
-                  </div>
-                )}
+            <div className="group relative flex items-center gap-3 w-full p-3 rounded-xl hover:bg-gray-50">
+              <div className="rounded-md size-8 flex items-center justify-center bg-gray-50 p-1">
+                <ProductLogo
+                  logoUrl={product.logo_url}
+                  productName={product.name}
+                  size={25}
+                />
               </div>
               <div className="flex-col flex flex-1 min-w-0">
-                <a
-                  href={product.website_url}
-                  className="group group-hover:text-blue-600 inline-flex items-center gap-1 font-medium transition-colors duration-100"
-                >
-                  {product.name}
-
-                  <ArrowUpRight className="opacity-0 size-3.5 group-hover:opacity-100 transition-opacity" />
-                </a>
-                <div className="text-sm flex items-center gap-2 min-w-0">
-                  <h3 className="truncate shrink">{product.tagline}</h3>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Tags className="size-3" />
+                <h2 className="group group-hover:text-blue-800 inline-flex items-center gap-1 font-medium transition-colors duration-100">
+                  {index + 1}. {product.name}
+                </h2>
+                <div className="flex items-center gap-2 w-full min-w-0 overflow-hidden">
+                  <h3 className="text-sm text-muted-foreground whitespace-nowrap shrink">
+                    {product.tagline}
+                  </h3>
+                  <div className="hidden md:flex items-center gap-2">
+                    <Tags className="size-3 shrink-0" />
                     {product.tags
                       .slice(0, 3)
                       .map((tag: string, index: number) => (
                         <span
-                          className="hover:underline text-xs bg-gray-100 px-1.5 py-0.5 rounded"
+                          className="hover:underline text-xs bg-gray-100 px-1.5 py-0.5 rounded whitespace-nowrap shrink-0"
                           key={index}
                         >
                           {tag}
                         </span>
                       ))}
                     {product.tags.length > 3 && (
-                      <span className="text-xs">
+                      <span className="text-xs whitespace-nowrap shrink-0">
                         +{product.tags.length - 3}
                       </span>
                     )}
                   </div>
                 </div>
               </div>
-              <div className="flex-1 flex items-center justify-end gap-x-2">
+              <div className="flex items-center justify-end gap-x-2 shrink-0">
                 <Button
                   variant={"secondary"}
                   size={"sm"}
-                  className="text-xs font-medium"
+                  className="text-xs hidden md:flex font-medium"
                 >
                   <MessageSquare className="size-3" />
                   {product.comments_count}
                 </Button>
-                <UpvoteButton product={product} />
+                <UpvoteButton size={"sm"} product={product} />
               </div>
             </div>
           </Link>

@@ -119,6 +119,9 @@
     }
     body {
         @apply bg-background text-foreground;
+        font-family: var(--font-inter), sans-serif;
+        font-weight: 450;
+        letter-spacing: -0.02em;
     }
 }
 
@@ -130,18 +133,3 @@
     pointer-events: none;
 }
 
-@theme inline {
-    --animate-aurora: aurora 60s linear infinite;
-    @keyframes aurora {
-        from {
-            background-position:
-                50% 50%,
-                50% 50%;
-        }
-        to {
-            background-position:
-                350% 50%,
-                350% 50%;
-        }
-    }
-}
