@@ -95,3 +95,79 @@ export function sortReviews(
 
   return sorted;
 }
+
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const MAX_LOGO_SIZE = 2 * 1024 * 1024;
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+const MAX_IMAGES_COUNT = 5;
+
+export interface FileValidationError {
+  file: string;
+  error: string;
+}
+
+export function validateLogoFile(file: File): FileValidationError | null {
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    return {
+      file: file.name,
+      error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.',
+    };
+  }
+
+  if (file.size > MAX_LOGO_SIZE) {
+    return {
+      file: file.name,
+      error: 'File too large. Maximum size is 2MB.',
+    };
+  }
+
+  return null;
+}
+
+export function validateImageFiles(files: File[]): FileValidationError[] {
+  const errors: FileValidationError[] = [];
+
+  if (files.length > MAX_IMAGES_COUNT) {
+    errors.push({
+      file: 'general',
+      error: `Too many files. Maximum is ${MAX_IMAGES_COUNT} images.`,
+    });
+    return errors;
+  }
+
+  files.forEach((file) => {
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      errors.push({
+        file: file.name,
+        error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.',
+      });
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+      errors.push({
+        file: file.name,
+        error: 'File too large. Maximum size is 5MB.',
+      });
+    }
+  });
+
+  return errors;
+}
+
+export function generateStoragePath(userId: string, filename: string): string {
+  const timestamp = Date.now();
+  const random = crypto.randomUUID();
+  const ext = filename.split('.').pop();
+  return `${userId}/${timestamp}-${random}.${ext}`;
+}
+
+export function generateProductImagePath(
+  userId: string,
+  productId: string,
+  filename: string
+): string {
+  const timestamp = Date.now();
+  const random = crypto.randomUUID();
+  const ext = filename.split('.').pop();
+  return `${userId}/${productId}/${timestamp}-${random}.${ext}`;
+}

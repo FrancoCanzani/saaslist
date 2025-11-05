@@ -5,6 +5,7 @@ import { Product, Comment, Review } from "./types";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "@/utils/types";
 import { commentSchema, reviewSchema } from "./schemas";
+import { generateStoragePath, generateProductImagePath } from "./helpers";
 
 export async function handleUpvoteAction(
   product: Product
@@ -354,5 +355,114 @@ export async function deleteReviewAction(
       throw error;
     }
     throw new Error("Something went wrong");
+  }
+}
+
+export async function uploadProductLogo(
+  file: File
+): Promise<{ url: string; path: string }> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to upload files");
+    }
+
+    const filePath = generateStoragePath(user.id, file.name);
+    
+    const { data, error } = await supabase.storage
+      .from("product-logos")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (error) {
+      throw new Error(`Failed to upload logo: ${error.message}`);
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("product-logos").getPublicUrl(data.path);
+
+    return { url: publicUrl, path: data.path };
+  } catch (error) {
+    console.error("Upload logo error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to upload logo");
+  }
+}
+
+export async function uploadProductImages(
+  files: File[],
+  productId: string
+): Promise<string[]> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to upload files");
+    }
+
+    const uploadPromises = files.map(async (file) => {
+      const filePath = generateProductImagePath(user.id, productId, file.name);
+
+      const { data, error } = await supabase.storage
+        .from("product-images")
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) {
+        throw new Error(`Failed to upload image: ${error.message}`);
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("product-images").getPublicUrl(data.path);
+
+      return publicUrl;
+    });
+
+    return await Promise.all(uploadPromises);
+  } catch (error) {
+    console.error("Upload images error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Failed to upload images");
+  }
+}
+
+export async function deleteUploadedAssets(
+  paths: string[],
+  bucket: "product-logos" | "product-images"
+): Promise<void> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to delete files");
+    }
+
+    const { error } = await supabase.storage.from(bucket).remove(paths);
+
+    if (error) {
+      console.error("Failed to delete assets:", error);
+    }
+  } catch (error) {
+    console.error("Delete assets error:", error);
   }
 }

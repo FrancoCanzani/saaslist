@@ -21,6 +21,8 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import { productSchema } from "../schemas";
 import TagSelector from "./tag-selector";
+import { LogoUpload } from "./logo-upload";
+import { ImagesUpload } from "./images-upload";
 
 interface ProductFormProps {
   onSubmit: (data: z.infer<typeof productSchema>) => Promise<void>;
@@ -50,6 +52,8 @@ export function ProductForm({
       description: defaultValues?.description || "",
       tags: defaultValues?.tags || [],
       logo_url: defaultValues?.logo_url,
+      logo_file: null as File | null,
+      image_files: [] as File[],
       demo_url: defaultValues?.demo_url,
       pricing_model: defaultValues?.pricing_model || "free",
       promo_code: defaultValues?.promo_code,
@@ -365,6 +369,24 @@ export function ProductForm({
             <FieldSeparator />
 
             <div id="images-media" className="scroll-mt-24 space-y-6">
+              <form.Field name="logo_file">
+                {(field) => {
+                  return (
+                    <Field>
+                      <FieldLabel>Logo</FieldLabel>
+                      <LogoUpload
+                        value={field.state.value}
+                        onChange={(file) => field.handleChange(file)}
+                        disabled={isSubmitting}
+                      />
+                      <FieldDescription className="text-xs">
+                        Upload your product logo (PNG, JPG, WebP up to 2MB)
+                      </FieldDescription>
+                    </Field>
+                  );
+                }}
+              </form.Field>
+
               <form.Field
                 name="logo_url"
                 validators={{
@@ -374,44 +396,41 @@ export function ProductForm({
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="logo_url">Logo</FieldLabel>
-                      <div className="space-y-4">
-                        <div>
-                          <Input
-                            id="logo_url"
-                            type="url"
-                            value={field.state.value || ""}
-                            onBlur={field.handleBlur}
-                            onChange={(e) =>
-                              field.handleChange(e.target.value || undefined)
-                            }
-                            placeholder="https://example.com/logo.png"
-                          />
-                        </div>
+                      <FieldLabel htmlFor="logo_url">
+                        Or use a Logo URL
+                      </FieldLabel>
+                      <Input
+                        id="logo_url"
+                        type="url"
+                        value={field.state.value || ""}
+                        onBlur={field.handleBlur}
+                        onChange={(e) =>
+                          field.handleChange(e.target.value || undefined)
+                        }
+                        placeholder="https://example.com/logo.png"
+                        disabled={isSubmitting}
+                      />
+                      <FieldDescription className="text-xs">
+                        Provide an external URL if you prefer not to upload
+                      </FieldDescription>
+                    </Field>
+                  );
+                }}
+              </form.Field>
 
-                        <div className="">
-                          <p className="text-sm mb-2">Or upload a logo:</p>
-                          <Input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                // TODO: Upload to Supabase Storage
-                                console.log("Logo file selected:", file.name);
-                                // For now, just show a placeholder
-                                alert(
-                                  "File upload coming soon! For now, please use a URL.",
-                                );
-                              }
-                            }}
-                            className="w-full text-sm"
-                          />
-                          <FieldDescription className="text-xs">
-                            Upload will be available soon
-                          </FieldDescription>
-                        </div>
-                      </div>
+              <form.Field name="image_files">
+                {(field) => {
+                  return (
+                    <Field>
+                      <FieldLabel>Product Images (Optional)</FieldLabel>
+                      <ImagesUpload
+                        value={field.state.value}
+                        onChange={(files) => field.handleChange(files)}
+                        disabled={isSubmitting}
+                      />
+                      <FieldDescription className="text-xs">
+                        Upload up to 5 product screenshots or images
+                      </FieldDescription>
                     </Field>
                   );
                 }}
@@ -439,6 +458,7 @@ export function ProductForm({
                         }
                         className="w-full border px-3 py-2"
                         placeholder="https://loom.com/share/..."
+                        disabled={isSubmitting}
                       />
                     </Field>
                   );

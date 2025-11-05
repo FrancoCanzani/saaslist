@@ -24,6 +24,7 @@ export interface Product {
   website_url: string;
   repo_url?: string;
   logo_url?: string;
+  images?: string[];
   demo_url?: string;
   pricing_model: PricingModel;
   promo_code?: string;
@@ -51,6 +52,8 @@ export interface ProductFormData {
   description: string;
   tags: string[];
   logo_url?: string;
+  logo_file?: File | null;
+  image_files?: File[];
   demo_url?: string;
   pricing_model: PricingModel;
   promo_code?: string;

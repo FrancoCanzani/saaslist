@@ -1,7 +1,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { MessageSquare, Tags } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Product } from "../types";
 import ProductLogo from "./product-logo";
@@ -99,60 +99,65 @@ export default async function ProductList({
       </div>
     );
   }
+
   return (
     <div className="space-y-6">
       <h2 className="text-xl leading-tight font-medium">{title}</h2>
-      <div className="flex flex-col space-y-6">
-        {processedProducts.map((product: Product, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {processedProducts.map((product: Product) => (
           <Link key={product.id} href={`/products/${product.id}`}>
-            <div className="group relative flex items-center gap-3 w-full p-3 rounded-xl hover:bg-gray-50">
-              <div className="rounded-md size-8 flex items-center justify-center bg-gray-50 p-1">
-                <ProductLogo
-                  logoUrl={product.logo_url}
-                  productName={product.name}
-                  size={25}
-                />
-              </div>
-              <div className="flex-col flex flex-1 min-w-0">
-                <h2 className="group group-hover:text-blue-800 inline-flex items-center gap-1 font-medium transition-colors duration-100">
-                  {index + 1}. {product.name}
-                </h2>
-                <div className="flex items-center gap-2 w-full min-w-0 overflow-hidden">
-                  <h3 className="text-sm text-muted-foreground whitespace-nowrap shrink">
+            <Card className="group flex bg-gray-50/50 flex-col h-full space-y-2 border-none">
+              <div className="flex items-start gap-2">
+                <div className="rounded-md size-10 flex items-center justify-center shrink-0">
+                  <ProductLogo
+                    logoUrl={product.logo_url}
+                    productName={product.name}
+                    size={30}
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-medium line-clamp-1">{product.name}</h2>
+                  <p className="text-xs text-muted-foreground line-clamp-2 flex-1">
                     {product.tagline}
-                  </h3>
-                  <div className="hidden md:flex items-center gap-2">
-                    <Tags className="size-3 shrink-0" />
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-sm flex-1">{product.description}</p>
+
+              <div className="flex items-center justify-between gap-2 w-full">
+                {product.tags.length > 0 && (
+                  <div className="flex group-hover:hidden items-center gap-1 flex-1 min-w-0 overflow-hidden">
                     {product.tags
                       .slice(0, 3)
-                      .map((tag: string, index: number) => (
-                        <span
-                          className="hover:underline text-xs bg-gray-100 px-1.5 py-0.5 rounded whitespace-nowrap shrink-0"
-                          key={index}
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                      .map((tag: string, index: number) => {
+                        const isLast = index === Math.min(product.tags.length, 3) - 1;
+                        return (
+                          <span
+                            className={`text-xs bg-orange-50 px-1.5 py-0.5 rounded capitalize inline-block whitespace-nowrap ${isLast ? "overflow-hidden text-ellipsis max-w-[100px]" : "shrink-0"}`}
+                            key={index}
+                            title={isLast ? tag : undefined}
+                          >
+                            {tag}
+                          </span>
+                        );
+                      })}
                     {product.tags.length > 3 && (
-                      <span className="text-xs whitespace-nowrap shrink-0">
+                      <span className="text-xs text-muted-foreground shrink-0">
                         +{product.tags.length - 3}
                       </span>
                     )}
                   </div>
+                )}
+
+                <div className="hidden group-hover:flex text-xs capitalize font-medium items-center text-blue-700 justify-center gap-x-1 overflow-hidden">
+                  Visit website
+                  <ArrowRight className="size-3" />
                 </div>
+
+                <UpvoteButton size={"xs"} product={product} label="Upvote" />
               </div>
-              <div className="flex items-center justify-end gap-x-2 shrink-0">
-                <Button
-                  variant={"secondary"}
-                  size={"sm"}
-                  className="text-xs hidden md:flex font-medium"
-                >
-                  <MessageSquare className="size-3" />
-                  {product.comments_count}
-                </Button>
-                <UpvoteButton size={"sm"} product={product} />
-              </div>
-            </div>
+            </Card>
           </Link>
         ))}
       </div>

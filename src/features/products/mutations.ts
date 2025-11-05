@@ -1,39 +1,71 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { productSchema } from './schemas'
-import { ApiResponse, Product } from './types'
-import { z } from 'zod'
-
-type ProductFormData = z.infer<typeof productSchema>
+import { ApiResponse, Product, ProductFormData } from './types'
+import { uploadProductLogo, uploadProductImages, deleteUploadedAssets } from './actions'
 
 const createProduct = async (data: ProductFormData): Promise<Product> => {
-  const response = await fetch('/api/products', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
+  let uploadedLogoPath: string | null = null;
+  let logoUrl = data.logo_url;
 
-  const result: ApiResponse<Product> = await response.json()
-
-  if (!response.ok || !result.success) {
-    if (response.status === 401) {
-      throw new Error('You must be logged in to submit a product')
+  try {
+    if (data.logo_file) {
+      const { url, path } = await uploadProductLogo(data.logo_file);
+      logoUrl = url;
+      uploadedLogoPath = path;
     }
-    
-    if (response.status === 400) {
-      const errorMessage = result.details || result.error || 'Validation error'
-      throw new Error(`Validation error: ${errorMessage}`)
+
+    const { logo_file, image_files, ...productData } = data;
+
+    const response = await fetch('/api/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...productData,
+        logo_url: logoUrl,
+      }),
+    });
+
+    const result: ApiResponse<Product> = await response.json();
+
+    if (!response.ok || !result.success) {
+      if (uploadedLogoPath) {
+        await deleteUploadedAssets([uploadedLogoPath], 'product-logos');
+      }
+
+      if (response.status === 401) {
+        throw new Error('You must be logged in to submit a product');
+      }
+      
+      if (response.status === 400) {
+        const errorMessage = result.details || result.error || 'Validation error';
+        throw new Error(`Validation error: ${errorMessage}`);
+      }
+      
+      throw new Error(result.error || 'Failed to submit product');
     }
-    
-    throw new Error(result.error || 'Failed to submit product')
-  }
 
-  if (!result.data) {
-    throw new Error('No product data returned from server')
-  }
+    if (!result.data) {
+      throw new Error('No product data returned from server');
+    }
 
-  return result.data
+    if (image_files && image_files.length > 0) {
+      try {
+        const imageUrls = await uploadProductImages(image_files, result.data.id);
+        result.data.images = imageUrls;
+      } catch (error) {
+        console.error('Failed to upload product images:', error);
+      }
+    }
+
+    return result.data;
+  } catch (error) {
+    if (uploadedLogoPath) {
+      await deleteUploadedAssets([uploadedLogoPath], 'product-logos');
+    }
+    throw error;
+  }
 }
 
 export const useCreateProduct = () => {

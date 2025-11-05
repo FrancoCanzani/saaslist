@@ -24,12 +24,13 @@ export default function ProductLogo({
         width={size}
         height={size}
         onError={() => setImageError(true)}
+        className="rounded-md"
       />
     );
   }
 
   return (
-    <div className="size-9 flex text-blue-800 items-center font-medium justify-center">
+    <div className="size-9 flex items-center font-medium justify-center">
       {productName.split("")[0]}
     </div>
   );

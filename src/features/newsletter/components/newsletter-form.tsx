@@ -63,22 +63,17 @@ export function NewsletterForm({
         }}
         className="max-w-xl mx-auto space-y-6"
       >
-        <div className="space-y-4 p-4 rounded-lg border">
+        <div className="space-y-4 bg-gray-50 p-4 rounded-lg border border-dashed">
           <div className="flex flex-col items-center gap-1">
             <p className="font-medium">{defaultName}</p>
             <p className="text-sm text-muted-foreground">{defaultEmail}</p>
           </div>
-          <p className="text-sm text-center">
+          <p className="text-xs text-center text-muted-foreground">
             You'll receive the newsletter at this email address every Sunday.
           </p>
         </div>
 
-        <Button
-        type="submit"
-        variant={"secondary"}
-        disabled={isPending}
-        className="w-full"
-        >
+        <Button type="submit" disabled={isPending} className="w-full">
           {isPending ? "Subscribing..." : "Subscribe to Newsletter"}
         </Button>
 

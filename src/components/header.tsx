@@ -21,7 +21,7 @@ export default async function Header() {
         <Link href={"/newsletter"} className="hidden md:block">
           Newsletter
         </Link>
-        <Link href={"#"} className="hidden md:block">
+        <Link href={"/advertise"} className="hidden md:block">
           Advertise
         </Link>
       </div>
@@ -29,7 +29,7 @@ export default async function Header() {
         {user ? (
           <>
             <Button
-              className="relative text-white leading-none bg-linear-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/40"
+              className="text-white leading-none bg-linear-to-br from-blue-500 to-blue-700 hover:scale-95 transition-all duration-300 shadow-lg shadow-blue-500/40"
               size={"sm"}
               variant={"secondary"}
             >

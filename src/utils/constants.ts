@@ -8,7 +8,6 @@ export const tags: TagCategory[] = [
     name: "AI",
     tags: [
       "AI",
-      "Artificial Intelligence",
       "Machine Learning",
       "Deep Learning",
       "GPT",

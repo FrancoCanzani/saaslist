@@ -19,6 +19,7 @@ CREATE TABLE products (
   website_url TEXT NOT NULL,
   repo_url TEXT,
   logo_url TEXT,
+  images TEXT[],
   demo_url TEXT,
   pricing_model TEXT NOT NULL CHECK (pricing_model IN ('free', 'freemium', 'premium')),
   promo_code TEXT,
@@ -34,6 +35,9 @@ CREATE TABLE products (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Migration: Add images column to existing products table
+-- ALTER TABLE products ADD COLUMN images TEXT[];
 
 CREATE TABLE upvotes (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
