@@ -2,7 +2,8 @@
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
-import { tags } from "@/utils/constants";
+import { categories } from "@/utils/constants";
+import { getTagSlug } from "@/utils/helpers";
 import Fuse from "fuse.js";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -20,7 +21,7 @@ export function BrowseContent({ products }: BrowseContentProps) {
   );
 
   const categoryStats = useMemo(() => {
-    return tags.map((category) => {
+    return categories.map((category) => {
       const count =
         products?.filter((product) =>
           product.tags.some((tag: string) =>
@@ -47,6 +48,7 @@ export function BrowseContent({ products }: BrowseContentProps) {
 
       return {
         name: category.name,
+        slug: category.slug,
         count,
         tags: tagsWithCount,
       };
@@ -141,7 +143,7 @@ export function BrowseContent({ products }: BrowseContentProps) {
 
         {filteredCategories.map((category) => (
           <Link
-            href={`/browse/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
+            href={`/browse/${category.slug}`}
             className="group space-y-2 p-2.5 transition-all"
             key={category.name}
           >
@@ -155,7 +157,7 @@ export function BrowseContent({ products }: BrowseContentProps) {
                 {category.tags.map((tag) => (
                   <Link
                     key={tag.name}
-                    href={`/browse/${category.name.toLowerCase().replace(/\s+/g, "-")}?tag=${encodeURIComponent(tag.name)}`}
+                    href={`/browse/${category.slug}/${getTagSlug(tag.name)}`}
                     onClick={(e) => e.stopPropagation()}
                   >
                     <span className="text-sm hover:underline text-muted-foreground hover:text-primary">

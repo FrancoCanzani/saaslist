@@ -1,10 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CommentSection from "@/features/products/components/comment-section";
 import ProductLogo from "@/features/products/components/product-logo";
+import { ProductMediaCarousel } from "@/features/products/components/product-media-carousel";
 import ProductSidebar from "@/features/products/components/product-sidebar";
 import ReviewSection from "@/features/products/components/review-section";
 import { Product } from "@/features/products/types";
+import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
 import { createClient } from "@/utils/supabase/server";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function ProductPage({
@@ -80,11 +83,12 @@ export default async function ProductPage({
     hasUserReviewed = !!userReview;
   }
 
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex gap-6">
-        <main className="flex-1">
-          <div className="flex items-start gap-x-6">
+        <main className="flex-1 flex flex-col gap-6">
+          <div className="flex items-center gap-x-6">
             <div className="rounded-md w-10 flex items-center justify-center h-10 bg-gray-100 p-1">
               <ProductLogo
                 logoUrl={product.logo_url}
@@ -98,27 +102,41 @@ export default async function ProductPage({
               <h3 className="text-muted-foreground text-sm">
                 {product.tagline}
               </h3>
-              <p className="my-4">{product.description}</p>
-
-              {product.demo_url && (
-                <div className="my-4">
-                  <div className="relative w-full max-w-2xl">
-                    <iframe
-                      src={
-                        product.demo_url.includes("youtube.com")
-                          ? product.demo_url.replace("watch?v=", "embed/")
-                          : product.demo_url
-                      }
-                      className="w-full h-64 rounded-lg"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      title={`${product.name} demo video`}
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           </div>
+
+          <p className="text-pretty">{product.description}</p>
+
+          <div>
+            <h4 className="font-medium mb-1">Tags</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {product.tags.map((tag: string, index: number) => {
+                const category = getCategoryByTag(tag);
+                return category ? (
+                  <Link
+                    href={`/browse/${category.slug}/${getTagSlug(tag)}`}
+                    className="hover:underline text-xs bg-gray-50 px-2 py-1 rounded inline-block transition-colors hover:bg-gray-100"
+                    key={index}
+                  >
+                    {tag}
+                  </Link>
+                ) : (
+                  <span
+                    className="text-xs bg-gray-50 px-2 py-1 rounded inline-block"
+                    key={index}
+                  >
+                    {tag}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+
+          <ProductMediaCarousel
+            demoUrl={product.demo_url}
+            images={product.images}
+            productName={product.name}
+          />
 
           <Tabs defaultValue="reviews" className="mt-8">
             <TabsList>

@@ -18,7 +18,7 @@ export default async function Home() {
           Join our afiliate program <ArrowUpRight className="size-4" />
         </Link>
         <div className="space-y-4">
-          <h2 className="md:text-6xl text-4xl sm:text-5xl leading-tight font-medium tracking-tighter xl:leading-tight text-balance">
+          <h2 className="md:text-6xl text-4xl sm:text-5xl leading-tight font-medium  tracking-tighter xl:leading-tight text-balance">
             Get Noticed. Get Users. Get Results.
           </h2>
           <p className="text-muted-foreground text-sm md:text-base text-balance">

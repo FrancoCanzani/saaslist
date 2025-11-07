@@ -1,11 +1,10 @@
-export interface TagCategory {
-  name: string;
-  tags: string[];
-}
+import { Category } from "./types";
 
-export const tags: TagCategory[] = [
+export const categories: Category[] = [
   {
     name: "AI",
+    slug: "ai",
+    description: "Artificial Intelligence and Machine Learning products",
     tags: [
       "AI",
       "Machine Learning",
@@ -659,4 +658,7 @@ export const tags: TagCategory[] = [
       "Environmental",
     ],
   },
-];
+].map((cat) => ({
+  ...cat,
+  slug: cat.slug || cat.name.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and"),
+}));

@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { tags } from "@/utils/constants";
+import { categories } from "@/utils/constants";
 import { X } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -38,11 +38,11 @@ export default function TagSelector({
 
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) {
-      return tags;
+      return categories;
     }
 
     const query = searchQuery.toLowerCase();
-    return tags
+    return categories
       .map((category) => ({
         ...category,
         tags: category.tags.filter(

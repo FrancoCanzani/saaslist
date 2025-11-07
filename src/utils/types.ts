@@ -4,3 +4,10 @@ export interface ActionResponse<T = unknown> {
   error?: string;
   action?: string;
 }
+
+export interface Category {
+  name: string;
+  slug: string;
+  description?: string;
+  tags: string[];
+}

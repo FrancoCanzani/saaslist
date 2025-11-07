@@ -1,3 +1,6 @@
+import { categories } from "./constants";
+import { Category } from "./types";
+
 export async function copyToClipboard(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text);
@@ -7,3 +10,30 @@ export async function copyToClipboard(text: string): Promise<boolean> {
   }
 }
 
+export function getCategoryBySlug(slug: string): Category | undefined {
+  return categories.find((cat) => cat.slug === slug);
+}
+
+export function getCategoryByName(name: string): Category | undefined {
+  return categories.find((cat) => cat.name.toLowerCase() === name.toLowerCase());
+}
+
+export function getCategoryByTag(tag: string): Category | undefined {
+  return categories.find((cat) =>
+    cat.tags.some((t) => t.toLowerCase() === tag.toLowerCase())
+  );
+}
+
+export function getTagSlug(tag: string): string {
+  return tag.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and");
+}
+
+export function getAllCategorySlugs(): string[] {
+  return categories.map((cat) => cat.slug);
+}
+
+export function getAllTags(): string[] {
+  return Array.from(
+    new Set(categories.flatMap((cat) => cat.tags))
+  );
+}

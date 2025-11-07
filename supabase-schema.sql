@@ -36,7 +36,7 @@ CREATE TABLE products (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Migration: Add images column to existing products table
+-- Migrations for existing products table
 -- ALTER TABLE products ADD COLUMN images TEXT[];
 
 CREATE TABLE upvotes (
@@ -165,3 +165,46 @@ CREATE TABLE newsletter_subscriptions (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Storage Buckets Setup
+-- Note: Buckets need to be created manually in Supabase Dashboard or via SQL
+-- These policies assume buckets 'product-logos' and 'product-images' exist
+
+-- Enable RLS on storage.objects
+ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow authenticated users to upload product logos
+CREATE POLICY "Authenticated users can upload product logos"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'product-logos');
+
+-- Policy: Allow public access to view product logos
+CREATE POLICY "Public access to product logos"
+ON storage.objects FOR SELECT
+TO public
+USING (bucket_id = 'product-logos');
+
+-- Policy: Allow users to delete their own product logos
+CREATE POLICY "Users can delete their own product logos"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (bucket_id = 'product-logos' AND auth.uid()::text = (storage.foldername(name))[1]);
+
+-- Policy: Allow authenticated users to upload product images
+CREATE POLICY "Authenticated users can upload product images"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'product-images');
+
+-- Policy: Allow public access to view product images
+CREATE POLICY "Public access to product images"
+ON storage.objects FOR SELECT
+TO public
+USING (bucket_id = 'product-images');
+
+-- Policy: Allow users to delete their own product images
+CREATE POLICY "Users can delete their own product images"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (bucket_id = 'product-images' AND auth.uid()::text = (storage.foldername(name))[1]);

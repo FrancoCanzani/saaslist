@@ -53,7 +53,22 @@ const createProduct = async (data: ProductFormData): Promise<Product> => {
     if (image_files && image_files.length > 0) {
       try {
         const imageUrls = await uploadProductImages(image_files, result.data.id);
-        result.data.images = imageUrls;
+        
+        const updateResponse = await fetch(`/api/products/${result.data.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            images: imageUrls,
+          }),
+        });
+
+        if (updateResponse.ok) {
+          result.data.images = imageUrls;
+        } else {
+          console.error('Failed to save image URLs to database');
+        }
       } catch (error) {
         console.error('Failed to upload product images:', error);
       }

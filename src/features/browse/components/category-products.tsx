@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/features/products/components/product-card";
 import { Product } from "@/features/products/types";
-import { TagCategory } from "@/utils/constants";
+import { Category } from "@/utils/types";
 import Fuse from "fuse.js";
 import { X } from "lucide-react";
 import { parseAsString, useQueryState } from "nuqs";
 import { useMemo } from "react";
 
 interface CategoryProductsProps {
-  category: TagCategory;
+  category: Category;
   products: Product[];
 }
 

@@ -20,9 +20,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import { productSchema } from "../schemas";
-import TagSelector from "./tag-selector";
-import { LogoUpload } from "./logo-upload";
 import { ImagesUpload } from "./images-upload";
+import { LogoUpload } from "./logo-upload";
+import TagSelector from "./tag-selector";
 
 interface ProductFormProps {
   onSubmit: (data: z.infer<typeof productSchema>) => Promise<void>;
@@ -446,7 +446,7 @@ export function ProductForm({
                   return (
                     <Field>
                       <FieldLabel htmlFor="demo_url">
-                        Demo Video URL (Loom or YouTube)
+                        Demo Video URL (YouTube)
                       </FieldLabel>
                       <Input
                         id="demo_url"
@@ -457,7 +457,7 @@ export function ProductForm({
                           field.handleChange(e.target.value || undefined)
                         }
                         className="w-full border px-3 py-2"
-                        placeholder="https://loom.com/share/..."
+                        placeholder="https://www.youtube.com/watch?v=1c6biyEsxyM..."
                         disabled={isSubmitting}
                       />
                     </Field>

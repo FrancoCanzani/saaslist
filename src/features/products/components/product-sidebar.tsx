@@ -3,19 +3,11 @@
 import { Button } from "@/components/ui/button";
 import UpvoteButton from "@/features/products/components/upvote-button";
 import { Product } from "@/features/products/types";
-import { tags } from "@/utils/constants";
 import { copyToClipboard } from "@/utils/helpers";
 import { formatDistanceToNowStrict } from "date-fns";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-
-function getCategoryForTag(tag: string) {
-  const category = tags.find((cat) =>
-    cat.tags.some((t) => t.toLowerCase() === tag.toLowerCase()),
-  );
-  return category ? category.name.toLowerCase().replace(/\s+/g, "-") : null;
-}
 
 export default function ProductSidebar({ product }: { product: Product }) {
   async function handleCopyLink() {
@@ -47,31 +39,6 @@ export default function ProductSidebar({ product }: { product: Product }) {
           </a>
         </Button>
         <UpvoteButton product={product} label="Upvote" size="sm" />
-      </div>
-
-      <div>
-        <h4 className="font-semibold mb-2">Tags</h4>
-        <div className="space-x-1">
-          {product.tags.slice(0, 3).map((tag: string, index: number) => {
-            const categorySlug = getCategoryForTag(tag);
-            return categorySlug ? (
-              <Link
-                href={`/browse/${categorySlug}`}
-                className="hover:underline text-sm bg-gray-100 px-1.5 py-0.5 rounded capitalize cursor-pointer inline-block"
-                key={index}
-              >
-                {tag}
-              </Link>
-            ) : (
-              <span
-                className="text-sm bg-gray-100 px-1.5 py-0.5 rounded capitalize inline-block"
-                key={index}
-              >
-                {tag}
-              </span>
-            );
-          })}
-        </div>
       </div>
 
       {product.founder_name && (
