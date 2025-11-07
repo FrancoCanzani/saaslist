@@ -1,8 +1,8 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
+import { Meteors } from "@/components/ui/meteors";
 import ProductList from "@/features/products/components/product-list";
-import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {
@@ -10,15 +10,19 @@ export default async function Home() {
     <div className="min-h-screen max-w-6xl mx-auto">
       <Header />
 
-      <div className="w-full py-12 md:py-20 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden">
+      <div className="w-full py-12 md:py-20 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
+        <Meteors
+          number={10}
+          className="bg-blaze-orange shadow-[0_0_0_1px_#ff5b0440] before:bg-linear-to-r before:from-blaze-orange before:to-transparent"
+        />
         <Link
           href={"#"}
-          className="leading-snug font-medium tracking-tight text-blue-800 capitalize flex items-center gap-x-2"
+          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-blaze-orange/10 px-2 py-0.5 relative z-10"
         >
-          Join our afiliate program <ArrowUpRight className="size-4" />
+          Join our afiliate program
         </Link>
-        <div className="space-y-4">
-          <h2 className="md:text-6xl text-4xl sm:text-5xl leading-tight font-medium  tracking-tighter xl:leading-tight text-balance">
+        <div className="space-y-4 relative z-10">
+          <h2 className="md:text-6xl custom-selection text-4xl sm:text-5xl leading-tight font-medium  tracking-tighter xl:leading-tight text-balance">
             Get Noticed. Get Users. Get Results.
           </h2>
           <p className="text-muted-foreground text-sm md:text-base text-balance">
@@ -27,15 +31,15 @@ export default async function Home() {
             who are launching their next big thing.
           </p>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-4 relative z-10">
           <div className="space-x-2">
-            <Button asChild variant={"default"} size={"lg"}>
-              <Link
-                href={"/products/new"}
-                className="text-white leading-none bg-linear-to-br from-blue-500 to-blue-700 hover:scale-95 transition-all duration-200 shadow-lg shadow-blue-500/40"
-              >
-                Submit your SaaS
-              </Link>
+            <Button
+              asChild
+              variant={"default"}
+              size={"lg"}
+              className="bg-blaze-orange hover:bg-blaze-orange/90"
+            >
+              <Link href={"/products/new"}>Submit your SaaS</Link>
             </Button>
             <Button asChild variant={"outline"} size={"lg"}>
               <Link href={"/browse"}>Browse Products</Link>

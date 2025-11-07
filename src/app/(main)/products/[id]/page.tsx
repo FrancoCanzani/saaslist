@@ -83,7 +83,6 @@ export default async function ProductPage({
     hasUserReviewed = !!userReview;
   }
 
-
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex gap-6">
@@ -108,21 +107,21 @@ export default async function ProductPage({
           <p className="text-pretty">{product.description}</p>
 
           <div>
-            <h4 className="font-medium mb-1">Tags</h4>
+            <h4 className="font-medium mb-1.5 text-sm">Tags</h4>
             <div className="flex flex-wrap gap-1.5">
               {product.tags.map((tag: string, index: number) => {
                 const category = getCategoryByTag(tag);
                 return category ? (
                   <Link
                     href={`/browse/${category.slug}/${getTagSlug(tag)}`}
-                    className="hover:underline text-xs bg-gray-50 px-2 py-1 rounded inline-block transition-colors hover:bg-gray-100"
+                    className="hover:underline text-[10px] bg-gray-50 px-2 py-1 rounded inline-block transition-colors hover:bg-gray-100"
                     key={index}
                   >
                     {tag}
                   </Link>
                 ) : (
                   <span
-                    className="text-xs bg-gray-50 px-2 py-1 rounded inline-block"
+                    className="text-[10px] bg-gray-50 px-2 py-1 rounded inline-block"
                     key={index}
                   >
                     {tag}

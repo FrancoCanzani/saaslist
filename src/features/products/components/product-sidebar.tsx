@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import UpvoteButton from "@/features/products/components/upvote-button";
+import { ProductShare } from "@/features/products/components/product-share";
 import { Product } from "@/features/products/types";
 import { copyToClipboard } from "@/utils/helpers";
 import { formatDistanceToNowStrict } from "date-fns";
@@ -10,14 +11,12 @@ import Link from "next/link";
 import { toast } from "sonner";
 
 export default function ProductSidebar({ product }: { product: Product }) {
-  async function handleCopyLink() {
-    const success = await copyToClipboard(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/product/${product.id}`,
-    );
+  async function handleCopyPromoCode() {
+    const success = await copyToClipboard(product.promo_code!);
     if (success) {
-      toast.success("Link copied to clipboard!");
+      toast.success("Promo code copied!");
     } else {
-      toast.error("Failed to copy link to clipboard");
+      toast.error("Failed to copy promo code");
     }
   }
 
@@ -65,14 +64,7 @@ export default function ProductSidebar({ product }: { product: Product }) {
           <h4 className="font-semibold mb-2">Promo Code</h4>
           <div className="text-xs flex items-center justify-start hover:bg-gray-50 cursor-pointer border text-secondary-foreground h-8 w-fit font-medium rounded gap-1.5 px-3">
             <button
-              onClick={async () => {
-                const success = await copyToClipboard(product.promo_code!);
-                if (success) {
-                  toast.success("Promo code copied!");
-                } else {
-                  toast.error("Failed to copy promo code");
-                }
-              }}
+              onClick={handleCopyPromoCode}
               className="truncate font-mono uppercase"
             >
               {product.promo_code}
@@ -178,19 +170,11 @@ export default function ProductSidebar({ product }: { product: Product }) {
         </div>
       )}
 
-      <div className="flex flex-col space-y-3">
-        <h4 className="font-semibold text-sm">Share</h4>
-        <div className="space-x-1 text-xs flex items-center justify-start  hover:bg-gray-50 cursor-pointer border text-secondary-foreground h-8 rounded gap-1.5 px-3">
-          <button
-            onClick={async () => await handleCopyLink()}
-            className="truncate"
-          >{`${process.env.NEXT_PUBLIC_BASE_URL}/product/${product.id}`}</button>
-        </div>
-        <p className="text-xs">
-          Check out our <span className="underline">Launch Guide</span> on how
-          to reach in other platforms.
-        </p>
-      </div>
+      <ProductShare
+        productId={product.id}
+        productName={product.name}
+        productTagline={product.tagline}
+      />
     </div>
   );
 }

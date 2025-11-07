@@ -29,7 +29,7 @@ export default async function Header() {
         {user ? (
           <>
             <Button
-              className="text-white leading-none bg-linear-to-br from-blue-500 to-blue-700 hover:scale-95 transition-all duration-300 shadow-lg shadow-blue-500/40"
+              className="bg-blaze-orange hover:bg-blaze-orange/90 text-white"
               size={"sm"}
               variant={"secondary"}
             >
