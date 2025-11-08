@@ -38,9 +38,9 @@ export default async function Home() {
               backgroundRepeat: "no-repeat",
             }}
           />
-          <h2 className="custom-selection text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance relative z-10">
+          <h1 className="custom-selection text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance relative z-10">
             Get Noticed. Get Users. Get Results.
-          </h2>
+          </h1>
           <p className="text-gray-600 dark:text-muted-foreground text-sm md:text-base text-balance relative z-10">
             Showcase your SaaS product to thousands of early adopters,
             entrepreneurs, and tech enthusiasts. Join the community of builders

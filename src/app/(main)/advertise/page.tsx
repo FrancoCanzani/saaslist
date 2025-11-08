@@ -1,372 +1,293 @@
+"use client";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Card } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ArrowUpRight,
-  BarChart3,
-  CheckCircle2,
-  Mail,
-  Megaphone,
-  Target,
-  TrendingUp,
-  Zap,
-} from "lucide-react";
-import Link from "next/link";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { addDays, differenceInDays, format } from "date-fns";
+import { Check } from "lucide-react";
+import { useState } from "react";
+import type { DateRange } from "react-day-picker";
 
-export default async function AdvertisePage() {
+const pricingPlans = [
+  {
+    id: "daily",
+    name: "Daily Boost",
+    type: "daily",
+    pricePerDay: 10,
+    description: "Perfect for product launches and short campaigns.",
+    features: [
+      "Featured on homepage rotation",
+      "Highlighted in your category listings",
+      "Pinned to top of relevant tags",
+      "'Sponsored' badge on your listing",
+      "1 newsletter feature placement",
+      "Priority email support",
+    ],
+    cta: "Get started",
+    popular: false,
+  },
+  {
+    id: "monthly",
+    name: "Growth Plan",
+    type: "fixed",
+    price: 99,
+    description: "Best value for sustained visibility and growth.",
+    features: [
+      "Featured on homepage for 30 days",
+      "Pinned position in all relevant categories",
+      "Premium highlight styling on all listings",
+      "4 newsletter feature placements",
+      "Highlighted in browse page",
+      "Social media mention (1x)",
+      "Priority support",
+      "Weekly performance report",
+    ],
+    cta: "Get started",
+    popular: true,
+  },
+  {
+    id: "lifetime",
+    name: "Lifetime",
+    type: "fixed",
+    price: 999,
+    description: "One-time payment for permanent premium visibility.",
+    features: [
+      "Permanent homepage featured rotation",
+      "Always pinned in relevant categories",
+      "Exclusive 'Partner' badge",
+      "Unlimited newsletter placements",
+      "Featured in monthly roundup posts",
+      "Monthly social media mentions",
+      "Custom featured section (optional)",
+      "Dedicated account manager",
+      "Priority in all future features",
+    ],
+    cta: "Get started",
+    popular: false,
+  },
+];
+
+const faqs = [
+  {
+    question: "How quickly will my sponsored listing go live?",
+    answer:
+      "Your sponsored listing goes live within 24 hours of payment confirmation. We'll send you a confirmation email once it's active.",
+  },
+  {
+    question: "Where exactly will my product be featured?",
+    answer:
+      "Your product will appear in multiple places: homepage featured rotation (alongside top products), pinned to the top of relevant category pages, highlighted in tag pages, and featured in our weekly newsletter sent every Sunday.",
+  },
+  {
+    question: "Can I choose which categories my product is featured in?",
+    answer:
+      "Yes! When you upgrade, you'll select the categories and tags that match your product. Your product will then be prominently featured in those specific sections for maximum relevant exposure.",
+  },
+  {
+    question: "Can I pause or cancel my plan?",
+    answer:
+      "Daily plans run for your selected dates and end automatically. Monthly plans can be cancelled anytime with no penalty. Lifetime plans are non-refundable but include unlimited modifications and support.",
+  },
+  {
+    question: "How does the newsletter feature work?",
+    answer:
+      "Our newsletter goes out every Sunday to all subscribers. Featured products are showcased with logo, tagline, description, and a direct link. Daily plans get 1 placement, Monthly plans get 4 placements (one per week), and Lifetime plans get monthly features.",
+  },
+  {
+    question: "What makes this different from a free listing?",
+    answer:
+      "Free listings are sorted by upvotes and recency, competing with all other products. Sponsored listings get permanent visibility in featured sections, highlighted styling with badges, newsletter placements, and priority positioning in categories regardless of upvotes.",
+  },
+  {
+    question: "Do you offer custom or enterprise plans?",
+    answer:
+      "Yes! For multiple products, larger campaigns, or specific needs, contact us for custom packages with additional features and dedicated account management.",
+  },
+];
+
+export default function AdvertisePage() {
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 7),
+  });
+
+  const calculateDailyPrice = () => {
+    if (!dateRange?.from || !dateRange?.to) return 0;
+    const days = differenceInDays(dateRange.to, dateRange.from) + 1;
+    return days * 10;
+  };
+
+  const dailyDays =
+    dateRange?.from && dateRange?.to
+      ? differenceInDays(dateRange.to, dateRange.from) + 1
+      : 0;
+  const dailyPrice = calculateDailyPrice();
+
   return (
-    <main className="p-6 space-y-16 max-w-4xl mx-auto py-12">
-      {/* Hero Section */}
-      <div className="text-center space-y-6">
-        <Badge variant="outline" className="text-xs">
-          High-Intent Placements
-        </Badge>
-        <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-tight">
-          Get Attention from SaaS Buyers
+    <main className="py-12 max-w-5xl mx-auto space-y-8">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance mb-4">
+          We've got a plan that's perfect for you
         </h1>
-        <p className="text-pretty text-base text-muted-foreground max-w-2xl mx-auto">
-          We don't sell "ads." We sell attention to SaaS buyers. Every placement
-          is native, contextual, and trackable—designed for founders who want
-          lead generation, launch visibility, and category dominance.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="size-4 text-blue-600" />
-            <span>Native placements</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="size-4 text-blue-600" />
-            <span>Contextual targeting</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="size-4 text-blue-600" />
-            <span>Full analytics</span>
-          </div>
-        </div>
+        <h2 className="text-gray-600 dark:text-muted-foreground text-sm md:text-base text-balance">
+          Get your SaaS in front of entrepreneurs and early adopters
+        </h2>
       </div>
 
-      {/* Ad Products */}
-      <div className="space-y-12">
-        {/* Featured Listings */}
-        <Card className="relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl" />
-          <CardHeader className="relative">
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded bg-blue-500/10">
-                    <Zap className="size-5 text-blue-600" />
-                  </div>
-                  <Badge variant="secondary" className="text-xs">
-                    Most Popular
-                  </Badge>
-                </div>
-                <CardTitle className="text-2xl">Featured Listings</CardTitle>
-                <CardDescription className="text-base">
-                  Highlighted at the top of category pages and homepage
-                </CardDescription>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-medium">$99–$299</div>
-                <div className="text-xs text-muted-foreground">per week</div>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 relative">
-            <div className="space-y-3">
-              <h3 className="font-medium text-sm flex items-center gap-2">
-                <Target className="size-4 text-blue-600" />
-                What You Get
-              </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>
-                    Prominent placement at the top of category pages and
-                    homepage
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>
-                    Labeled as "Sponsored" or "Featured SaaS" for transparency
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>Enhanced visuals, badges, and CTA buttons</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>
-                    Rotating or capped slots (e.g., only 5 per category)
-                  </span>
-                </li>
-              </ul>
-            </div>
-            <div className="p-4 rounded bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Why it sells:</strong>{" "}
-                Founders pay for exposure right when they launch. Perfect for
-                new products looking to capture early adopters and generate
-                immediate visibility.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid md:grid-cols-3 gap-6 md:gap-8 px-4 md:px-6 max-w-6xl mx-auto">
+        {pricingPlans.map((plan) => {
+          const isDaily = plan.type === "daily";
+          const price = isDaily ? dailyPrice : plan.price;
 
-        {/* Category Sponsorships */}
-        <Card className="relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl" />
-          <CardHeader className="relative">
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded bg-blue-500/10">
-                    <TrendingUp className="size-5 text-blue-600" />
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    Premium
-                  </Badge>
-                </div>
-                <CardTitle className="text-2xl">
-                  Category Sponsorships
-                </CardTitle>
-                <CardDescription className="text-base">
-                  Own a category and position your brand as the leader
-                </CardDescription>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-medium">$500–$2,000</div>
-                <div className="text-xs text-muted-foreground">per month</div>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 relative">
-            <div className="space-y-3">
-              <h3 className="font-medium text-sm flex items-center gap-2">
-                <Target className="size-4 text-blue-600" />
-                What You Get
-              </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>
-                    Category ownership with "Sponsored by [Your Brand]" at the
-                    top
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>
-                    Logo + short text blurb prominently displayed on category
-                    page
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>
-                    One newsletter mention per week in that category's digest
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>
-                    Analytics dashboard showing impressions, clicks, and
-                    conversions
-                  </span>
-                </li>
-              </ul>
-            </div>
-            <div className="p-4 rounded bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Why it sells:</strong>{" "}
-                Positioning power for established SaaS companies or agencies.
-                Own "Best AI Tools," "Top CRM," or any category. Perfect for
-                category dominance and long-term brand building.
-              </p>
-            </div>
-            <div className="text-xs text-muted-foreground italic">
-              Examples: "Sponsored by Pipedream" (Developer Tools), "Sponsored
-              by Notion" (Productivity Tools)
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Newsletter Placements */}
-        <Card className="relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl" />
-          <CardHeader className="relative">
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded bg-blue-500/10">
-                    <Mail className="size-5 text-blue-600" />
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    Newsletter
-                  </Badge>
-                </div>
-                <CardTitle className="text-2xl">
-                  Newsletter Placements
-                </CardTitle>
-                <CardDescription className="text-base">
-                  Reach engaged SaaS founders in our weekly digest
-                </CardDescription>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-medium">$200–$800</div>
-                <div className="text-xs text-muted-foreground">per issue</div>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 relative">
-            <div className="space-y-3">
-              <h3 className="font-medium text-sm flex items-center gap-2">
-                <Target className="size-4 text-blue-600" />
-                What You Get
-              </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>
-                    1–2 sponsor slots in our weekly "Top SaaS Launches"
-                    newsletter
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>Banner or native paragraph ad placement</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>Direct links to your product or landing page</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="size-4 text-blue-600 mt-0.5 shrink-0" />
-                  <span>Open and click tracking analytics</span>
-                </li>
-              </ul>
-            </div>
-            <div className="p-4 rounded bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Why it sells:</strong>{" "}
-                Newsletters convert—founders love measurable ROI. Our audience
-                actively reads to discover new tools, so your message reaches
-                high-intent buyers at the perfect moment.
-              </p>
-            </div>
-            <div className="p-3 rounded bg-muted border border-dashed">
-              <p className="text-xs text-muted-foreground italic">
-                Example: "🎯 Sponsored: Automate your SaaS billing with Paddle —
-                free for startups."
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Strategy Section */}
-      <div className="space-y-6">
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-medium tracking-tight">
-            Our Ad Strategy
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            What makes us different from traditional ad platforms
-          </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-4">
-          <Card>
-            <CardHeader>
-              <div className="p-2 rounded bg-blue-500/10 w-fit mb-2">
-                <Target className="size-5 text-blue-600" />
-              </div>
-              <CardTitle className="text-lg">High-Intent Discovery</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                We're not just a directory. We're a discovery platform where
-                SaaS buyers actively search for solutions. Your ads reach people
-                who are ready to buy.
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <div className="p-2 rounded bg-blue-500/10 w-fit mb-2">
-                <BarChart3 className="size-5 text-blue-600" />
-              </div>
-              <CardTitle className="text-lg">
-                What Advertisers Care About
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Lead generation, launch visibility, and category dominance.
-                Every placement is designed to deliver measurable results, not
-                just impressions.
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <div className="p-2 rounded bg-blue-500/10 w-fit mb-2">
-                <Megaphone className="size-5 text-blue-600" />
-              </div>
-              <CardTitle className="text-lg">Native & Contextual</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Every placement feels native and contextual. No banner
-                blindness. No intrusive popups. Just seamless integration that
-                respects your audience.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <Card className="bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 border-blue-200 dark:border-blue-800">
-        <CardContent className="p-8 text-center space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-medium tracking-tight">
-              Ready to Reach SaaS Buyers?
-            </h2>
-            <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-              Get in touch to discuss placements, pricing, and how we can help
-              you achieve your goals—whether that's lead generation, launch
-              visibility, or category dominance.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              asChild
-              size="lg"
-              className="text-white leading-none bg-linear-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/40"
+          return (
+            <Card
+              key={plan.id}
+              className={cn(
+                "relative flex flex-col space-y-4 p-4 md:p-6",
+                plan.popular
+                  ? "border-primary shadow-lg md:scale-105"
+                  : "bg-card",
+              )}
             >
-              <Link href="mailto:advertise@saaslist.com">
-                Get in Touch
-                <ArrowUpRight className="size-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/browse">See Our Categories</Link>
-            </Button>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Interested in custom placements? We offer flexible packages tailored
-            to your needs.
+              <div className="flex items-center w-full justify-between gap-2">
+                <h3 className="text-lg font-mono font-medium">{plan.name}</h3>
+                {plan.popular && (
+                  <Badge className="rounded shrink-0">Popular</Badge>
+                )}
+                {plan.id === "lifetime" && (
+                  <Badge
+                    variant="secondary"
+                    className="rounded bg-blaze-orange/10 text-blaze-orange border-blaze-orange/20 shrink-0 text-xs"
+                  >
+                    13/50 spots
+                  </Badge>
+                )}
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl md:text-4xl font-semibold tracking-tight">
+                    ${price}
+                  </span>
+                  <div className="flex flex-col text-xs md:text-sm text-muted-foreground">
+                    {isDaily ? (
+                      <>
+                        <span>
+                          ${plan.pricePerDay}/day
+                          {dailyDays > 0 ? ` × ${dailyDays}` : ""}
+                        </span>
+                      </>
+                    ) : (
+                      <span>
+                        {plan.id === "monthly" ? "/month" : "one-time"}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-sm text-gray-600 dark:text-muted-foreground">
+                {plan.description}
+              </p>
+
+              {isDaily && (
+                <Popover>
+                  <PopoverTrigger asChild className="w-full">
+                    <button
+                      className={cn(
+                        "w-full justify-start underline text-left font-normal text-sm",
+                        !dateRange && "text-muted-foreground",
+                      )}
+                    >
+                      {dateRange?.from ? (
+                        dateRange.to ? (
+                          <>
+                            {format(dateRange.from, "MMM dd")} -{" "}
+                            {format(dateRange.to, "MMM dd, y")}
+                          </>
+                        ) : (
+                          format(dateRange.from, "MMM dd, y")
+                        )
+                      ) : (
+                        <span>Pick your dates</span>
+                      )}
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="range"
+                      defaultMonth={dateRange?.from}
+                      selected={dateRange}
+                      onSelect={setDateRange}
+                      numberOfMonths={2}
+                      disabled={(date) => date < new Date()}
+                    />
+                  </PopoverContent>
+                </Popover>
+              )}
+
+              <Button
+                size="default"
+                className="w-full"
+                disabled={isDaily && (!dateRange?.from || !dateRange?.to)}
+              >
+                {plan.cta}
+              </Button>
+
+              <div className="flex-1 space-y-3">
+                <p className="text-xs font-semibold text-gray-600 dark:text-muted-foreground uppercase tracking-wide">
+                  What's Included
+                </p>
+                <ul className="space-y-2.5">
+                  {plan.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2.5">
+                      <Check className="size-4 text-blaze-orange shrink-0 mt-0.5" />
+                      <span className="text-sm leading-relaxed">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      <div className="px-6 py-12 max-w-4xl mx-auto">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-medium font-mono tracking-tighter mb-2">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-gray-600 dark:text-muted-foreground text-sm">
+            Everything you need to know about advertising on SaasList
           </p>
-        </CardContent>
-      </Card>
+        </div>
+
+        <Accordion type="single" collapsible className="w-full">
+          {faqs.map((faq, idx) => (
+            <AccordionItem key={idx} value={`item-${idx}`}>
+              <AccordionTrigger className="text-left">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">
+                {faq.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
     </main>
   );
 }

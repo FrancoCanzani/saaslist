@@ -46,7 +46,7 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500"
           aria-label="Profile menu"
         >
           {profile.avatar_url ? (
@@ -82,18 +82,27 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger className="cursor-pointer">
+          <DropdownMenuSubTrigger className="cursor-pointer text-xs">
             Theme
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-              <DropdownMenuRadioItem value="light" className="cursor-pointer">
+              <DropdownMenuRadioItem
+                value="light"
+                className="cursor-pointer text-xs"
+              >
                 Light
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="dark" className="cursor-pointer">
+              <DropdownMenuRadioItem
+                value="dark"
+                className="cursor-pointer text-xs"
+              >
                 Dark
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="system" className="cursor-pointer">
+              <DropdownMenuRadioItem
+                value="system"
+                className="cursor-pointer text-xs"
+              >
                 System
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
@@ -102,7 +111,10 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+        <DropdownMenuItem
+          onClick={handleSignOut}
+          className="cursor-pointer text-xs"
+        >
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
