@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { QueryProvider } from "@/lib/query-client-provider";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -42,6 +43,7 @@ export default function RootLayout({
             <QueryProvider>
               {children}
               <Toaster />
+              <Analytics />
             </QueryProvider>
           </NuqsAdapter>
         </ThemeProvider>
