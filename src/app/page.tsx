@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default async function Home() {
   return (
-    <div className="min-h-screen max-w-6xl mx-auto">
+    <div className="min-h-screen relative max-w-6xl mx-auto">
       <Header />
 
       <div className="w-full py-12 md:py-20 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
@@ -15,17 +15,33 @@ export default async function Home() {
           number={10}
           className="bg-blaze-orange shadow-[0_0_0_1px_#ff5b0440] before:bg-linear-to-r before:from-blaze-orange before:to-transparent"
         />
+
         <Link
           href={"#"}
           className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-blaze-orange/10 rounded px-2 py-0.5 relative z-10"
         >
           Join our afiliate program
         </Link>
-        <div className="space-y-4 relative z-10">
-          <h2 className="custom-selection text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance">
+        <div className="space-y-4 relative">
+          <div
+            className="absolute inset-0 -z-10 pointer-events-none dark:opacity-0"
+            style={{
+              background: "#ffffff",
+              backgroundImage: `
+                  radial-gradient(
+                    circle at top center,
+                    rgba(255, 91, 4, 0.25),
+                    transparent 50%
+                  )
+                `,
+              filter: "blur(100px)",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+          <h2 className="custom-selection text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance relative z-10">
             Get Noticed. Get Users. Get Results.
           </h2>
-          <p className="text-gray-600 dark:text-muted-foreground text-sm md:text-base text-balance ">
+          <p className="text-gray-600 dark:text-muted-foreground text-sm md:text-base text-balance relative z-10">
             Showcase your SaaS product to thousands of early adopters,
             entrepreneurs, and tech enthusiasts. Join the community of builders
             who are launching their next big thing.
