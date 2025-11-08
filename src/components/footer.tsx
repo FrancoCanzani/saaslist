@@ -4,7 +4,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-dashed border-gray-100 mt-20">
+    <footer className="border-t border-dashed dark:border-gray-800 border-gray-100  mt-20">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <h3 className="font-mono font-medium text-xl">SaasList</h3>

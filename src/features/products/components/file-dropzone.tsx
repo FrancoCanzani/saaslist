@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
 import { Upload } from "lucide-react";
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
 interface FileDropzoneProps {
   onDrop: (acceptedFiles: File[]) => void;
@@ -26,7 +26,7 @@ export function FileDropzone({
     (acceptedFiles: File[]) => {
       onDrop(acceptedFiles);
     },
-    [onDrop]
+    [onDrop],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -41,18 +41,18 @@ export function FileDropzone({
     <div
       {...getRootProps()}
       className={cn(
-        "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+        "border-2 border-dashed rounded p-8 text-center cursor-pointer transition-colors",
         isDragActive
           ? "border-blue-500 bg-blue-50"
           : "border-gray-300 hover:border-gray-400",
-        disabled && "opacity-50 cursor-not-allowed"
+        disabled && "opacity-50 cursor-not-allowed",
       )}
     >
       <input {...getInputProps()} />
       {children || (
         <div className="space-y-2">
           <Upload className="mx-auto h-10 w-10 text-gray-400" />
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-muted-foreground">
             {isDragActive
               ? "Drop the files here..."
               : "Drag & drop files here, or click to select"}
@@ -62,4 +62,3 @@ export function FileDropzone({
     </div>
   );
 }
-

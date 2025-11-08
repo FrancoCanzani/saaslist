@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { FileDropzone } from "./file-dropzone";
-import { validateLogoFile } from "../helpers";
-import { X, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Upload, X } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { validateLogoFile } from "../helpers";
+import { FileDropzone } from "./file-dropzone";
 
 interface LogoUploadProps {
   value?: File | null;
@@ -47,7 +47,7 @@ export function LogoUpload({ value, onChange, disabled }: LogoUploadProps) {
   if (preview) {
     return (
       <div className="space-y-2">
-        <div className="relative w-32 h-32 border rounded-lg overflow-hidden">
+        <div className="relative w-32 h-32 border rounded overflow-hidden">
           <Image
             src={preview}
             alt="Logo preview"
@@ -79,7 +79,7 @@ export function LogoUpload({ value, onChange, disabled }: LogoUploadProps) {
       >
         <div className="space-y-2">
           <Upload className="mx-auto h-10 w-10 text-gray-400" />
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-muted-foreground">
             Drop logo here or click to upload
           </p>
           <p className="text-xs text-gray-500">PNG, JPG, WebP up to 2MB</p>
@@ -89,4 +89,3 @@ export function LogoUpload({ value, onChange, disabled }: LogoUploadProps) {
     </div>
   );
 }
-

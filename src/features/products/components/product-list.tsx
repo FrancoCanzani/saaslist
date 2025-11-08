@@ -1,11 +1,8 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Card } from "@/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 import { Product } from "../types";
-import ProductLogo from "./product-logo";
-import UpvoteButton from "./upvote-button";
+import EmptyGridCell from "./empty-grid-cell";
+import ProductGridCard from "./product-grid-card";
 
 export default async function ProductList({
   date,
@@ -100,65 +97,31 @@ export default async function ProductList({
     );
   }
 
+  const totalProducts = processedProducts.length;
+  const gridCols = 2;
+  const remainder = totalProducts % gridCols;
+  const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
+
   return (
     <div className="space-y-6">
-      <h2 className="text-xl leading-tight font-medium">{title}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {processedProducts.map((product: Product) => (
-          <Link key={product.id} href={`/products/${product.id}`}>
-            <Card className="group flex bg-gray-50/50 flex-col h-full space-y-2 border-none">
-              <div className="flex items-start gap-2">
-                <div className="rounded-md size-10 flex items-center justify-center shrink-0">
-                  <ProductLogo
-                    logoUrl={product.logo_url}
-                    productName={product.name}
-                    size={30}
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="font-medium line-clamp-1">{product.name}</h2>
-                  <p className="text-xs text-muted-foreground line-clamp-2 flex-1">
-                    {product.tagline}
-                  </p>
-                </div>
-              </div>
+      <h2 className="text-xl leading-tight font-mono font-medium">{title}</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 border rounded">
+        {processedProducts.map((product: Product, index: number) => (
+          <ProductGridCard
+            key={product.id}
+            product={product}
+            index={index}
+            totalProducts={processedProducts.length}
+          />
+        ))}
 
-              <p className="text-sm flex-1">{product.description}</p>
-
-              <div className="flex items-center justify-between gap-2 w-full">
-                {product.tags.length > 0 && (
-                  <div className="flex group-hover:hidden items-center gap-1 flex-1 min-w-0 overflow-hidden">
-                    {product.tags
-                      .slice(0, 3)
-                      .map((tag: string, index: number) => {
-                        const isLast = index === Math.min(product.tags.length, 3) - 1;
-                        return (
-                          <span
-                            className={`text-xs bg-orange-50 px-1.5 py-0.5 rounded capitalize inline-block whitespace-nowrap ${isLast ? "overflow-hidden text-ellipsis max-w-[100px]" : "shrink-0"}`}
-                            key={index}
-                            title={isLast ? tag : undefined}
-                          >
-                            {tag}
-                          </span>
-                        );
-                      })}
-                    {product.tags.length > 3 && (
-                      <span className="text-xs text-muted-foreground shrink-0">
-                        +{product.tags.length - 3}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                <div className="hidden group-hover:flex text-xs capitalize font-medium items-center text-blue-700 justify-center gap-x-1 overflow-hidden">
-                  Visit website
-                  <ArrowRight className="size-3" />
-                </div>
-
-                <UpvoteButton size={"xs"} product={product} label="Upvote" />
-              </div>
-            </Card>
-          </Link>
+        {Array.from({ length: emptyCells }).map((_, index) => (
+          <EmptyGridCell
+            key={`empty-${index}`}
+            index={index}
+            cellIndex={totalProducts + index}
+            totalCells={totalProducts + emptyCells}
+          />
         ))}
       </div>
     </div>

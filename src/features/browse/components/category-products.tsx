@@ -3,7 +3,8 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import ProductCard from "@/features/products/components/product-card";
+import EmptyGridCell from "@/features/products/components/empty-grid-cell";
+import ProductGridCard from "@/features/products/components/product-grid-card";
 import { Product } from "@/features/products/types";
 import { Category } from "@/utils/types";
 import Fuse from "fuse.js";
@@ -84,6 +85,11 @@ export default function CategoryProducts({
     setTag("");
   };
 
+  const totalProducts = filteredProducts.length;
+  const gridCols = 2;
+  const remainder = totalProducts % gridCols;
+  const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
+
   return (
     <div className="p-8 space-y-8">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
@@ -133,9 +139,23 @@ export default function CategoryProducts({
           </AlertDescription>
         </Alert>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 border rounded">
+          {filteredProducts.map((product, index) => (
+            <ProductGridCard
+              key={product.id}
+              product={product}
+              index={index}
+              totalProducts={filteredProducts.length}
+            />
+          ))}
+
+          {Array.from({ length: emptyCells }).map((_, index) => (
+            <EmptyGridCell
+              key={`empty-${index}`}
+              index={index}
+              cellIndex={totalProducts + index}
+              totalCells={totalProducts + emptyCells}
+            />
           ))}
         </div>
       )}

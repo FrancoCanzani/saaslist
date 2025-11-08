@@ -91,7 +91,7 @@ export default function CommentForm({
   }
 
   return (
-    <div className="border rounded-xl overflow-hidden">
+    <div className="border rounded overflow-hidden">
       <EditorContent editor={editor} />
       <div className="py-2 px-4 flex gap-2 justify-between">
         <div className="inline-flex items-center justify-start gap-x-1 text-sm font-medium">

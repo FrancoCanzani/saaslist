@@ -10,12 +10,12 @@ import {
 import {
   ArrowUpRight,
   BarChart3,
-  Megaphone,
-  Mail,
-  TrendingUp,
-  Target,
-  Zap,
   CheckCircle2,
+  Mail,
+  Megaphone,
+  Target,
+  TrendingUp,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -60,7 +60,7 @@ export default async function AdvertisePage() {
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-blue-500/10">
+                  <div className="p-2 rounded bg-blue-500/10">
                     <Zap className="size-5 text-blue-600" />
                   </div>
                   <Badge variant="secondary" className="text-xs">
@@ -110,7 +110,7 @@ export default async function AdvertisePage() {
                 </li>
               </ul>
             </div>
-            <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+            <div className="p-4 rounded bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
               <p className="text-sm text-muted-foreground">
                 <strong className="text-foreground">Why it sells:</strong>{" "}
                 Founders pay for exposure right when they launch. Perfect for
@@ -128,14 +128,16 @@ export default async function AdvertisePage() {
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-blue-500/10">
+                  <div className="p-2 rounded bg-blue-500/10">
                     <TrendingUp className="size-5 text-blue-600" />
                   </div>
                   <Badge variant="outline" className="text-xs">
                     Premium
                   </Badge>
                 </div>
-                <CardTitle className="text-2xl">Category Sponsorships</CardTitle>
+                <CardTitle className="text-2xl">
+                  Category Sponsorships
+                </CardTitle>
                 <CardDescription className="text-base">
                   Own a category and position your brand as the leader
                 </CardDescription>
@@ -182,7 +184,7 @@ export default async function AdvertisePage() {
                 </li>
               </ul>
             </div>
-            <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+            <div className="p-4 rounded bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
               <p className="text-sm text-muted-foreground">
                 <strong className="text-foreground">Why it sells:</strong>{" "}
                 Positioning power for established SaaS companies or agencies.
@@ -204,14 +206,16 @@ export default async function AdvertisePage() {
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-blue-500/10">
+                  <div className="p-2 rounded bg-blue-500/10">
                     <Mail className="size-5 text-blue-600" />
                   </div>
                   <Badge variant="outline" className="text-xs">
                     Newsletter
                   </Badge>
                 </div>
-                <CardTitle className="text-2xl">Newsletter Placements</CardTitle>
+                <CardTitle className="text-2xl">
+                  Newsletter Placements
+                </CardTitle>
                 <CardDescription className="text-base">
                   Reach engaged SaaS founders in our weekly digest
                 </CardDescription>
@@ -250,7 +254,7 @@ export default async function AdvertisePage() {
                 </li>
               </ul>
             </div>
-            <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+            <div className="p-4 rounded bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
               <p className="text-sm text-muted-foreground">
                 <strong className="text-foreground">Why it sells:</strong>{" "}
                 Newsletters convert—founders love measurable ROI. Our audience
@@ -258,10 +262,10 @@ export default async function AdvertisePage() {
                 high-intent buyers at the perfect moment.
               </p>
             </div>
-            <div className="p-3 rounded-lg bg-muted border border-dashed">
+            <div className="p-3 rounded bg-muted border border-dashed">
               <p className="text-xs text-muted-foreground italic">
-                Example: "🎯 Sponsored: Automate your SaaS billing with Paddle
-                — free for startups."
+                Example: "🎯 Sponsored: Automate your SaaS billing with Paddle —
+                free for startups."
               </p>
             </div>
           </CardContent>
@@ -281,25 +285,27 @@ export default async function AdvertisePage() {
         <div className="grid md:grid-cols-3 gap-4">
           <Card>
             <CardHeader>
-              <div className="p-2 rounded-lg bg-blue-500/10 w-fit mb-2">
+              <div className="p-2 rounded bg-blue-500/10 w-fit mb-2">
                 <Target className="size-5 text-blue-600" />
               </div>
               <CardTitle className="text-lg">High-Intent Discovery</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                We're not just a directory. We're a discovery platform where SaaS
-                buyers actively search for solutions. Your ads reach people who
-                are ready to buy.
+                We're not just a directory. We're a discovery platform where
+                SaaS buyers actively search for solutions. Your ads reach people
+                who are ready to buy.
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader>
-              <div className="p-2 rounded-lg bg-blue-500/10 w-fit mb-2">
+              <div className="p-2 rounded bg-blue-500/10 w-fit mb-2">
                 <BarChart3 className="size-5 text-blue-600" />
               </div>
-              <CardTitle className="text-lg">What Advertisers Care About</CardTitle>
+              <CardTitle className="text-lg">
+                What Advertisers Care About
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
@@ -311,16 +317,16 @@ export default async function AdvertisePage() {
           </Card>
           <Card>
             <CardHeader>
-              <div className="p-2 rounded-lg bg-blue-500/10 w-fit mb-2">
+              <div className="p-2 rounded bg-blue-500/10 w-fit mb-2">
                 <Megaphone className="size-5 text-blue-600" />
               </div>
               <CardTitle className="text-lg">Native & Contextual</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Every placement feels native and contextual. No banner blindness.
-                No intrusive popups. Just seamless integration that respects
-                your audience.
+                Every placement feels native and contextual. No banner
+                blindness. No intrusive popups. Just seamless integration that
+                respects your audience.
               </p>
             </CardContent>
           </Card>
@@ -328,7 +334,7 @@ export default async function AdvertisePage() {
       </div>
 
       {/* CTA Section */}
-      <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 border-blue-200 dark:border-blue-800">
+      <Card className="bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 border-blue-200 dark:border-blue-800">
         <CardContent className="p-8 text-center space-y-6">
           <div className="space-y-2">
             <h2 className="text-2xl font-medium tracking-tight">
@@ -364,4 +370,3 @@ export default async function AdvertisePage() {
     </main>
   );
 }
-

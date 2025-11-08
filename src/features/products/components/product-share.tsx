@@ -119,7 +119,7 @@ export function ProductShare({
             <TooltipTrigger asChild>
               <button
                 onClick={handleCopyLink}
-                className="size-6 rounded bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition-colors"
+                className="size-6 rounded bg-gray-50 hover:bg-gray-100 dark:bg-neutral-950 flex items-center justify-center transition-colors"
               >
                 <LinkIcon className="size-3" />
               </button>
@@ -136,7 +136,7 @@ export function ProductShare({
                   href={button.href}
                   target="_blank"
                   rel="noopener"
-                  className="size-6 rounded bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition-colors"
+                  className="size-6 rounded bg-gray-50 hover:bg-gray-100 dark:bg-neutral-950 flex items-center justify-center transition-colors"
                 >
                   {button.icon}
                 </a>
@@ -151,4 +151,3 @@ export function ProductShare({
     </div>
   );
 }
-

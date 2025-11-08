@@ -34,6 +34,7 @@ export async function handleUpvoteAction(
 
       revalidatePath("/");
       revalidatePath("/browse");
+      revalidatePath(`/products/${product.id}`);
       
       return { success: true, action: "removed", data: deletedUpvote };
     } else {
@@ -55,6 +56,7 @@ export async function handleUpvoteAction(
 
       revalidatePath("/");
       revalidatePath("/browse");
+      revalidatePath(`/products/${product.id}`);
       
       return { success: true, action: "added", data: insertedUpvote };
     }

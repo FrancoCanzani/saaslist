@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { FileDropzone } from "./file-dropzone";
-import { validateImageFiles } from "../helpers";
-import { X, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Upload, X } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { validateImageFiles } from "../helpers";
+import { FileDropzone } from "./file-dropzone";
 
 interface ImagesUploadProps {
   value?: File[];
@@ -13,13 +13,17 @@ interface ImagesUploadProps {
   disabled?: boolean;
 }
 
-export function ImagesUpload({ value = [], onChange, disabled }: ImagesUploadProps) {
+export function ImagesUpload({
+  value = [],
+  onChange,
+  disabled,
+}: ImagesUploadProps) {
   const [errors, setErrors] = useState<string[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
 
   const handleDrop = (newFiles: File[]) => {
     setErrors([]);
-    
+
     const allFiles = [...value, ...newFiles];
     const validationErrors = validateImageFiles(allFiles);
 
@@ -58,7 +62,7 @@ export function ImagesUpload({ value = [], onChange, disabled }: ImagesUploadPro
           {previews.map((preview, index) => (
             <div
               key={index}
-              className="relative aspect-video border rounded-lg overflow-hidden"
+              className="relative aspect-video border rounded overflow-hidden"
             >
               <Image
                 src={preview}
@@ -90,7 +94,7 @@ export function ImagesUpload({ value = [], onChange, disabled }: ImagesUploadPro
         >
           <div className="space-y-2">
             <Upload className="mx-auto h-10 w-10 text-gray-400" />
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-muted-foreground">
               Drop images here or click to upload
             </p>
             <p className="text-xs text-gray-500">
@@ -115,4 +119,3 @@ export function ImagesUpload({ value = [], onChange, disabled }: ImagesUploadPro
     </div>
   );
 }
-

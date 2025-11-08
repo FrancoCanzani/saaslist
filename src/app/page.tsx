@@ -17,15 +17,15 @@ export default async function Home() {
         />
         <Link
           href={"#"}
-          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-blaze-orange/10 px-2 py-0.5 relative z-10"
+          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-blaze-orange/10 rounded px-2 py-0.5 relative z-10"
         >
           Join our afiliate program
         </Link>
         <div className="space-y-4 relative z-10">
-          <h2 className="md:text-6xl custom-selection text-4xl sm:text-5xl leading-tight font-medium  tracking-tighter xl:leading-tight text-balance">
+          <h2 className="custom-selection text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance">
             Get Noticed. Get Users. Get Results.
           </h2>
-          <p className="text-muted-foreground text-sm md:text-base text-balance">
+          <p className="text-gray-600 dark:text-muted-foreground text-sm md:text-base text-balance ">
             Showcase your SaaS product to thousands of early adopters,
             entrepreneurs, and tech enthusiasts. Join the community of builders
             who are launching their next big thing.
@@ -37,7 +37,7 @@ export default async function Home() {
               asChild
               variant={"default"}
               size={"lg"}
-              className="bg-blaze-orange hover:bg-blaze-orange/90"
+              className="bg-blaze-orange hover:bg-blaze-orange/90 dark:text-white"
             >
               <Link href={"/products/new"}>Submit your SaaS</Link>
             </Button>
@@ -45,13 +45,13 @@ export default async function Home() {
               <Link href={"/browse"}>Browse Products</Link>
             </Button>
           </div>
-          <p className="text-xs font-medium">
+          <p className="text-xs font-medium text-gray-600 dark:text-muted-foreground">
             Free to submit • No credit card required • Launch in minutes
           </p>
         </div>
       </div>
 
-      <main className="p-6 flex flex-col gap-6">
+      <main className="p-6 flex flex-col gap-8">
         <ProductList date="today" />
         <ProductList date="yesterday" />
         <ProductList date="week" />

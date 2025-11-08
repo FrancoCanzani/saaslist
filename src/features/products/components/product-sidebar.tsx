@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import UpvoteButton from "@/features/products/components/upvote-button";
+import { ProductNavigation } from "@/features/products/components/product-navigation";
 import { ProductShare } from "@/features/products/components/product-share";
 import { Product } from "@/features/products/types";
 import { copyToClipboard } from "@/utils/helpers";
@@ -10,7 +9,22 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
-export default function ProductSidebar({ product }: { product: Product }) {
+interface NavigationProduct {
+  id: string;
+  name: string;
+}
+
+interface ProductSidebarProps {
+  product: Product;
+  prevProduct?: NavigationProduct | null;
+  nextProduct?: NavigationProduct | null;
+}
+
+export default function ProductSidebar({
+  product,
+  prevProduct,
+  nextProduct,
+}: ProductSidebarProps) {
   async function handleCopyPromoCode() {
     const success = await copyToClipboard(product.promo_code!);
     if (success) {
@@ -31,14 +45,10 @@ export default function ProductSidebar({ product }: { product: Product }) {
         </h4>
       </div>
 
-      <div className="flex gap-2">
-        <Button asChild variant={"outline"} className="" size={"sm"}>
-          <a href={product.website_url} target="_blank" rel="noopener">
-            Visit Website
-          </a>
-        </Button>
-        <UpvoteButton product={product} label="Upvote" size="sm" />
-      </div>
+      <ProductNavigation
+        prevProduct={prevProduct ?? null}
+        nextProduct={nextProduct ?? null}
+      />
 
       {product.founder_name && (
         <div>

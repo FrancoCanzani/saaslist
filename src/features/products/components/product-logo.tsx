@@ -24,7 +24,7 @@ export default function ProductLogo({
         width={size}
         height={size}
         onError={() => setImageError(true)}
-        className="rounded-md"
+        className="rounded"
       />
     );
   }

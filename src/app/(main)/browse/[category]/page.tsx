@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui/button";
-import ProductCard from "@/features/products/components/product-card";
+import EmptyGridCell from "@/features/products/components/empty-grid-cell";
+import ProductGridCard from "@/features/products/components/product-grid-card";
 import { Product } from "@/features/products/types";
 import { categories } from "@/utils/constants";
-import { getCategoryBySlug, getTagSlug } from "@/utils/helpers";
+import { getCategoryBySlug } from "@/utils/helpers";
 import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export const revalidate = 600;
@@ -34,7 +33,6 @@ export default async function CategoryPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Fetch all products that have any tag from this category
   const categoryTagsLower = category.tags.map((tag) => tag.toLowerCase());
 
   const { data: products, error } = await supabase
@@ -43,7 +41,7 @@ export default async function CategoryPage({
       `
       *,
       upvotes!left(user_id)
-    `
+    `,
     )
     .order("created_at", { ascending: false });
 
@@ -51,7 +49,7 @@ export default async function CategoryPage({
     .filter((product: any) => {
       if (!product.tags || !Array.isArray(product.tags)) return false;
       return product.tags.some((tag: string) =>
-        categoryTagsLower.includes(tag.toLowerCase())
+        categoryTagsLower.includes(tag.toLowerCase()),
       );
     })
     .map((product: any) => ({
@@ -61,11 +59,10 @@ export default async function CategoryPage({
         : false,
     })) as Product[];
 
-  // Count products per tag
   const tagCounts = new Map<string, number>();
   category.tags.forEach((tag) => {
     const count = categoryProducts.filter((product) =>
-      product.tags?.some((t) => t.toLowerCase() === tag.toLowerCase())
+      product.tags?.some((t) => t.toLowerCase() === tag.toLowerCase()),
     ).length;
     if (count > 0) {
       tagCounts.set(tag, count);
@@ -73,61 +70,56 @@ export default async function CategoryPage({
   });
 
   const tagsWithProducts = Array.from(tagCounts.entries()).sort(
-    (a, b) => b[1] - a[1]
+    (a, b) => b[1] - a[1],
   );
 
-  return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-6">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">{category.name}</h1>
-            {category.description && (
-              <p className="text-muted-foreground">{category.description}</p>
-            )}
-          </div>
+  const totalProducts = categoryProducts.length;
+  const gridCols = 2;
+  const remainder = totalProducts % gridCols;
+  const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
 
-          <div className="text-sm text-muted-foreground">
-            {categoryProducts.length}{" "}
-            {categoryProducts.length === 1 ? "product" : "products"}
-          </div>
+  return (
+    <div className="p-8 space-y-8">
+      <div className="flex items-center w-full justify-between gap-6">
+        <div>
+          <h1 className="text-xl font-mono font-medium">{category.name}</h1>
+          {category.description && (
+            <h2 className="dark:text-muted-foreground text-gray-600 text-sm">
+              {category.description}
+            </h2>
+          )}
         </div>
 
-        {tagsWithProducts.length > 0 && (
-          <div>
-            <h3 className="text-sm font-medium mb-3">Browse by tag</h3>
-            <div className="flex flex-wrap gap-2">
-              {tagsWithProducts.map(([tag, count]) => (
-                <Button
-                  key={tag}
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="text-xs"
-                >
-                  <Link href={`/browse/${categorySlug}/${getTagSlug(tag)}`}>
-                    {tag} ({count})
-                  </Link>
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
+        <div className="text-xs text-gray-600 dark:text-muted-foreground">
+          {categoryProducts.length}{" "}
+          {categoryProducts.length === 1 ? "product" : "products"}
+        </div>
       </div>
 
       {categoryProducts.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-muted-foreground text-sm">
+          <p className="dark:text-muted-foreground text-gray-600 text-sm">
             No products in this category yet.
           </p>
-          <Button asChild className="mt-4" size="sm">
-            <Link href="/products/new">Submit the first product</Link>
-          </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {categoryProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 border rounded">
+          {categoryProducts.map((product, index) => (
+            <ProductGridCard
+              key={product.id}
+              product={product}
+              index={index}
+              totalProducts={categoryProducts.length}
+            />
+          ))}
+
+          {Array.from({ length: emptyCells }).map((_, index) => (
+            <EmptyGridCell
+              key={`empty-${index}`}
+              index={index}
+              cellIndex={totalProducts + index}
+              totalCells={totalProducts + emptyCells}
+            />
           ))}
         </div>
       )}

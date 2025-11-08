@@ -76,7 +76,7 @@ export function ProductForm({
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="block w-full text-left p-1.5 text-sm text-gray-600 hover:text-gray-900"
+                className="block w-full text-left p-1.5 text-sm text-gray-600 dark:text-muted-foreground hover:text-gray-900"
               >
                 {section.label}
               </a>

@@ -2,6 +2,7 @@
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { categories } from "@/utils/constants";
 import { getTagSlug } from "@/utils/helpers";
 import Fuse from "fuse.js";
@@ -117,10 +118,10 @@ export function BrowseContent({ products }: BrowseContentProps) {
     <div className="p-8 space-y-8">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
         <div>
-          <h1 className="text-xl font-medium">Browse Products</h1>
-          <p className="text-muted-foreground text-sm">
+          <h1 className="text-xl font-mono font-medium">Browse Products</h1>
+          <h2 className="dark:text-muted-foreground text-gray-600 text-sm">
             Explore products by category
-          </p>
+          </h2>
         </div>
 
         <Input
@@ -132,7 +133,7 @@ export function BrowseContent({ products }: BrowseContentProps) {
         />
       </div>
 
-      <div className="space-y-8 flex flex-col divide-y">
+      <div className="flex flex-col">
         {filteredCategories.length === 0 && search && (
           <Alert>
             <AlertDescription className="mx-auto">
@@ -142,32 +143,30 @@ export function BrowseContent({ products }: BrowseContentProps) {
         )}
 
         {filteredCategories.map((category) => (
-          <Link
-            href={`/browse/${category.slug}`}
-            className="group space-y-2 p-2.5 transition-all"
-            key={category.name}
-          >
-            <h4 className="w-full flex items-center justify-start gap-x-1">
-              {category.name}
+          <div key={category.name} className="space-y-2">
+            <Link
+              href={`/browse/${category.slug}`}
+              className="group w-full flex items-center justify-start gap-x-1 hover:text-primary transition-colors"
+            >
+              <h4>{category.name}</h4>
               <span>({category.count})</span>
-              <ArrowRight className="size-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-            </h4>
+              <ArrowRight className="size-3 invisible group-hover:visible" />
+            </Link>
             {category.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {category.tags.map((tag) => (
                   <Link
                     key={tag.name}
                     href={`/browse/${category.slug}/${getTagSlug(tag.name)}`}
-                    onClick={(e) => e.stopPropagation()}
+                    className="text-sm hover:underline dark:text-muted-foreground text-gray-600 hover:text-primary"
                   >
-                    <span className="text-sm hover:underline text-muted-foreground hover:text-primary">
-                      {tag.name} ({tag.count})
-                    </span>
+                    {tag.name} ({tag.count})
                   </Link>
                 ))}
               </div>
             )}
-          </Link>
+            <Separator className="my-6" />
+          </div>
         ))}
       </div>
     </div>

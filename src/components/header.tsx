@@ -30,7 +30,7 @@ export default async function Header() {
           <>
             <Button
               className="bg-blaze-orange hover:bg-blaze-orange/90 text-white"
-              size={"sm"}
+              size={"xs"}
               variant={"secondary"}
             >
               <Link href={"/products/new"}>New Product</Link>
@@ -39,7 +39,9 @@ export default async function Header() {
               <ProfileDropdown profile={profile} />
             ) : (
               <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                <span className="text-sm font-medium text-gray-600">U</span>
+                <span className="text-sm font-medium text-gray-600 dark:text-muted-foreground">
+                  U
+                </span>
               </div>
             )}
           </>

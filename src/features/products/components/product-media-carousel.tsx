@@ -63,7 +63,7 @@ export function ProductMediaCarousel({
         <CarouselContent>
           {mediaItems.map((item, index) => (
             <CarouselItem key={index}>
-              <div className="relative w-full aspect-video rounded-md overflow-hidden">
+              <div className="relative w-full aspect-video rounded overflow-hidden">
                 {item.type === "video" ? (
                   <iframe
                     src={extractYouTubeEmbedUrl(item.url)}

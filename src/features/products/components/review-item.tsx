@@ -50,7 +50,7 @@ export default function ReviewItem({
   };
 
   return (
-    <div className="border rounded-xl p-3 space-y-3">
+    <div className="border rounded p-3 space-y-3">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3">
           {review.user.avatar_url ? (

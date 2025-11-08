@@ -3,6 +3,12 @@ import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import React from "react";
 
+// Deterministic pseudo-random function based on index
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
 export const Meteors = ({
   number,
   className,
@@ -22,6 +28,10 @@ export const Meteors = ({
         // Calculate position to evenly distribute meteors across full container width using percentage
         const position = (idx / meteorCount) * 100; // Spread across 0-100% of container width
 
+        // Use deterministic values based on index to avoid hydration mismatch
+        const delay = seededRandom(idx) * 5; // Delay between 0-5s
+        const duration = 5 + Math.floor(seededRandom(idx + 1000) * 5); // Duration between 5-10s
+
         return (
           <span
             key={"meteor" + idx}
@@ -33,8 +43,8 @@ export const Meteors = ({
             style={{
               top: "-40px", // Start above the container
               left: position + "%",
-              animationDelay: Math.random() * 5 + "s", // Random delay between 0-5s
-              animationDuration: Math.floor(Math.random() * (10 - 5) + 5) + "s", // Keep some randomness in duration
+              animationDelay: delay + "s",
+              animationDuration: duration + "s",
             }}
           ></span>
         );

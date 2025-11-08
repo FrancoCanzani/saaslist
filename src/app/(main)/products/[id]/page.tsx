@@ -1,9 +1,11 @@
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CommentSection from "@/features/products/components/comment-section";
 import ProductLogo from "@/features/products/components/product-logo";
 import { ProductMediaCarousel } from "@/features/products/components/product-media-carousel";
 import ProductSidebar from "@/features/products/components/product-sidebar";
 import ReviewSection from "@/features/products/components/review-section";
+import UpvoteButton from "@/features/products/components/upvote-button";
 import { Product } from "@/features/products/types";
 import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
 import { createClient } from "@/utils/supabase/server";
@@ -83,12 +85,28 @@ export default async function ProductPage({
     hasUserReviewed = !!userReview;
   }
 
+  const { data: prevProduct } = await supabase
+    .from("products")
+    .select("id, name")
+    .lt("created_at", product.created_at)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  const { data: nextProduct } = await supabase
+    .from("products")
+    .select("id, name")
+    .gt("created_at", product.created_at)
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .single();
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex gap-6">
         <main className="flex-1 flex flex-col gap-6">
           <div className="flex items-center gap-x-6">
-            <div className="rounded-md w-10 flex items-center justify-center h-10 bg-gray-100 p-1">
+            <div className="size-10 flex items-center justify-center shrink-0 rounded group-hover:scale-105 transition-all duration-300">
               <ProductLogo
                 logoUrl={product.logo_url}
                 productName={product.name}
@@ -97,10 +115,23 @@ export default async function ProductPage({
             </div>
 
             <div className="flex-1">
-              <h2 className="text-3xl font-medium">{product.name}</h2>
-              <h3 className="text-muted-foreground text-sm">
+              <h2 className="text-3xl font-mono font-medium">{product.name}</h2>
+              <h3 className="dark:text-muted-foreground text-gray-600 text-sm">
                 {product.tagline}
               </h3>
+            </div>
+
+            <div className="space-x-1.5">
+              <UpvoteButton
+                product={processedProduct}
+                label="Upvotes"
+                size="xs"
+              />
+              <Button asChild className="" size={"xs"}>
+                <a href={product.website_url} target="_blank" rel="noopener">
+                  Visit {product.name}
+                </a>
+              </Button>
             </div>
           </div>
 
@@ -114,14 +145,14 @@ export default async function ProductPage({
                 return category ? (
                   <Link
                     href={`/browse/${category.slug}/${getTagSlug(tag)}`}
-                    className="hover:underline text-[10px] bg-gray-50 px-2 py-1 rounded inline-block transition-colors hover:bg-gray-100"
+                    className="hover:underline text-[10px] bg-gray-50 px-2 py-1 rounded inline-block transition-colors hover:bg-gray-100 dark:bg-neutral-950"
                     key={index}
                   >
                     {tag}
                   </Link>
                 ) : (
                   <span
-                    className="text-[10px] bg-gray-50 px-2 py-1 rounded inline-block"
+                    className="text-xs bg-gray-50 dark:bg-neutral-950 px-2 py-1 rounded inline-block"
                     key={index}
                   >
                     {tag}
@@ -173,7 +204,11 @@ export default async function ProductPage({
           </Tabs>
         </main>
 
-        <ProductSidebar product={processedProduct} />
+        <ProductSidebar
+          product={processedProduct}
+          prevProduct={prevProduct ?? undefined}
+          nextProduct={nextProduct ?? undefined}
+        />
       </div>
     </div>
   );

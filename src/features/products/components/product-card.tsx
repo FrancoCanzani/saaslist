@@ -14,7 +14,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <Link href={`/products/${product.id}`}>
       <Card className="flex-col flex p-4 min-w-0">
         <div className="flex items-center space-x-2">
-          <div className="rounded-md w-8 flex items-center justify-center h-8 bg-gray-50 p-1">
+          <div className="rounded w-8 flex items-center justify-center h-8 bg-gray-50 p-1">
             {product.logo_url && !imageError ? (
               <Image
                 src={product.logo_url}

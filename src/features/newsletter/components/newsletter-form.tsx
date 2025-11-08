@@ -63,12 +63,14 @@ export function NewsletterForm({
         }}
         className="max-w-xl mx-auto space-y-6"
       >
-        <div className="space-y-4 bg-gray-50 p-4 rounded-lg border border-dashed">
+        <div className="space-y-4 bg-neutral-50 dark:bg-background p-4 rounded border border-dashed">
           <div className="flex flex-col items-center gap-1">
             <p className="font-medium">{defaultName}</p>
-            <p className="text-sm text-muted-foreground">{defaultEmail}</p>
+            <p className="text-sm dark:text-muted-foreground text-gray-600">
+              {defaultEmail}
+            </p>
           </div>
-          <p className="text-xs text-center text-muted-foreground">
+          <p className="text-xs text-center dark:text-muted-foreground text-gray-600">
             You'll receive the newsletter at this email address every Sunday.
           </p>
         </div>
@@ -77,7 +79,7 @@ export function NewsletterForm({
           {isPending ? "Subscribing..." : "Subscribe to Newsletter"}
         </Button>
 
-        <p className="text-xs text-center">
+        <p className="text-xs text-center dark:text-muted-foreground text-gray-600">
           By subscribing, you agree to receive weekly emails. You can
           unsubscribe at any time.
         </p>
