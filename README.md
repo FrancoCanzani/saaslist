@@ -1,6 +1,6 @@
-# MicroSaaS - Product Hunt for Micro SaaS
+# SaasList - Product Hunt for SaaS
 
-A modern platform for discovering and sharing micro SaaS products, built with Next.js and Supabase.
+A modern platform for discovering and sharing SaaS products, built with Next.js and Supabase.
 
 ## 🚀 Quick Start
 
@@ -25,7 +25,7 @@ A modern platform for discovering and sharing micro SaaS products, built with Ne
    ```bash
    cp .env.local.example .env.local
    ```
-   
+
    Then edit `.env.local` and add your Supabase credentials:
    ```
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
