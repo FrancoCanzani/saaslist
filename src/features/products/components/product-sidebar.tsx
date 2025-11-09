@@ -12,6 +12,7 @@ import { toast } from "sonner";
 interface NavigationProduct {
   id: string;
   name: string;
+  logo_url?: string | null;
 }
 
 interface ProductSidebarProps {
@@ -52,7 +53,7 @@ export default function ProductSidebar({
 
       {product.founder_name && (
         <div>
-          <h4 className="font-semibold mb-2">Founder</h4>
+          <h4 className="font-medium mb-2">Founder</h4>
           <Link
             href={`/founder/${product.user_id}`}
             className="text-sm font-medium hover:underline"
@@ -63,7 +64,7 @@ export default function ProductSidebar({
       )}
 
       <div>
-        <h4 className="font-semibold mb-2">Pricing</h4>
+        <h4 className="font-medium mb-2">Pricing</h4>
         <span className="inline-block bg-blue-100 text-blue-800 px-2 py-1 text-xs rounded capitalize font-medium">
           {product.pricing_model}
         </span>
@@ -71,7 +72,7 @@ export default function ProductSidebar({
 
       {product.promo_code && (
         <div>
-          <h4 className="font-semibold mb-2">Promo Code</h4>
+          <h4 className="font-medium mb-2">Promo Code</h4>
           <div className="text-xs flex items-center justify-start hover:bg-gray-50 cursor-pointer border text-secondary-foreground h-8 w-fit font-medium rounded gap-1.5 px-3">
             <button
               onClick={handleCopyPromoCode}
@@ -85,7 +86,7 @@ export default function ProductSidebar({
 
       {product.platforms && product.platforms.length > 0 && (
         <div>
-          <h4 className="font-semibold mb-2">Available on</h4>
+          <h4 className="font-medium mb-2">Available on</h4>
           <div className="flex flex-wrap gap-1.5">
             {product.platforms.map((platform) => (
               <span
@@ -109,7 +110,7 @@ export default function ProductSidebar({
         product.linkedin_url ||
         product.product_hunt_url) && (
         <div>
-          <h4 className="font-semibold mb-2">Socials</h4>
+          <h4 className="font-medium mb-2">Socials</h4>
           <div className="flex gap-2">
             {product.twitter_url && (
               <a
@@ -168,7 +169,7 @@ export default function ProductSidebar({
 
       {product.repo_url && (
         <div>
-          <h4 className="font-semibold mb-2">Open Source</h4>
+          <h4 className="font-medium mb-2">Open Source</h4>
           <a
             href={product.repo_url}
             target="_blank"

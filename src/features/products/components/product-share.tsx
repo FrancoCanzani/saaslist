@@ -6,21 +6,22 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import { copyToClipboard } from "@/utils/helpers";
 import { Link as LinkIcon } from "lucide-react";
 import { toast } from "sonner";
-
-interface ProductShareProps {
-  productId: string;
-  productName: string;
-  productTagline: string;
-}
 
 export function ProductShare({
   productId,
   productName,
   productTagline,
-}: ProductShareProps) {
+  className,
+}: {
+  productId: string;
+  productName: string;
+  productTagline: string;
+  className?: string;
+}) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
   const productUrl = `${baseUrl}/products/${productId}`;
   const shareText = `Check out ${productName}: ${productTagline}`;
@@ -110,8 +111,8 @@ export function ProductShare({
   ];
 
   return (
-    <div className="space-y-3">
-      <h4 className="font-semibold text-sm">Share</h4>
+    <div className={cn("space-y-2", className)}>
+      <h4 className="font-medium text-sm">Share</h4>
 
       <TooltipProvider>
         <div className="flex items-center gap-2">

@@ -3,26 +3,23 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { Button } from "./ui/button";
 
 export default function Footer() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <footer className="border-t border-dashed dark:border-gray-800 border-gray-100  mt-20">
+    <footer className="border-t border-dashed dark:border-gray-800 border-gray-100 mt-20">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
             <h3 className="font-mono font-medium text-xl">SaasList</h3>
-            <Button
-              variant="outline"
-              size="icon-sm"
+            <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >
-              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Sun className="size-4 block dark:hidden" />
+              <Moon className="size-4 hidden dark:block" />
               <span className="sr-only">Toggle theme</span>
-            </Button>
+            </button>
           </div>
 
           <div>

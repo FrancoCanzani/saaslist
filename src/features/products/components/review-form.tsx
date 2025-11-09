@@ -64,6 +64,7 @@ export default function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Sum up your experience..."
           maxLength={100}
+          className="text-xs sm:text-sm"
           disabled={isPending}
         />
       </div>
@@ -80,7 +81,7 @@ export default function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
           rows={8}
           maxLength={2000}
           disabled={isPending}
-          className="resize-none min-h-[100px]"
+          className="resize-none text-xs sm:text-sm min-h-[100px]"
         />
         <p className="text-xs text-muted-foreground mt-2">
           {content.length}/2000 characters

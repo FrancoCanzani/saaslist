@@ -3,6 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CommentSection from "@/features/products/components/comment-section";
 import ProductLogo from "@/features/products/components/product-logo";
 import { ProductMediaCarousel } from "@/features/products/components/product-media-carousel";
+import { ProductNavigation } from "@/features/products/components/product-navigation";
+import { ProductShare } from "@/features/products/components/product-share";
 import ProductSidebar from "@/features/products/components/product-sidebar";
 import ReviewSection from "@/features/products/components/review-section";
 import UpvoteButton from "@/features/products/components/upvote-button";
@@ -87,7 +89,7 @@ export default async function ProductPage({
 
   const { data: prevProduct } = await supabase
     .from("products")
-    .select("id, name")
+    .select("id, name, logo_url")
     .lt("created_at", product.created_at)
     .order("created_at", { ascending: false })
     .limit(1)
@@ -95,7 +97,7 @@ export default async function ProductPage({
 
   const { data: nextProduct } = await supabase
     .from("products")
-    .select("id, name")
+    .select("id, name, logo_url")
     .gt("created_at", product.created_at)
     .order("created_at", { ascending: true })
     .limit(1)
@@ -121,18 +123,31 @@ export default async function ProductPage({
               </h3>
             </div>
 
-            <div className="space-x-1.5">
+            <div className="space-x-1.5 hidden md:block">
               <UpvoteButton
                 product={processedProduct}
                 label="Upvotes"
-                size="xs"
+                size="sm"
               />
-              <Button asChild className="" size={"xs"}>
+              <Button asChild className="" size={"sm"}>
                 <a href={product.website_url} target="_blank" rel="noopener">
                   Visit {product.name}
                 </a>
               </Button>
             </div>
+          </div>
+
+          <div className="space-x-1.5 md:hidden">
+            <UpvoteButton
+              product={processedProduct}
+              label="Upvotes"
+              size="sm"
+            />
+            <Button asChild className="" size={"sm"}>
+              <a href={product.website_url} target="_blank" rel="noopener">
+                Visit {product.name}
+              </a>
+            </Button>
           </div>
 
           <p className="text-pretty">{product.description}</p>
@@ -145,7 +160,7 @@ export default async function ProductPage({
                 return category ? (
                   <Link
                     href={`/browse/${category.slug}/${getTagSlug(tag)}`}
-                    className="hover:underline text-[10px] bg-gray-50 px-2 py-1 rounded inline-block transition-colors hover:bg-gray-100 dark:bg-neutral-950"
+                    className="hover:underline text-xs bg-gray-50 px-2 py-1 rounded inline-block transition-colors hover:bg-gray-100 dark:bg-neutral-950"
                     key={index}
                   >
                     {tag}
@@ -202,6 +217,18 @@ export default async function ProductPage({
               />
             </TabsContent>
           </Tabs>
+
+          <div className="block md:hidden space-y-6">
+            <ProductNavigation
+              prevProduct={prevProduct ?? null}
+              nextProduct={nextProduct ?? null}
+            />
+            <ProductShare
+              productId={product.id}
+              productName={product.name}
+              productTagline={product.tagline}
+            />
+          </div>
         </main>
 
         <ProductSidebar
