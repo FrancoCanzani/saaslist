@@ -26,7 +26,7 @@ export function ProductNavigation({
 
   return (
     <div>
-      <h4 className="font-medium mb-2">Navigate</h4>
+      <h4 className="font-medium text-sm mb-2">Navigate</h4>
       <div className="flex flex-col gap-2">
         {prevProduct && (
           <Button

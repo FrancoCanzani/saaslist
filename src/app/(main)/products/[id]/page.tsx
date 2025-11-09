@@ -117,7 +117,9 @@ export default async function ProductPage({
             </div>
 
             <div className="flex-1">
-              <h2 className="text-3xl font-mono font-medium">{product.name}</h2>
+              <h2 className="text-xl xl:text-2xl font-mono font-medium">
+                {product.name}
+              </h2>
               <h3 className="dark:text-muted-foreground text-gray-600 text-sm">
                 {product.tagline}
               </h3>
@@ -129,7 +131,7 @@ export default async function ProductPage({
                 label="Upvotes"
                 size="sm"
               />
-              <Button asChild className="" size={"sm"}>
+              <Button asChild size={"sm"}>
                 <a href={product.website_url} target="_blank" rel="noopener">
                   Visit {product.name}
                 </a>
