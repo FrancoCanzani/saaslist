@@ -63,13 +63,6 @@ export default function ProductSidebar({
         </div>
       )}
 
-      <div>
-        <h4 className="font-medium mb-2">Pricing</h4>
-        <span className="inline-block bg-blue-100 text-blue-800 px-2 py-1 text-xs rounded capitalize font-medium">
-          {product.pricing_model}
-        </span>
-      </div>
-
       {product.promo_code && (
         <div>
           <h4 className="font-medium mb-2">Promo Code</h4>

@@ -15,7 +15,7 @@ export default async function Header() {
         <Link href={"/browse"} className="hidden md:block">
           Browse
         </Link>
-        <Link href={"#"} className="hidden md:block">
+        <Link href={"/leaderboard"} className="hidden md:block">
           Leaderboard
         </Link>
         <Link href={"/newsletter"} className="hidden md:block">

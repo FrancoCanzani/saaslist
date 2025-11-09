@@ -91,7 +91,7 @@ export default function CategoryProducts({
   const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-6 sm:p-8 space-y-8">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
         <div>
           <h1 className="text-xl font-medium">{category.name}</h1>

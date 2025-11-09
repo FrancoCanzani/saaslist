@@ -79,7 +79,7 @@ export default async function CategoryPage({
   const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-6 sm:p-8 space-y-8">
       <div className="flex items-center w-full justify-between gap-6">
         <div>
           <h1 className="text-xl font-mono font-medium">{category.name}</h1>

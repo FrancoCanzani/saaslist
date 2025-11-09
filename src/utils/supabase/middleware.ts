@@ -43,6 +43,7 @@ export async function updateSession(request: NextRequest) {
     "/",
     "/newsletter",
     "/browse",
+    "/leaderboard",
     "/advertise",
     "/login",
     "/auth",
