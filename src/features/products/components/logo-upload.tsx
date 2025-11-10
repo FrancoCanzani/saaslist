@@ -73,7 +73,7 @@ export function LogoUpload({ value, onChange, disabled }: LogoUploadProps) {
     <div className="space-y-2">
       <FileDropzone
         onDrop={handleDrop}
-        maxSize={2 * 1024 * 1024}
+        maxSize={5 * 1024 * 1024}
         maxFiles={1}
         disabled={disabled}
       >
@@ -82,7 +82,7 @@ export function LogoUpload({ value, onChange, disabled }: LogoUploadProps) {
             Drop logo here or click to upload
           </p>
           <p className="text-xs text-gray-600 dark:text-muted-foreground">
-            PNG, JPG, WebP up to 2MB
+            PNG, JPG, WebP up to 5MB
           </p>
         </div>
       </FileDropzone>

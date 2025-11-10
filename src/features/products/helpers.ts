@@ -97,7 +97,7 @@ export function sortReviews(
 }
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
-const MAX_LOGO_SIZE = 2 * 1024 * 1024;
+const MAX_LOGO_SIZE = 5 * 1024 * 1024;
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const MAX_IMAGES_COUNT = 5;
 
@@ -120,7 +120,7 @@ export function validateLogoFile(file: File): FileValidationError | null {
     const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
     return {
       file: file.name,
-      error: `"${file.name}" is too large (${sizeMB}MB). Maximum size is 2MB.`,
+      error: `"${file.name}" is too large (${sizeMB}MB). Maximum size is 5MB.`,
     };
   }
 

@@ -130,22 +130,20 @@ export default function TagSelector({
           <DialogHeader>
             <DialogTitle className="font-medium">
               Select launch tags
-              <span className="text-xs ml-2 text-muted-foreground">
+              <span className="text-xs ml-2 text-gray-600 dark:text-muted-foreground">
                 {tempSelectedTags.length} Selected
               </span>
             </DialogTitle>
           </DialogHeader>
 
-          <div>
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="Search for launch tags"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="text-xs"
-              />
-            </div>
+          <div className="relative">
+            <Input
+              type="text"
+              placeholder="Search for launch tags"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="text-xs"
+            />
           </div>
 
           <div className="flex-1 overflow-y-auto">
@@ -154,14 +152,12 @@ export default function TagSelector({
                 <AccordionItem
                   key={category.name}
                   value={category.name}
-                  className="border rounded"
+                  className="overflow-hidden rounded border last:border-b"
                 >
                   <AccordionTrigger className="px-2 py-1">
-                    <div className="flex items-center text-xs justify-between w-full">
+                    <div className="flex items-center space-x-1 text-sm justify-start w-full">
                       <span className="font-medium">{category.name}</span>
-                      <span className="text-muted-foreground bg-gray-50 px-2 py-1 rounded">
-                        {category.tags.length}
-                      </span>
+                      <span className="text-xs">({category.tags.length})</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="p-2">
