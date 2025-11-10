@@ -87,7 +87,7 @@ export default async function ProductList({
   if (!processedProducts || processedProducts.length == 0) {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold">{title}</h2>
+        <h2 className="text-xl leading-tight font-mono font-medium">{title}</h2>
         <Alert>
           <AlertDescription className="mx-auto">
             Ups! It looks like we have nothing to show here{" "}
