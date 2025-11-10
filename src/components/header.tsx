@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { MobileNav } from "@/components/mobile-nav";
 import { getCurrentUser } from "@/features/profiles/api";
 import { ProfileDropdown } from "@/features/profiles/components/ProfileDropdown";
 import Link from "next/link";
@@ -26,6 +27,7 @@ export default async function Header() {
         </Link>
       </div>
       <div className="flex items-center gap-4">
+        <MobileNav />
         {user ? (
           <>
             <Button

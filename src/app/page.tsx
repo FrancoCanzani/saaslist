@@ -18,7 +18,7 @@ export default async function Home() {
 
         <Link
           href={"#"}
-          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-blaze-orange/10 rounded px-2 py-0.5 relative z-10"
+          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-blaze-orange/10 dark:bg-background dark:border dark:border-blaze-orange/50 dark:hover:border-blaze-orange transition-all duration-200 rounded px-2 py-0.5 relative z-10 dark:shadow-blaze-orange/10 dark:shadow-xl"
         >
           Join our afiliate program
         </Link>
