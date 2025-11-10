@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/mobile-nav";
+import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/features/profiles/api";
 import { ProfileDropdown } from "@/features/profiles/components/ProfileDropdown";
 import Link from "next/link";
@@ -12,19 +12,15 @@ export default async function Header() {
       <Link href={"/"} className="font-mono font-medium text-lg md:text-2xl">
         SaasList
       </Link>
-      <div className="inline-flex flex-1 justify-center gap-6 *:font-medium">
-        <Link href={"/browse"} className="hidden md:block">
-          Browse
-        </Link>
-        <Link href={"/leaderboard"} className="hidden md:block">
-          Leaderboard
-        </Link>
-        <Link href={"/newsletter"} className="hidden md:block">
-          Newsletter
-        </Link>
-        <Link href={"/advertise"} className="hidden md:block">
-          Advertise
-        </Link>
+      <div
+        className="inline-flex flex-1 justify-center gap-6 *:font-medium
+        *:hidden *:md:block *:hover:text-blaze-orange
+        "
+      >
+        <Link href={"/browse"}>Browse</Link>
+        <Link href={"/leaderboard"}>Leaderboard</Link>
+        <Link href={"/newsletter"}>Newsletter</Link>
+        <Link href={"/advertise"}>Advertise</Link>
       </div>
       <div className="flex items-center gap-4">
         <MobileNav />

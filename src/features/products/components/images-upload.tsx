@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Upload, X } from "lucide-react";
+import { X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { validateImageFiles } from "../helpers";
@@ -74,7 +74,7 @@ export function ImagesUpload({
                 type="button"
                 variant="destructive"
                 size="sm"
-                className="absolute top-1 right-1 h-6 w-6 p-0"
+                className="absolute top-1 right-1 size-6 p-0"
                 onClick={() => handleRemove(index)}
                 disabled={disabled}
               >
@@ -93,14 +93,13 @@ export function ImagesUpload({
           disabled={disabled}
         >
           <div className="space-y-2">
-            <Upload className="mx-auto h-10 w-10 text-gray-400" />
             <p className="text-sm text-gray-600 dark:text-muted-foreground">
               Drop images here or click to upload
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-600 dark:text-muted-foreground">
               PNG, JPG, WebP up to 5MB each (max 5 images)
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-600 dark:text-muted-foreground">
               {value.length} / 5 images uploaded
             </p>
           </div>
@@ -108,9 +107,9 @@ export function ImagesUpload({
       )}
 
       {errors.length > 0 && (
-        <div className="space-y-1">
+        <div className="space-y-1 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded">
           {errors.map((error, index) => (
-            <p key={index} className="text-sm text-red-500">
+            <p key={index} className="text-sm text-red-600 dark:text-red-400">
               {error}
             </p>
           ))}

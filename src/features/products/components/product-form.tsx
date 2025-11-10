@@ -33,7 +33,6 @@ interface ProductFormProps {
 const sections = [
   { id: "main-info", label: "Main Info" },
   { id: "images-media", label: "Images & Media" },
-  { id: "pricing", label: "Pricing" },
   { id: "social-media", label: "Social Media" },
 ];
 
@@ -56,7 +55,6 @@ export function ProductForm({
       image_files: [] as File[],
       demo_url: defaultValues?.demo_url,
       pricing_model: defaultValues?.pricing_model || "free",
-      promo_code: defaultValues?.promo_code,
       twitter_url: defaultValues?.twitter_url,
       linkedin_url: defaultValues?.linkedin_url,
       product_hunt_url: defaultValues?.product_hunt_url,
@@ -76,7 +74,7 @@ export function ProductForm({
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="block w-full text-left p-1.5 text-sm text-gray-600 dark:text-muted-foreground hover:text-gray-900"
+                className="block w-full text-left p-1.5 text-sm hover:text-blaze-orange"
               >
                 {section.label}
               </a>
@@ -92,6 +90,8 @@ export function ProductForm({
           }}
         >
           <FieldGroup>
+            <h3 className="text-3xl capitalize">Main info</h3>
+
             <div id="main-info" className="scroll-mt-24 space-y-6">
               <form.Field
                 name="name"
@@ -105,7 +105,7 @@ export function ProductForm({
                   return (
                     <Field>
                       <FieldLabel htmlFor="name">
-                        Name of the Launch *
+                        Name of your Saas *
                       </FieldLabel>
                       <Input
                         id="name"
@@ -176,6 +176,40 @@ export function ProductForm({
                         aria-invalid={isInvalid}
                         placeholder="https://example.com"
                       />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+
+              <form.Field
+                name="description"
+                validators={{
+                  onChange: productSchema.shape.description,
+                }}
+              >
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field>
+                      <FieldLabel htmlFor="description">
+                        Description *
+                      </FieldLabel>
+                      <Textarea
+                        id="description"
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className="min-h-[120px]"
+                        aria-invalid={isInvalid}
+                        placeholder="Tell us about your product, its features, and what makes it unique..."
+                      />
+                      <FieldDescription className="text-xs">
+                        Detailed description (50-1000 characters)
+                      </FieldDescription>
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
                       )}
@@ -307,40 +341,6 @@ export function ProductForm({
               </form.Field>
 
               <form.Field
-                name="description"
-                validators={{
-                  onChange: productSchema.shape.description,
-                }}
-              >
-                {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-                  return (
-                    <Field>
-                      <FieldLabel htmlFor="description">
-                        Description *
-                      </FieldLabel>
-                      <Textarea
-                        id="description"
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        className="min-h-[120px]"
-                        aria-invalid={isInvalid}
-                        placeholder="Tell us about your product, its features, and what makes it unique..."
-                      />
-                      <FieldDescription className="text-xs">
-                        Detailed description (50-1000 characters)
-                      </FieldDescription>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
-                    </Field>
-                  );
-                }}
-              </form.Field>
-
-              <form.Field
                 name="tags"
                 validators={{
                   onChange: productSchema.shape.tags,
@@ -364,9 +364,86 @@ export function ProductForm({
                   );
                 }}
               </form.Field>
+
+              <form.Field
+                name="pricing_model"
+                validators={{
+                  onChange: productSchema.shape.pricing_model,
+                }}
+              >
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+
+                  const pricingOptions = [
+                    {
+                      id: "free",
+                      title: "Free",
+                      description: "Completely free to use",
+                    },
+                    {
+                      id: "freemium",
+                      title: "Freemium",
+                      description: "Free tier with paid upgrades",
+                    },
+                    {
+                      id: "premium",
+                      title: "Premium",
+                      description: "Paid subscription required",
+                    },
+                  ] as const;
+
+                  return (
+                    <FieldSet>
+                      <FieldLegend>Pricing Model *</FieldLegend>
+                      <FieldDescription className="text-xs">
+                        How do you monetize your product?
+                      </FieldDescription>
+                      <RadioGroup
+                        name={field.name}
+                        value={field.state.value}
+                        onValueChange={(value) =>
+                          field.handleChange(
+                            value as "free" | "freemium" | "premium",
+                          )
+                        }
+                      >
+                        {pricingOptions.map((option) => (
+                          <FieldLabel
+                            key={option.id}
+                            htmlFor={`pricing-${option.id}`}
+                          >
+                            <Field
+                              orientation="horizontal"
+                              data-invalid={isInvalid}
+                            >
+                              <FieldContent>
+                                <FieldTitle>{option.title}</FieldTitle>
+                                <FieldDescription className="text-xs">
+                                  {option.description}
+                                </FieldDescription>
+                              </FieldContent>
+                              <RadioGroupItem
+                                value={option.id}
+                                id={`pricing-${option.id}`}
+                                aria-invalid={isInvalid}
+                              />
+                            </Field>
+                          </FieldLabel>
+                        ))}
+                      </RadioGroup>
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </FieldSet>
+                  );
+                }}
+              </form.Field>
             </div>
 
             <FieldSeparator />
+
+            <h3 className="text-3xl capitalize">Images & Media</h3>
 
             <div id="images-media" className="scroll-mt-24 space-y-6">
               <form.Field name="logo_file">
@@ -468,199 +545,93 @@ export function ProductForm({
 
             <FieldSeparator />
 
-            <div id="pricing" className="scroll-mt-24 space-y-6">
+            <h3 className="text-3xl capitalize">Social Media</h3>
+
+            <div id="social-media" className="scroll-mt-24 space-y-6">
               <form.Field
-                name="pricing_model"
+                name="twitter_url"
                 validators={{
-                  onChange: productSchema.shape.pricing_model,
-                }}
-              >
-                {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-
-                  const pricingOptions = [
-                    {
-                      id: "free",
-                      title: "Free",
-                      description: "Completely free to use",
-                    },
-                    {
-                      id: "freemium",
-                      title: "Freemium",
-                      description: "Free tier with paid upgrades",
-                    },
-                    {
-                      id: "premium",
-                      title: "Premium",
-                      description: "Paid subscription required",
-                    },
-                  ] as const;
-
-                  return (
-                    <FieldSet>
-                      <FieldLegend>Pricing Model *</FieldLegend>
-                      <FieldDescription className="text-xs">
-                        How do you monetize your product?
-                      </FieldDescription>
-                      <RadioGroup
-                        name={field.name}
-                        value={field.state.value}
-                        onValueChange={(value) =>
-                          field.handleChange(
-                            value as "free" | "freemium" | "premium",
-                          )
-                        }
-                      >
-                        {pricingOptions.map((option) => (
-                          <FieldLabel
-                            key={option.id}
-                            htmlFor={`pricing-${option.id}`}
-                          >
-                            <Field
-                              orientation="horizontal"
-                              data-invalid={isInvalid}
-                            >
-                              <FieldContent>
-                                <FieldTitle>{option.title}</FieldTitle>
-                                <FieldDescription className="text-xs">
-                                  {option.description}
-                                </FieldDescription>
-                              </FieldContent>
-                              <RadioGroupItem
-                                value={option.id}
-                                id={`pricing-${option.id}`}
-                                aria-invalid={isInvalid}
-                              />
-                            </Field>
-                          </FieldLabel>
-                        ))}
-                      </RadioGroup>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
-                    </FieldSet>
-                  );
-                }}
-              </form.Field>
-
-              <form.Field
-                name="promo_code"
-                validators={{
-                  onChange: productSchema.shape.promo_code,
+                  onChange: productSchema.shape.twitter_url,
                 }}
               >
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="promo_code">Promo Code</FieldLabel>
+                      <FieldLabel htmlFor="twitter_url">
+                        Twitter/X URL
+                      </FieldLabel>
                       <Input
-                        id="promo_code"
-                        type="text"
+                        id="twitter_url"
+                        type="url"
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
                           field.handleChange(e.target.value || undefined)
                         }
-                        placeholder="SUMMER2026"
+                        placeholder="https://twitter.com/yourhandle"
+                      />
+                    </Field>
+                  );
+                }}
+              </form.Field>
+
+              <form.Field
+                name="linkedin_url"
+                validators={{
+                  onChange: productSchema.shape.linkedin_url,
+                }}
+              >
+                {(field) => {
+                  return (
+                    <Field>
+                      <FieldLabel htmlFor="linkedin_url">
+                        LinkedIn URL
+                      </FieldLabel>
+                      <Input
+                        id="linkedin_url"
+                        type="url"
+                        value={field.state.value || ""}
+                        onBlur={field.handleBlur}
+                        onChange={(e) =>
+                          field.handleChange(e.target.value || undefined)
+                        }
+                        placeholder="https://linkedin.com/company/yourcompany"
+                      />
+                    </Field>
+                  );
+                }}
+              </form.Field>
+
+              <form.Field
+                name="product_hunt_url"
+                validators={{
+                  onChange: productSchema.shape.product_hunt_url,
+                }}
+              >
+                {(field) => {
+                  return (
+                    <Field>
+                      <FieldLabel htmlFor="product_hunt_url">
+                        Product Hunt URL
+                      </FieldLabel>
+                      <Input
+                        id="product_hunt_url"
+                        type="url"
+                        value={field.state.value || ""}
+                        onBlur={field.handleBlur}
+                        onChange={(e) =>
+                          field.handleChange(e.target.value || undefined)
+                        }
+                        placeholder="https://producthunt.com/posts/yourproduct"
                       />
                     </Field>
                   );
                 }}
               </form.Field>
             </div>
-
-            <FieldSeparator />
-
-            <div id="social-media" className="scroll-mt-24 space-y-6">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Social Media</h3>
-
-                <form.Field
-                  name="twitter_url"
-                  validators={{
-                    onChange: productSchema.shape.twitter_url,
-                  }}
-                >
-                  {(field) => {
-                    return (
-                      <Field>
-                        <FieldLabel htmlFor="twitter_url">
-                          Twitter/X URL
-                        </FieldLabel>
-                        <Input
-                          id="twitter_url"
-                          type="url"
-                          value={field.state.value || ""}
-                          onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.target.value || undefined)
-                          }
-                          placeholder="https://twitter.com/yourhandle"
-                        />
-                      </Field>
-                    );
-                  }}
-                </form.Field>
-
-                <form.Field
-                  name="linkedin_url"
-                  validators={{
-                    onChange: productSchema.shape.linkedin_url,
-                  }}
-                >
-                  {(field) => {
-                    return (
-                      <Field>
-                        <FieldLabel htmlFor="linkedin_url">
-                          LinkedIn URL
-                        </FieldLabel>
-                        <Input
-                          id="linkedin_url"
-                          type="url"
-                          value={field.state.value || ""}
-                          onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.target.value || undefined)
-                          }
-                          placeholder="https://linkedin.com/company/yourcompany"
-                        />
-                      </Field>
-                    );
-                  }}
-                </form.Field>
-
-                <form.Field
-                  name="product_hunt_url"
-                  validators={{
-                    onChange: productSchema.shape.product_hunt_url,
-                  }}
-                >
-                  {(field) => {
-                    return (
-                      <Field>
-                        <FieldLabel htmlFor="product_hunt_url">
-                          Product Hunt URL
-                        </FieldLabel>
-                        <Input
-                          id="product_hunt_url"
-                          type="url"
-                          value={field.state.value || ""}
-                          onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(e.target.value || undefined)
-                          }
-                          placeholder="https://producthunt.com/posts/yourproduct"
-                        />
-                      </Field>
-                    );
-                  }}
-                </form.Field>
-              </div>
-            </div>
           </FieldGroup>
 
-          <div className="mt-8 gap-4 flex justify-end">
+          <div className="mt-8 flex justify-end">
             <Button size={"sm"} type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : "Submit Product"}
             </Button>

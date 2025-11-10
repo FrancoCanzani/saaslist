@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductForm } from "@/features/products/components/new-product-form";
+import { ProductForm } from "@/features/products/components/product-form";
 import { useCreateProduct } from "@/features/products/mutations";
 import { productSchema } from "@/features/products/schemas";
 import { useRouter } from "next/navigation";
@@ -30,20 +30,18 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="p-6 scroll-smooth">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-xl font-medium">Submit a Product</h1>
-          <p className="text-sm text-muted-foreground">
-            Share your SaaS with the community
-          </p>
-        </div>
-
-        <ProductForm
-          onSubmit={handleSubmit}
-          isSubmitting={createProductMutation.isPending}
-        />
+    <div className="p-6 sm:p-8 space-y-8">
+      <div className="">
+        <h1 className="text-xl font-mono font-medium">Submit a Product</h1>
+        <h2 className="text-sm text-gray-600 dark:text-muted-foreground">
+          Share your SaaS with the community
+        </h2>
       </div>
+
+      <ProductForm
+        onSubmit={handleSubmit}
+        isSubmitting={createProductMutation.isPending}
+      />
     </div>
   );
 }

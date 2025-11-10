@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
       logo_url: productData.logo_url || null,
       demo_url: productData.demo_url || null,
       pricing_model: productData.pricing_model,
-      promo_code: productData.promo_code || null,
       tags: productData.tags,
       twitter_url: productData.twitter_url || null,
       linkedin_url: productData.linkedin_url || null,

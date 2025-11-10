@@ -24,7 +24,6 @@ export const productSchema = z
     logo_url: z.url("Please enter a valid URL").optional(),
     demo_url: z.url("Please enter a valid URL").optional(),
     pricing_model: z.enum(["free", "freemium", "premium"]),
-    promo_code: z.string().optional(),
     twitter_url: z
       .string()
       .url("Please enter a valid URL")

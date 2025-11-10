@@ -12,10 +12,8 @@ import Link from "next/link";
 export function MobileNav() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          aria-label="Navigation menu"
-        >
+      <DropdownMenuTrigger asChild className="md:hidden">
+        <button aria-label="Navigation menu">
           <Menu className="size-4" />
         </button>
       </DropdownMenuTrigger>
@@ -45,4 +43,3 @@ export function MobileNav() {
     </DropdownMenu>
   );
 }
-

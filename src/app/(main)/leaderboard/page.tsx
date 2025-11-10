@@ -134,7 +134,7 @@ export default async function LeaderboardPage({
 
       {processedProducts.length === 0 ? (
         <Alert>
-          <AlertDescription>
+          <AlertDescription className="mx-auto">
             No products found for this time period
           </AlertDescription>
         </Alert>

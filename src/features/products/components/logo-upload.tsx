@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Upload, X } from "lucide-react";
+import { X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { validateLogoFile } from "../helpers";
@@ -57,8 +57,8 @@ export function LogoUpload({ value, onChange, disabled }: LogoUploadProps) {
           <Button
             type="button"
             variant="destructive"
-            size="sm"
-            className="absolute top-1 right-1 h-6 w-6 p-0"
+            size="xs"
+            className="absolute top-1 right-1 size-6 p-0"
             onClick={handleRemove}
             disabled={disabled}
           >
@@ -78,14 +78,17 @@ export function LogoUpload({ value, onChange, disabled }: LogoUploadProps) {
         disabled={disabled}
       >
         <div className="space-y-2">
-          <Upload className="mx-auto h-10 w-10 text-gray-400" />
           <p className="text-sm text-gray-600 dark:text-muted-foreground">
             Drop logo here or click to upload
           </p>
-          <p className="text-xs text-gray-500">PNG, JPG, WebP up to 2MB</p>
+          <p className="text-xs text-gray-600 dark:text-muted-foreground">
+            PNG, JPG, WebP up to 2MB
+          </p>
         </div>
       </FileDropzone>
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+      )}
     </div>
   );
 }

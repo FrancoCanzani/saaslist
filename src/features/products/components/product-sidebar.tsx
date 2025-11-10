@@ -3,11 +3,9 @@
 import { ProductNavigation } from "@/features/products/components/product-navigation";
 import { ProductShare } from "@/features/products/components/product-share";
 import { Product } from "@/features/products/types";
-import { copyToClipboard } from "@/utils/helpers";
 import { formatDistanceToNowStrict } from "date-fns";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { toast } from "sonner";
 
 interface NavigationProduct {
   id: string;
@@ -26,15 +24,6 @@ export default function ProductSidebar({
   prevProduct,
   nextProduct,
 }: ProductSidebarProps) {
-  async function handleCopyPromoCode() {
-    const success = await copyToClipboard(product.promo_code!);
-    if (success) {
-      toast.success("Promo code copied!");
-    } else {
-      toast.error("Failed to copy promo code");
-    }
-  }
-
   return (
     <div className="w-80 hidden md:block shrink-0 space-y-6">
       <div>
@@ -53,7 +42,7 @@ export default function ProductSidebar({
 
       {product.founder_name && (
         <div>
-          <h4 className="font-medium mb-2">Founder</h4>
+          <h4 className="font-medium mb-2 text-sm">Founder</h4>
           <Link
             href={`/founder/${product.user_id}`}
             className="text-sm font-medium hover:underline"
@@ -63,28 +52,14 @@ export default function ProductSidebar({
         </div>
       )}
 
-      {product.promo_code && (
-        <div>
-          <h4 className="font-medium mb-2">Promo Code</h4>
-          <div className="text-xs flex items-center justify-start hover:bg-gray-50 cursor-pointer border text-secondary-foreground h-8 w-fit font-medium rounded gap-1.5 px-3">
-            <button
-              onClick={handleCopyPromoCode}
-              className="truncate font-mono uppercase"
-            >
-              {product.promo_code}
-            </button>
-          </div>
-        </div>
-      )}
-
       {product.platforms && product.platforms.length > 0 && (
         <div>
-          <h4 className="font-medium mb-2">Available on</h4>
+          <h4 className="font-medium mb-2 text-sm">Available on</h4>
           <div className="flex flex-wrap gap-1.5">
             {product.platforms.map((platform) => (
               <span
                 key={platform}
-                className="inline-block text-xs bg-gray-100 px-2 py-1 rounded capitalize"
+                className="inline-block text-xs bg-gray-100 dark:bg-background px-2 py-1 rounded capitalize"
               >
                 {platform === "browser_extension"
                   ? "Browser Extension"
@@ -162,7 +137,7 @@ export default function ProductSidebar({
 
       {product.repo_url && (
         <div>
-          <h4 className="font-medium mb-2">Open Source</h4>
+          <h4 className="font-medium mb-2 text-sm">Open Source</h4>
           <a
             href={product.repo_url}
             target="_blank"

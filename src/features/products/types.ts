@@ -27,7 +27,6 @@ export interface Product {
   images?: string[];
   demo_url?: string;
   pricing_model: PricingModel;
-  promo_code?: string;
   tags: string[];
   twitter_url?: string;
   linkedin_url?: string;
@@ -56,7 +55,6 @@ export interface ProductFormData {
   image_files?: File[];
   demo_url?: string;
   pricing_model: PricingModel;
-  promo_code?: string;
   twitter_url?: string;
   linkedin_url?: string;
   product_hunt_url?: string;

@@ -22,7 +22,6 @@ CREATE TABLE products (
   images TEXT[],
   demo_url TEXT,
   pricing_model TEXT NOT NULL CHECK (pricing_model IN ('free', 'freemium', 'premium')),
-  promo_code TEXT,
   tags TEXT[],
   twitter_url TEXT,
   linkedin_url TEXT,

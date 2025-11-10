@@ -108,16 +108,19 @@ export interface FileValidationError {
 
 export function validateLogoFile(file: File): FileValidationError | null {
   if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    const fileType = file.type || 'unknown';
+    const extension = file.name.split('.').pop()?.toUpperCase() || 'unknown';
     return {
       file: file.name,
-      error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.',
+      error: `"${file.name}" is not a valid image file (${extension}). Only JPEG, PNG, and WebP images are allowed.`,
     };
   }
 
   if (file.size > MAX_LOGO_SIZE) {
+    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
     return {
       file: file.name,
-      error: 'File too large. Maximum size is 2MB.',
+      error: `"${file.name}" is too large (${sizeMB}MB). Maximum size is 2MB.`,
     };
   }
 
@@ -130,23 +133,25 @@ export function validateImageFiles(files: File[]): FileValidationError[] {
   if (files.length > MAX_IMAGES_COUNT) {
     errors.push({
       file: 'general',
-      error: `Too many files. Maximum is ${MAX_IMAGES_COUNT} images.`,
+      error: `Too many files selected. You can upload up to ${MAX_IMAGES_COUNT} images maximum.`,
     });
     return errors;
   }
 
   files.forEach((file) => {
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      const extension = file.name.split('.').pop()?.toUpperCase() || 'unknown';
       errors.push({
         file: file.name,
-        error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.',
+        error: `"${file.name}" is not a valid image file (${extension}). Only JPEG, PNG, and WebP images are allowed.`,
       });
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
       errors.push({
         file: file.name,
-        error: 'File too large. Maximum size is 5MB.',
+        error: `"${file.name}" is too large (${sizeMB}MB). Maximum size is 5MB per image.`,
       });
     }
   });
