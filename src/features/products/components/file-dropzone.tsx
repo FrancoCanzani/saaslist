@@ -27,35 +27,41 @@ export function FileDropzone({
   const handleDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: any[]) => {
       setDropError(null);
-      
+
       if (rejectedFiles.length > 0) {
         const rejection = rejectedFiles[0];
         const file = rejection.file;
-        const extension = file.name.split('.').pop()?.toUpperCase() || 'unknown';
-        
-        if (rejection.errors[0]?.code === 'file-invalid-type') {
-          setDropError(`"${file.name}" is not a valid image (${extension}). Please drop an image file (JPEG, PNG, or WebP).`);
-        } else if (rejection.errors[0]?.code === 'file-too-large') {
+        const extension =
+          file.name.split(".").pop()?.toUpperCase() || "unknown";
+
+        if (rejection.errors[0]?.code === "file-invalid-type") {
+          setDropError(
+            `"${file.name}" is not a valid image (${extension}). Please drop an image file (JPEG, PNG, or WebP).`,
+          );
+        } else if (rejection.errors[0]?.code === "file-too-large") {
           const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
-          setDropError(`"${file.name}" is too large (${sizeMB}MB). Please use a smaller file.`);
+          setDropError(
+            `"${file.name}" is too large (${sizeMB}MB). Please use a smaller file.`,
+          );
         } else {
           setDropError(`"${file.name}" could not be uploaded.`);
         }
         return;
       }
-      
+
       onDrop(acceptedFiles);
     },
     [onDrop],
   );
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
-    onDrop: handleDrop,
-    accept,
-    maxSize,
-    maxFiles,
-    disabled,
-  });
+  const { getRootProps, getInputProps, isDragActive, isDragReject } =
+    useDropzone({
+      onDrop: handleDrop,
+      accept,
+      maxSize,
+      maxFiles,
+      disabled,
+    });
 
   return (
     <div className="space-y-2">
@@ -74,11 +80,13 @@ export function FileDropzone({
         <input {...getInputProps()} />
         {children || (
           <div className="space-y-2">
-            <Upload className={cn(
-              "mx-auto h-10 w-10",
-              isDragReject ? "text-red-400" : "text-gray-400"
-            )} />
-            <p className="text-sm text-gray-600 dark:text-muted-foreground">
+            <Upload
+              className={cn(
+                "mx-auto h-10 w-10",
+                isDragReject ? "text-red-400" : "text-gray-400",
+              )}
+            />
+            <p className="text-sm text-muted-foreground">
               {isDragReject
                 ? "This file type is not supported"
                 : isDragActive
@@ -89,7 +97,7 @@ export function FileDropzone({
         )}
       </div>
       {dropError && (
-          <p className="text-sm text-red-600 dark:text-red-400">{dropError}</p>
+        <p className="text-sm text-red-600 dark:text-red-400">{dropError}</p>
       )}
     </div>
   );

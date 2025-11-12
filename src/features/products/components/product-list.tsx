@@ -1,8 +1,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { createClient } from "@/utils/supabase/server";
 import { Product } from "../types";
-import EmptyGridCell from "./empty-grid-cell";
-import ProductGridCard from "./product-grid-card";
+import ProductGrid from "./product-grid";
 
 export default async function ProductList({
   date,
@@ -68,13 +67,19 @@ export default async function ProductList({
     .order("upvotes_count", { ascending: false })
     .limit(10);
 
-  const processedProducts =
-    products?.map((product) => ({
-      ...product,
-      is_upvoted: user
-        ? product.upvotes?.some((upvote: any) => upvote.user_id === user.id)
-        : false,
-    })) || [];
+  const processedProducts: Product[] =
+    products?.map((product) => {
+      const { upvotes, ...rest } = product as Product & {
+        upvotes?: { user_id: string }[];
+      };
+
+      return {
+        ...rest,
+        is_upvoted: user
+          ? upvotes?.some((upvote) => upvote.user_id === user.id) ?? false
+          : false,
+      };
+    }) || [];
 
   if (error) {
     return (
@@ -97,33 +102,10 @@ export default async function ProductList({
     );
   }
 
-  const totalProducts = processedProducts.length;
-  const gridCols = 2;
-  const remainder = totalProducts % gridCols;
-  const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
-
   return (
     <div className="space-y-6">
       <h2 className="text-xl leading-tight font-mono font-medium">{title}</h2>
-      <div className="grid grid-cols-1 lg:grid-cols-2 border rounded">
-        {processedProducts.map((product: Product, index: number) => (
-          <ProductGridCard
-            key={product.id}
-            product={product}
-            index={index}
-            totalProducts={processedProducts.length}
-          />
-        ))}
-
-        {Array.from({ length: emptyCells }).map((_, index) => (
-          <EmptyGridCell
-            key={`empty-${index}`}
-            index={index}
-            cellIndex={totalProducts + index}
-            totalCells={totalProducts + emptyCells}
-          />
-        ))}
-      </div>
+      <ProductGrid products={processedProducts} />
     </div>
   );
 }

@@ -33,7 +33,7 @@ export default function NewProductPage() {
     <div className="p-6 sm:p-8 space-y-8">
       <div className="">
         <h1 className="text-xl font-mono font-medium">Submit a Product</h1>
-        <h2 className="text-sm text-gray-600 dark:text-muted-foreground">
+        <h2 className="text-sm text-muted-foreground">
           Share your SaaS with the community
         </h2>
       </div>

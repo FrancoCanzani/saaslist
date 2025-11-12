@@ -60,7 +60,7 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
               }}
             />
           ) : (
-            <span className="text-sm font-medium text-gray-600 dark:text-muted-foreground">
+            <span className="text-sm font-medium text-muted-foreground">
               {getInitials(profile.name)}
             </span>
           )}

@@ -1,7 +1,6 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LoadMoreButton } from "@/features/leaderboard/load-more-button";
 import { TimePeriodFilter } from "@/features/leaderboard/time-period-filter";
-import EmptyGridCell from "@/features/products/components/empty-grid-cell";
 import ProductGridCard from "@/features/products/components/product-grid-card";
 import { createClient } from "@/utils/supabase/server";
 import { createLoader, parseAsInteger, parseAsStringEnum } from "nuqs/server";
@@ -147,14 +146,6 @@ export default async function LeaderboardPage({
                 product={product}
                 index={index}
                 totalProducts={totalProducts}
-              />
-            ))}
-            {Array.from({ length: emptyCells }).map((_, index) => (
-              <EmptyGridCell
-                key={`empty-${index}`}
-                index={index}
-                cellIndex={totalProducts + index}
-                totalCells={totalProducts + emptyCells}
               />
             ))}
           </div>

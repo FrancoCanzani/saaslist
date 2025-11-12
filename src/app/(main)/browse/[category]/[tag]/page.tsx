@@ -1,4 +1,3 @@
-import EmptyGridCell from "@/features/products/components/empty-grid-cell";
 import ProductGridCard from "@/features/products/components/product-grid-card";
 import { Product } from "@/features/products/types";
 import { categories } from "@/utils/constants";
@@ -75,7 +74,7 @@ export default async function CategoryTagPage({
           </h1>
         </div>
 
-        <div className="text-xs text-gray-600 dark:text-muted-foreground">
+        <div className="text-xs text-muted-foreground">
           {processedProducts.length}{" "}
           {processedProducts.length === 1 ? "product" : "products"}
         </div>
@@ -95,15 +94,6 @@ export default async function CategoryTagPage({
               product={product}
               index={index}
               totalProducts={processedProducts.length}
-            />
-          ))}
-
-          {Array.from({ length: emptyCells }).map((_, index) => (
-            <EmptyGridCell
-              key={`empty-${index}`}
-              index={index}
-              cellIndex={totalProducts + index}
-              totalCells={totalProducts + emptyCells}
             />
           ))}
         </div>

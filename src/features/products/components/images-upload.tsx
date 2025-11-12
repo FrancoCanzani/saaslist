@@ -93,13 +93,13 @@ export function ImagesUpload({
           disabled={disabled}
         >
           <div className="space-y-2">
-            <p className="text-sm text-gray-600 dark:text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Drop images here or click to upload
             </p>
-            <p className="text-xs text-gray-600 dark:text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               PNG, JPG, WebP up to 5MB each (max 5 images)
             </p>
-            <p className="text-xs text-gray-600 dark:text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {value.length} / 5 images uploaded
             </p>
           </div>

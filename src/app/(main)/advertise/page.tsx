@@ -142,7 +142,7 @@ export default function AdvertisePage() {
         <h1 className="text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance mb-4">
           We've got a plan that's perfect for you
         </h1>
-        <h2 className="text-gray-600 dark:text-muted-foreground text-sm md:text-base text-balance">
+        <h2 className="text-muted-foreground text-sm md:text-base text-balance">
           Get your SaaS in front of entrepreneurs and early adopters
         </h2>
       </div>
@@ -199,7 +199,7 @@ export default function AdvertisePage() {
                 </div>
               </div>
 
-              <p className="text-sm text-gray-600 dark:text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {plan.description}
               </p>
 
@@ -248,7 +248,7 @@ export default function AdvertisePage() {
               </Button>
 
               <div className="flex-1 space-y-3">
-                <p className="text-xs font-semibold text-gray-600 dark:text-muted-foreground uppercase tracking-wide">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                   What's Included
                 </p>
                 <ul className="space-y-2.5">
@@ -270,7 +270,7 @@ export default function AdvertisePage() {
           <h2 className="text-3xl font-medium font-mono tracking-tighter mb-2">
             Frequently Asked Questions
           </h2>
-          <p className="text-gray-600 dark:text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-sm">
             Everything you need to know about advertising on SaasList
           </p>
         </div>

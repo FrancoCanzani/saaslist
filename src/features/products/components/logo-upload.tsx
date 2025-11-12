@@ -78,16 +78,16 @@ export function LogoUpload({ value, onChange, disabled }: LogoUploadProps) {
         disabled={disabled}
       >
         <div className="space-y-2">
-          <p className="text-sm text-gray-600 dark:text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Drop logo here or click to upload
           </p>
-          <p className="text-xs text-gray-600 dark:text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             PNG, JPG, WebP up to 5MB
           </p>
         </div>
       </FileDropzone>
       {error && (
-          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
       )}
     </div>
   );

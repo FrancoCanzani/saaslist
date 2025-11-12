@@ -10,7 +10,7 @@ export default async function NewsletterPage() {
         <h2 className="text-4xl font-medium font-mono tracking-tight">
           Weekly Drops
         </h2>
-        <p className="text-pretty text-sm text-gray-600 dark:text-muted-foreground">
+        <p className="text-pretty text-sm text-muted-foreground">
           Get the best products of the week delivered to your inbox every Sunday
         </p>
       </div>

@@ -37,7 +37,7 @@ export default function ProductGridCard({
             <span className="truncate">{product.name}</span>
             <ArrowUpRight className="size-4 group-hover:visible invisible shrink-0" />
           </h3>
-          <p className="text-sm text-gray-600 dark:text-muted-foreground line-clamp-1">
+          <p className="text-sm text-muted-foreground line-clamp-1">
             {product.tagline}
           </p>
         </div>

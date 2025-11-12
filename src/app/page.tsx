@@ -10,7 +10,7 @@ export default async function Home() {
     <div className="min-h-screen relative max-w-6xl mx-auto">
       <Header />
 
-      <div className="w-full py-12 md:py-20 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
+      <div className="w-full py-12 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
         <Meteors
           number={10}
           className="bg-blaze-orange shadow-[0_0_0_1px_#ff5b0440] before:bg-linear-to-r before:from-blaze-orange before:to-transparent"
@@ -41,7 +41,7 @@ export default async function Home() {
           <h1 className="custom-selection text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance relative z-10">
             Get Noticed. Get Users. Get Results.
           </h1>
-          <p className="text-gray-600 dark:text-muted-foreground text-sm md:text-base text-balance relative z-10">
+          <p className="text-muted-foreground text-sm md:text-base text-balance relative z-10">
             Showcase your SaaS product to thousands of early adopters,
             entrepreneurs, and tech enthusiasts. Join the community of builders
             who are launching their next big thing.
@@ -61,7 +61,7 @@ export default async function Home() {
               <Link href={"/browse"}>Browse Products</Link>
             </Button>
           </div>
-          <p className="text-xs font-medium text-gray-600 dark:text-muted-foreground">
+          <p className="text-xs font-medium text-muted-foreground">
             Free to submit • No credit card required • Launch in minutes
           </p>
         </div>

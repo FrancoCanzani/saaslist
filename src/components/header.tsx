@@ -37,7 +37,7 @@ export default async function Header() {
               <ProfileDropdown profile={profile} />
             ) : (
               <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                <span className="text-sm font-medium text-gray-600 dark:text-muted-foreground">
+                <span className="text-sm font-medium text-muted-foreground">
                   U
                 </span>
               </div>

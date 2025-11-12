@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CommentSection from "@/features/products/components/comment-section";
 import ProductLogo from "@/features/products/components/product-logo";
@@ -11,6 +10,7 @@ import UpvoteButton from "@/features/products/components/upvote-button";
 import { Product } from "@/features/products/types";
 import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
 import { createClient } from "@/utils/supabase/server";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -125,31 +125,41 @@ export default async function ProductPage({
               </h3>
             </div>
 
-            <div className="space-x-1.5 hidden md:block">
+            <div className="space-x-1.5 hidden md:flex items-center justify-end">
               <UpvoteButton
                 product={processedProduct}
                 label="Upvotes"
                 size="sm"
+                className="text-sm"
               />
-              <Button asChild size={"sm"}>
-                <a href={product.website_url} target="_blank" rel="noopener">
-                  Visit {product.name}
-                </a>
-              </Button>
+              <a
+                href={product.website_url}
+                className="text-sm flex items-center justify-start text-muted-foreground group space-x-1.5 hover:underline underline-offset-4"
+                target="_blank"
+                rel="noopener"
+              >
+                Visit {product.name}
+                <ArrowUpRight className="size-3.5 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+              </a>
             </div>
           </div>
 
-          <div className="space-x-1.5 md:hidden">
+          <div className="space-x-1.5 md:hidden flex items-center justify-start">
             <UpvoteButton
               product={processedProduct}
               label="Upvotes"
               size="sm"
+              className="text-sm"
             />
-            <Button asChild className="" size={"sm"}>
-              <a href={product.website_url} target="_blank" rel="noopener">
-                Visit {product.name}
-              </a>
-            </Button>
+            <a
+              href={product.website_url}
+              className="text-sm flex items-center justify-start text-muted-foreground group space-x-1.5 hover:underline underline-offset-4"
+              target="_blank"
+              rel="noopener"
+            >
+              Visit {product.name}
+              <ArrowUpRight className="size-3.5 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+            </a>
           </div>
 
           <p className="text-pretty">{product.description}</p>

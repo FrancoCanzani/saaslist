@@ -32,7 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${ibmPlexMono.variable} antialiased`}>
+      <body
+        className={`${inter.variable} ${ibmPlexMono.variable} antialiased bg-[#FAFAFA] dark:bg-background`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

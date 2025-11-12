@@ -130,7 +130,7 @@ export default function TagSelector({
           <DialogHeader>
             <DialogTitle className="font-medium">
               Select launch tags
-              <span className="text-xs ml-2 text-gray-600 dark:text-muted-foreground">
+              <span className="text-xs ml-2 text-muted-foreground">
                 {tempSelectedTags.length} Selected
               </span>
             </DialogTitle>

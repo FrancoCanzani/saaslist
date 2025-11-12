@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
@@ -10,12 +9,10 @@ import { Product } from "../types";
 export default function UpvoteButton({
   product,
   label,
-  size = "sm",
   className,
 }: {
   product: Product;
   label?: string;
-  size: "xs" | "sm" | "default" | "lg" | null | undefined;
   className?: string;
 }) {
   const [isPending, startTransition] = useTransition();
@@ -56,19 +53,16 @@ export default function UpvoteButton({
   }
 
   return (
-    <Button
-      variant={"outline"}
-      size={size}
+    <button
       className={cn(
-        "text-xs font-medium",
-        optimisticProduct.is_upvoted &&
-          "text-white hover:text-white leading-none dark:bg-blaze-orange bg-blaze-orange hover:bg-blaze-orange/90 dark:hover:bg-blaze-orange/90",
+        "font-medium hover:text-blaze-orange",
+        optimisticProduct.is_upvoted && "hover:text-primary text-blaze-orange",
         className,
       )}
       onClick={handleUpvote}
     >
-      {optimisticProduct.upvotes_count}
-      {label && <span>{label}</span>}
-    </Button>
+      {label && <span className="mr-1">{label}</span>}(
+      {optimisticProduct.upvotes_count})
+    </button>
   );
 }

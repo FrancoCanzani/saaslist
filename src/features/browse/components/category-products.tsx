@@ -3,7 +3,6 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import EmptyGridCell from "@/features/products/components/empty-grid-cell";
 import ProductGridCard from "@/features/products/components/product-grid-card";
 import { Product } from "@/features/products/types";
 import { Category } from "@/utils/types";
@@ -146,15 +145,6 @@ export default function CategoryProducts({
               product={product}
               index={index}
               totalProducts={filteredProducts.length}
-            />
-          ))}
-
-          {Array.from({ length: emptyCells }).map((_, index) => (
-            <EmptyGridCell
-              key={`empty-${index}`}
-              index={index}
-              cellIndex={totalProducts + index}
-              totalCells={totalProducts + emptyCells}
             />
           ))}
         </div>
