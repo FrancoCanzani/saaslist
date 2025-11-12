@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DeleteProductButton } from "@/features/products/components/delete-product-button";
 import ProductLogo from "@/features/products/components/product-logo";
 import { createClient } from "@/utils/supabase/server";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -83,8 +83,8 @@ export default async function MyProductsPage() {
                     href={`/products/${product.id}`}
                     className="text-xs flex items-center justify-start text-muted-foreground group gap-x-1 hover:underline underline-offset-4"
                   >
-                    Visit
-                    <ArrowUpRight className="size-3 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    View
+                    <ArrowRight className="size-3 opacity-0 group-hover:opacity-100 transition-all duration-300" />
                   </Link>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import ProductGridCard from "@/features/products/components/product-grid-card";
+import ProductGrid from "@/features/products/components/product-grid";
 import { Product } from "@/features/products/types";
 import { categories } from "@/utils/constants";
 import { getCategoryBySlug } from "@/utils/helpers";
@@ -102,16 +102,11 @@ export default async function CategoryPage({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 border rounded">
+        <>
           {categoryProducts.map((product, index) => (
-            <ProductGridCard
-              key={product.id}
-              product={product}
-              index={index}
-              totalProducts={categoryProducts.length}
-            />
+            <ProductGrid key={product.id} products={categoryProducts} />
           ))}
-        </div>
+        </>
       )}
     </div>
   );

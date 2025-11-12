@@ -8,7 +8,10 @@ interface LoadMoreButtonProps {
 }
 
 export function LoadMoreButton({ currentPage }: LoadMoreButtonProps) {
-  const [, setPage] = useQueryState("page", parseAsInteger.withDefault(1).withOptions({ shallow: false }));
+  const [, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ shallow: false }),
+  );
 
   const handleLoadMore = () => {
     setPage(currentPage + 1);
@@ -19,12 +22,11 @@ export function LoadMoreButton({ currentPage }: LoadMoreButtonProps) {
       <Button
         onClick={handleLoadMore}
         variant="outline"
-        size="lg"
-        className="min-w-[200px]"
+        size="xs"
+        className="shadow-none"
       >
         Load More
       </Button>
     </div>
   );
 }
-

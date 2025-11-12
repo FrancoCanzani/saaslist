@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Product } from "../types";
 import ProductLogo from "./product-logo";
@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       <h3 className="font-mono flex items-center justify-start gap-x-1 underline underline-offset-4">
         {product.name}
-        <ArrowUpRight className="opacity-0  transition-all group-hover:opacity-100 duration-300 size-3.5" />
+        <ArrowRight className="opacity-0  transition-all group-hover:opacity-100 duration-300 size-3.5" />
       </h3>
 
       <p className="text-sm text-muted-foreground">{product.tagline}</p>

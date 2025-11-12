@@ -1,4 +1,4 @@
-import ProductGridCard from "@/features/products/components/product-grid-card";
+import ProductGrid from "@/features/products/components/product-grid";
 import { Product } from "@/features/products/types";
 import { categories } from "@/utils/constants";
 import { getCategoryBySlug, getTagSlug } from "@/utils/helpers";
@@ -63,7 +63,6 @@ export default async function CategoryTagPage({
   const totalProducts = processedProducts.length;
   const gridCols = 2;
   const remainder = totalProducts % gridCols;
-  const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-8">
@@ -87,16 +86,7 @@ export default async function CategoryTagPage({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 border rounded">
-          {processedProducts.map((product, index) => (
-            <ProductGridCard
-              key={product.id}
-              product={product}
-              index={index}
-              totalProducts={processedProducts.length}
-            />
-          ))}
-        </div>
+        <ProductGrid products={processedProducts} />
       )}
     </div>
   );
