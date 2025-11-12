@@ -67,7 +67,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <main className="p-6 flex flex-col gap-8">
+      <main className="p-2 sm:p-6 lg:p-8 flex flex-col gap-8">
         <ProductList date="today" />
         <ProductList date="yesterday" />
         <ProductList date="week" />

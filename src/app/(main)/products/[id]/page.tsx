@@ -120,7 +120,7 @@ export default async function ProductPage({
               <h2 className="text-xl xl:text-2xl font-mono font-medium">
                 {product.name}
               </h2>
-              <h3 className="dark:text-muted-foreground text-gray-600 text-sm">
+              <h3 className="text-muted-foreground text-sm">
                 {product.tagline}
               </h3>
             </div>
@@ -129,7 +129,6 @@ export default async function ProductPage({
               <UpvoteButton
                 product={processedProduct}
                 label="Upvotes"
-                size="sm"
                 className="text-sm"
               />
               <a
@@ -148,7 +147,6 @@ export default async function ProductPage({
             <UpvoteButton
               product={processedProduct}
               label="Upvotes"
-              size="sm"
               className="text-sm"
             />
             <a

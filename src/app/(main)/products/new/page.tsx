@@ -30,7 +30,7 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="p-6 sm:p-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
       <div className="">
         <h1 className="text-xl font-mono font-medium">Submit a Product</h1>
         <h2 className="text-sm text-muted-foreground">

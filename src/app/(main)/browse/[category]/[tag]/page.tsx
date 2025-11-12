@@ -66,7 +66,7 @@ export default async function CategoryTagPage({
   const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
 
   return (
-    <div className="p-6 sm:p-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
       <div className="flex items-center w-full justify-between gap-6">
         <div>
           <h1 className="text-xl font-mono font-medium">
@@ -82,7 +82,7 @@ export default async function CategoryTagPage({
 
       {processedProducts.length === 0 ? (
         <div className="text-center py-12">
-          <p className="dark:text-muted-foreground text-gray-600 text-sm">
+          <p className="text-muted-foreground text-sm">
             No products found with this tag yet.
           </p>
         </div>

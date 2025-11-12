@@ -44,7 +44,6 @@ export default function ProductGridCard({
       </div>
       <UpvoteButton
         product={product}
-        size={"sm"}
         label="Upvotes"
         className="shadow-none shrink-0"
       />
