@@ -23,6 +23,27 @@ export const metadata: Metadata = {
   title: "SaasList - Discover & Share SaaS Products",
   description:
     "A Product Hunt for SaaS products. Discover, share, and upvote the best SaaS tools.",
+  openGraph: {
+    title: "SaasList - Discover & Share SaaS Products",
+    description:
+      "A Product Hunt for SaaS products. Discover, share, and upvote the best SaaS tools.",
+    type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "SaasList - Discover & Share SaaS Products",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SaasList - Discover & Share SaaS Products",
+    description:
+      "A Product Hunt for SaaS products. Discover, share, and upvote the best SaaS tools.",
+    images: ["/opengraph-image"],
+  },
 };
 
 export default function RootLayout({
