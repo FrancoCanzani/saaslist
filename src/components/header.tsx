@@ -8,7 +8,7 @@ export default async function Header() {
   const { user, profile } = await getCurrentUser();
 
   return (
-    <header className="sticky top-0 z-50 p-2 sm:p-6 lg:p-8 inline-flex items-center justify-between w-full text-sm backdrop-blur-lg bg-background/80">
+    <header className="sticky top-0 z-50 p-4 sm:p-6 lg:p-8 inline-flex items-center justify-between w-full text-sm backdrop-blur-lg bg-background/80">
       <Link href={"/"} className="font-mono font-medium text-lg md:text-2xl">
         SaasList
       </Link>
