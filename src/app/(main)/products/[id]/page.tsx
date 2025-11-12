@@ -133,7 +133,7 @@ export default async function ProductPage({
               />
               <a
                 href={product.website_url}
-                className="text-sm flex items-center justify-start text-muted-foreground group space-x-1.5 hover:underline underline-offset-4"
+                className="text-sm flex items-center justify-start text-muted-foreground group gap-x-1 hover:underline underline-offset-4"
                 target="_blank"
                 rel="noopener"
               >
@@ -151,7 +151,7 @@ export default async function ProductPage({
             />
             <a
               href={product.website_url}
-              className="text-sm flex items-center justify-start text-muted-foreground group space-x-1.5 hover:underline underline-offset-4"
+              className="text-sm flex items-center justify-start text-muted-foreground group gap-x-1 hover:underline underline-offset-4"
               target="_blank"
               rel="noopener"
             >

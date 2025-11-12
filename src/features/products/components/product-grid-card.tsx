@@ -33,7 +33,7 @@ export default function ProductGridCard({
           />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium truncate group-hover:text-blaze-orange font-mono uppercase transition-colors flex items-center justify-start gap-x-1.5">
+          <h3 className="font-medium truncate group-hover:text-blaze-orange font-mono uppercase transition-colors flex items-center justify-start gap-x-1">
             <span className="truncate">{product.name}</span>
             <ArrowUpRight className="size-4 group-hover:visible invisible shrink-0" />
           </h3>

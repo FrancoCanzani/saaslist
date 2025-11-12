@@ -12,7 +12,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="flex border hover:bg-accent group rounded flex-col gap-2 py-2.5 px-4"
+      className="flex border hover:bg-muted group rounded flex-col gap-2 py-2.5 px-4"
     >
       <div className="flex items-center justify-between">
         <div className="flex shrink-0 size-9 items-end justify-start">
@@ -29,7 +29,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      <h3 className="font-mono flex items-center justify-start space-x-1.5 underline underline-offset-4">
+      <h3 className="font-mono flex items-center justify-start gap-x-1 underline underline-offset-4">
         {product.name}
         <ArrowUpRight className="opacity-0  transition-all group-hover:opacity-100 duration-300 size-3.5" />
       </h3>

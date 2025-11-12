@@ -61,7 +61,7 @@ export default async function Home() {
               <Link href={"/browse"}>Browse Products</Link>
             </Button>
           </div>
-          <p className="text-xs font-medium text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             Free to submit • No credit card required • Launch in minutes
           </p>
         </div>

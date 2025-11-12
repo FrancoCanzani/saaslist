@@ -220,6 +220,58 @@ export async function deleteCommentAction(
   }
 }
 
+export async function deleteProductAction(
+  productId: string
+): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to delete products");
+    }
+
+    const { data: existingProduct, error: fetchError } = await supabase
+      .from("products")
+      .select("user_id")
+      .eq("id", productId)
+      .single();
+
+    if (fetchError || !existingProduct) {
+      throw new Error("Product not found");
+    }
+
+    if (existingProduct.user_id !== user.id) {
+      throw new Error("You can only delete your own products");
+    }
+
+    const { error: deleteError } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", productId);
+
+    if (deleteError) {
+      throw new Error("Failed to delete product");
+    }
+
+    revalidatePath("/my-products");
+    revalidatePath("/");
+    revalidatePath("/browse");
+    revalidatePath("/leaderboard");
+    revalidatePath(`/products/${productId}`);
+
+    return { success: true, action: "deleted" };
+  } catch (error) {
+    console.error("Delete product error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Something went wrong");
+  }
+}
+
 export async function flagCommentAction(
   commentId: string,
   productId: string
