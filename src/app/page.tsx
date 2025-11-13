@@ -3,6 +3,7 @@ import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import ProductList from "@/features/products/components/product-list";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default async function Home() {
   return (
@@ -46,10 +47,12 @@ export default async function Home() {
       </div>
 
       <main className="p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
-        <ProductList date="today" />
-        <ProductList date="yesterday" />
-        <ProductList date="week" />
-        <ProductList date="month" />
+        <Suspense fallback={"Loading..."}>
+          <ProductList date="today" />
+          <ProductList date="yesterday" />
+          <ProductList date="week" />
+          <ProductList date="month" />
+        </Suspense>
       </main>
 
       <Footer />
