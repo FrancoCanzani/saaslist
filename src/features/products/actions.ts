@@ -1,10 +1,10 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { Product, Comment, Review } from "./types";
+import { Product, Comment, Review, Update } from "./types";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "@/utils/types";
-import { commentSchema, reviewSchema } from "./schemas";
+import { commentSchema, reviewSchema, updateSchema } from "./schemas";
 import { generateStoragePath, generateProductImagePath } from "./helpers";
 
 export async function handleUpvoteAction(
@@ -518,5 +518,173 @@ export async function deleteUploadedAssets(
     }
   } catch (error) {
     console.error("Delete assets error:", error);
+  }
+}
+
+export async function createUpdateAction(data: {
+  title: string;
+  content: string;
+  product_id: string;
+}): Promise<ActionResponse<Update>> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to create updates");
+    }
+
+    // Verify user owns the product
+    const { data: product } = await supabase
+      .from("products")
+      .select("user_id")
+      .eq("id", data.product_id)
+      .single();
+
+    if (!product || product.user_id !== user.id) {
+      throw new Error("You can only create updates for your own products");
+    }
+
+    const validated = updateSchema.parse(data);
+
+    const { data: update, error } = await supabase
+      .from("product_updates")
+      .insert({
+        title: validated.title,
+        content: validated.content,
+        product_id: validated.product_id,
+        user_id: user.id,
+      })
+      .select(
+        `
+        *,
+        user:profiles!product_updates_user_id_fkey(name, avatar_url)
+      `
+      )
+      .single();
+
+    if (error) {
+      throw new Error("Failed to create update");
+    }
+
+    revalidatePath(`/products/${validated.product_id}`);
+    return { success: true, data: update, action: "created" };
+  } catch (error) {
+    console.error("Create update error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function updateUpdateAction(data: {
+  updateId: string;
+  title: string;
+  content: string;
+  product_id: string;
+}): Promise<ActionResponse<Update>> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to edit updates");
+    }
+
+    // Verify user owns the update
+    const { data: existingUpdate } = await supabase
+      .from("product_updates")
+      .select("user_id")
+      .eq("id", data.updateId)
+      .single();
+
+    if (!existingUpdate || existingUpdate.user_id !== user.id) {
+      throw new Error("You can only edit your own updates");
+    }
+
+    const validated = updateSchema.parse({
+      title: data.title,
+      content: data.content,
+      product_id: data.product_id,
+    });
+
+    const { data: update, error } = await supabase
+      .from("product_updates")
+      .update({
+        title: validated.title,
+        content: validated.content,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", data.updateId)
+      .select(
+        `
+        *,
+        user:profiles!product_updates_user_id_fkey(name, avatar_url)
+      `
+      )
+      .single();
+
+    if (error) {
+      throw new Error("Failed to update update");
+    }
+
+    revalidatePath(`/products/${data.product_id}`);
+    return { success: true, data: update, action: "updated" };
+  } catch (error) {
+    console.error("Update update error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function deleteUpdateAction(
+  updateId: string,
+  productId: string
+): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to delete updates");
+    }
+
+    // Verify user owns the update
+    const { data: existingUpdate } = await supabase
+      .from("product_updates")
+      .select("user_id")
+      .eq("id", updateId)
+      .single();
+
+    if (!existingUpdate || existingUpdate.user_id !== user.id) {
+      throw new Error("You can only delete your own updates");
+    }
+
+    const { error } = await supabase
+      .from("product_updates")
+      .delete()
+      .eq("id", updateId);
+
+    if (error) {
+      throw new Error("Failed to delete update");
+    }
+
+    revalidatePath(`/products/${productId}`);
+    return { success: true, action: "deleted" };
+  } catch (error) {
+    console.error("Delete update error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Something went wrong");
   }
 }

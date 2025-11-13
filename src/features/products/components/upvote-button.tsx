@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ChevronUp } from "lucide-react";
 import { useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
 import { handleUpvoteAction } from "../actions";
@@ -9,12 +10,10 @@ import { Product } from "../types";
 
 export default function UpvoteButton({
   product,
-  label,
   className,
   size = "sm",
 }: {
   product: Product;
-  label?: string;
   className?: string;
   size?: "xs" | "sm" | "default" | "lg" | "icon";
 }) {
@@ -61,12 +60,18 @@ export default function UpvoteButton({
       size={size}
       className={cn(
         "bg-blaze-orange/10 hover:bg-blaze-orange/20",
-        optimisticProduct.is_upvoted && "",
+        optimisticProduct.is_upvoted && "font-medium",
         className,
       )}
       onClick={handleUpvote}
     >
-      {label && <span>{label}</span>}({optimisticProduct.upvotes_count})
+      {optimisticProduct.is_upvoted && <ChevronUp className="size-3.5" />}{" "}
+      {optimisticProduct.is_upvoted ? (
+        <span>Upvoted</span>
+      ) : (
+        <span>Upvote</span>
+      )}
+      ({optimisticProduct.upvotes_count})
     </Button>
   );
 }

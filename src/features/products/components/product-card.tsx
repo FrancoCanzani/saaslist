@@ -24,7 +24,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
         </div>
         <UpvoteButton
-          label={product.is_upvoted ? "Upvoted" : "Upvote"}
           product={product}
           size="xs"
           className="bg-blaze-orange/10 dark:bg-blaze-orange/10 rounded hover:bg-blaze-orange/20 dark:hover:hover:bg-blaze-orange/20"

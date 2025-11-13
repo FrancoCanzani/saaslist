@@ -95,3 +95,17 @@ export const reviewSchema = z.object({
 });
 
 export type ReviewFormDataSchema = z.infer<typeof reviewSchema>;
+
+export const updateSchema = z.object({
+  title: z
+    .string()
+    .min(1, "Title cannot be empty")
+    .max(200, "Title must be at most 200 characters"),
+  content: z
+    .string()
+    .min(1, "Content cannot be empty")
+    .max(10000, "Content is too long (max 10000 characters)"),
+  product_id: z.uuid(),
+});
+
+export type UpdateFormData = z.infer<typeof updateSchema>;

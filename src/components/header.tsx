@@ -14,7 +14,7 @@ export default async function Header() {
       </Link>
       <div
         className="inline-flex flex-1 items-center justify-center gap-6 *:font-medium
-        *:hidden *:md:block *:hover:text-blaze-orange
+        *:hidden *:md:block *:hover:text-muted-foreground
         "
       >
         <Link href={"/browse"}>Browse</Link>

@@ -82,6 +82,13 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
+          onClick={() => router.push("/profile")}
+          className="cursor-pointer text-xs"
+        >
+          Profile
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
           onClick={() => router.push("/my-products")}
           className="cursor-pointer text-xs"
         >

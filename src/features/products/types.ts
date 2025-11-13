@@ -103,3 +103,17 @@ export interface ReviewFormData {
 }
 
 export type ReviewSortOption = 'newest' | 'highest' | 'lowest';
+
+export interface Update {
+  id: string;
+  product_id: string;
+  user_id: string;
+  title: string;
+  content: string; 
+  created_at: string;
+  updated_at: string;
+  user: {
+    name: string;
+    avatar_url: string | null;
+  };
+}

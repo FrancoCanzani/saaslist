@@ -4,7 +4,7 @@ import { ProductNavigation } from "@/features/products/components/product-naviga
 import { ProductShare } from "@/features/products/components/product-share";
 import { Product } from "@/features/products/types";
 import { formatDistanceToNowStrict } from "date-fns";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 interface NavigationProduct {
@@ -44,10 +44,11 @@ export default function ProductSidebar({
         <div>
           <h4 className="font-medium mb-2 text-sm">Founder</h4>
           <Link
-            href={`/founder/${product.user_id}`}
-            className="text-sm font-medium hover:underline"
+            href={`/founders/${product.user_id}`}
+            className="text-sm font-medium group flex items-center justify-start gap-x-1 hover:underline"
           >
             {product.founder_name}
+            <ArrowRight className="size-3 opacity-0 group-hover:opacity-100 transition-all duration-300" />
           </Link>
         </div>
       )}

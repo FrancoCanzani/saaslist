@@ -6,6 +6,7 @@ import { ProductNavigation } from "@/features/products/components/product-naviga
 import { ProductShare } from "@/features/products/components/product-share";
 import ProductSidebar from "@/features/products/components/product-sidebar";
 import ReviewSection from "@/features/products/components/review-section";
+import { UpdateSection } from "@/features/products/components/update-section";
 import UpvoteButton from "@/features/products/components/upvote-button";
 import { Product } from "@/features/products/types";
 import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
@@ -103,6 +104,19 @@ export default async function ProductPage({
     .limit(1)
     .single();
 
+  const { data: updates } = await supabase
+    .from("product_updates")
+    .select(
+      `
+      *,
+      user:profiles!product_updates_user_id_fkey(name, avatar_url)
+    `,
+    )
+    .eq("product_id", id)
+    .order("created_at", { ascending: false });
+
+  const isOwner = user?.id === product.user_id;
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex gap-6">
@@ -126,11 +140,7 @@ export default async function ProductPage({
             </div>
 
             <div className="space-x-1.5 hidden md:flex items-center justify-end">
-              <UpvoteButton
-                product={processedProduct}
-                label="Upvotes"
-                size="xs"
-              />
+              <UpvoteButton product={processedProduct} size="xs" />
               <a
                 href={product.website_url}
                 className="text-sm flex items-center justify-start text-muted-foreground group gap-x-1 hover:underline underline-offset-4"
@@ -144,11 +154,7 @@ export default async function ProductPage({
           </div>
 
           <div className="space-x-1.5 md:hidden flex items-center justify-start">
-            <UpvoteButton
-              product={processedProduct}
-              label="Upvotes"
-              className="text-sm"
-            />
+            <UpvoteButton product={processedProduct} className="text-sm" />
             <a
               href={product.website_url}
               className="text-sm flex items-center justify-start text-muted-foreground group gap-x-1 hover:underline underline-offset-4"
@@ -201,7 +207,18 @@ export default async function ProductPage({
               <TabsTrigger value="comments" className="text-xs">
                 Comments ({product.comments_count || 0})
               </TabsTrigger>
+              <TabsTrigger value="updates" className="text-xs">
+                Updates ({updates?.length || 0})
+              </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="updates">
+              <UpdateSection
+                productId={id}
+                initialUpdates={updates || []}
+                isOwner={isOwner}
+              />
+            </TabsContent>
 
             <TabsContent value="reviews">
               <ReviewSection
