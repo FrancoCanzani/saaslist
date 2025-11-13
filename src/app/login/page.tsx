@@ -43,11 +43,12 @@ export default function LoginPage() {
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-medium text-foreground">Join SaasList</h1>
+          <h1 className="text-2xl font-medium text-foreground">
+            Join SaasList
+          </h1>
         </div>
 
         <div className="space-y-3">
-          {/* Google button */}
           <Button
             variant="default"
             size="lg"
@@ -81,7 +82,6 @@ export default function LoginPage() {
             {isLoading ? "Signing in..." : "Sign up with Google"}
           </Button>
 
-          {/* GitHub button */}
           <Button
             variant="outline"
             size="lg"
@@ -101,7 +101,6 @@ export default function LoginPage() {
           </Button>
         </div>
 
-        {/* Terms and Privacy */}
         <p className="text-xs text-center text-muted-foreground mt-6">
           By signing up, you agree to our{" "}
           <Link

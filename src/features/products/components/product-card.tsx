@@ -23,11 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             size={28}
           />
         </div>
-        <UpvoteButton
-          product={product}
-          size="xs"
-          className="bg-blaze-orange/10 dark:bg-blaze-orange/10 rounded hover:bg-blaze-orange/20 dark:hover:hover:bg-blaze-orange/20"
-        />
+        <UpvoteButton product={product} size="xs" />
       </div>
 
       <h3 className="flex items-center justify-start gap-x-1 underline underline-offset-2">
