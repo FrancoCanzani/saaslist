@@ -139,7 +139,7 @@ export default function AdvertisePage() {
   return (
     <main className="py-12 max-w-5xl mx-auto space-y-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl sm:text-5xl leading-tight font-medium font-mono tracking-tighter xl:leading-tight text-balance mb-4">
+        <h1 className="text-4xl sm:text-5xl leading-tight font-medium tracking-tighter xl:leading-tight text-balance mb-4">
           We've got a plan that's perfect for you
         </h1>
         <h2 className="text-muted-foreground text-sm md:text-base text-balance">
@@ -163,7 +163,7 @@ export default function AdvertisePage() {
               )}
             >
               <div className="flex items-center w-full justify-between gap-2">
-                <h3 className="text-lg font-mono font-medium">{plan.name}</h3>
+                <h3 className="text-lg font-medium">{plan.name}</h3>
                 {plan.popular && (
                   <Badge className="rounded shrink-0">Popular</Badge>
                 )}

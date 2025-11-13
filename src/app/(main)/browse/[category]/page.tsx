@@ -81,7 +81,7 @@ export default async function CategoryPage({
     <div className="p-4 sm:p-6 lg:p-8 space-y-8">
       <div className="flex items-center w-full justify-between gap-6">
         <div>
-          <h1 className="text-xl font-mono font-medium">{category.name}</h1>
+          <h1 className="text-xl font-medium">{category.name}</h1>
           {category.description && (
             <h2 className="text-muted-foreground text-sm">
               {category.description}

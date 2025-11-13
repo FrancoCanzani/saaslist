@@ -29,7 +29,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      <h3 className="font-mono flex items-center justify-start gap-x-1 underline underline-offset-4">
+      <h3 className="flex items-center justify-start gap-x-1 underline underline-offset-2">
         {product.name}
         <ArrowRight className="opacity-0  transition-all group-hover:opacity-100 duration-300 size-3.5" />
       </h3>

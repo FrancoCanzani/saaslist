@@ -76,7 +76,7 @@ export default async function ProductList({
       return {
         ...rest,
         is_upvoted: user
-          ? upvotes?.some((upvote) => upvote.user_id === user.id) ?? false
+          ? (upvotes?.some((upvote) => upvote.user_id === user.id) ?? false)
           : false,
       };
     }) || [];
@@ -92,7 +92,7 @@ export default async function ProductList({
   if (!processedProducts || processedProducts.length == 0) {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl leading-tight font-mono font-medium">{title}</h2>
+        <h2 className="text-xl leading-tight font-medium">{title}</h2>
         <Alert>
           <AlertDescription className="mx-auto">
             Ups! It looks like we have nothing to show here{" "}
@@ -104,7 +104,7 @@ export default async function ProductList({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl leading-tight font-mono font-medium">{title}</h2>
+      <h2 className="text-xl leading-tight font-medium">{title}</h2>
       <ProductGrid products={processedProducts} />
     </div>
   );

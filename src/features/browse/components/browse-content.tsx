@@ -118,7 +118,7 @@ export function BrowseContent({ products }: BrowseContentProps) {
     <div className="p-4 sm:p-6 lg:p-8 space-y-8">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
         <div>
-          <h1 className="text-xl font-mono font-medium">Browse Products</h1>
+          <h1 className="text-xl font-medium">Browse Products</h1>
           <h2 className="text-muted-foreground text-sm">
             Explore products by category
           </h2>

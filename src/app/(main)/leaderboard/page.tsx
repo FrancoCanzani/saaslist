@@ -122,7 +122,7 @@ export default async function LeaderboardPage({
     <div className="p-4 sm:p-6 lg:p-8 space-y-8">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
         <div>
-          <h1 className="text-xl font-mono font-medium">Leaderboard</h1>
+          <h1 className="text-xl font-medium">Leaderboard</h1>
           <h2 className="text-muted-foreground text-sm">
             Top upvoted products {periodTitles[period].toLowerCase()}
           </h2>

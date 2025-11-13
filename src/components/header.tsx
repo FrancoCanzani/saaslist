@@ -9,11 +9,11 @@ export default async function Header() {
 
   return (
     <header className="sticky top-0 z-50 p-4 sm:p-6 lg:p-8 inline-flex items-center justify-between w-full text-sm backdrop-blur-lg bg-background/80">
-      <Link href={"/"} className="font-mono font-medium text-lg md:text-2xl">
+      <Link href={"/"} className="font-mono font-medium text-3xl">
         SaasList
       </Link>
       <div
-        className="inline-flex flex-1 justify-center gap-6 *:font-medium
+        className="inline-flex flex-1 items-center justify-center gap-6 *:font-medium
         *:hidden *:md:block *:hover:text-blaze-orange
         "
       >
@@ -27,7 +27,7 @@ export default async function Header() {
         {user ? (
           <>
             <Button
-              className="bg-blaze-orange hover:bg-blaze-orange/90 text-white"
+              className="bg-blaze-orange/10 hover:bg-blaze-orange/20"
               size={"xs"}
               variant={"secondary"}
             >

@@ -14,7 +14,7 @@ export default async function BlogPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-8">
       <div>
-        <h1 className="text-xl font-mono font-medium">Blog</h1>
+        <h1 className="text-xl font-medium">Blog</h1>
         <h2 className="text-muted-foreground text-sm">
           Latest articles and updates
         </h2>

@@ -117,7 +117,7 @@ export default async function ProductPage({
             </div>
 
             <div className="flex-1">
-              <h2 className="text-xl xl:text-2xl font-mono font-medium">
+              <h2 className="text-xl xl:text-2xl font-medium">
                 {product.name}
               </h2>
               <h3 className="text-muted-foreground text-sm">

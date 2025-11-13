@@ -68,7 +68,7 @@ export default async function CategoryTagPage({
     <div className="p-4 sm:p-6 lg:p-8 space-y-8">
       <div className="flex items-center w-full justify-between gap-6">
         <div>
-          <h1 className="text-xl font-mono font-medium">
+          <h1 className="text-xl font-medium">
             {category.name} / {tag}
           </h1>
         </div>

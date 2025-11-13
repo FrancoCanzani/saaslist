@@ -1,9 +1,9 @@
-import { notFound } from "next/navigation";
-import { getPostBySlug, getAllPosts } from "@/lib/blog";
+import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { format } from "date-fns";
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -56,7 +56,7 @@ export default async function BlogPostPage({
 
       <article className="max-w-3xl mx-auto">
         <header className="mb-8 space-y-4">
-          <h1 className="text-3xl font-mono font-medium">{post.title}</h1>
+          <h1 className="text-3xl font-medium">{post.title}</h1>
           {post.date && (
             <time
               dateTime={post.date}
@@ -75,4 +75,3 @@ export default async function BlogPostPage({
     </div>
   );
 }
-
