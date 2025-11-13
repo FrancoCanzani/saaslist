@@ -25,7 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <UpvoteButton
           label={product.is_upvoted ? "Upvoted" : "Upvote"}
           product={product}
-          className="text-sm"
+          size="xs"
         />
       </div>
 
