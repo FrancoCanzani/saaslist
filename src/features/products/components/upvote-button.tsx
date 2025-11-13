@@ -66,8 +66,7 @@ export default function UpvoteButton({
       )}
       onClick={handleUpvote}
     >
-      {label && <span className="mr-1">{label}</span>}(
-      {optimisticProduct.upvotes_count})
+      {label && <span>{label}</span>}({optimisticProduct.upvotes_count})
     </Button>
   );
 }

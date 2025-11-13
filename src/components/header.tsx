@@ -27,7 +27,7 @@ export default async function Header() {
         {user ? (
           <>
             <Button
-              className="bg-blaze-orange/10 hover:bg-blaze-orange/20"
+              className="bg-blaze-orange/10 dark:bg-blaze-orange/10 hover:bg-blaze-orange/20 dark:hover:hover:bg-blaze-orange/20"
               size={"xs"}
               variant={"secondary"}
             >

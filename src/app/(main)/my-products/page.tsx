@@ -1,9 +1,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { DeleteProductButton } from "@/features/products/components/delete-product-button";
+import { ProductActionsDropdown } from "@/features/products/components/product-actions-dropdown";
 import ProductLogo from "@/features/products/components/product-logo";
 import { createClient } from "@/utils/supabase/server";
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -71,21 +69,11 @@ export default async function MyProductsPage() {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 shrink-0 text-muted-foreground text-xs">
-                  <Button asChild variant={"outline"} size={"xs"}>
-                    <Link href={"#"}>Edit</Link>
-                  </Button>
-                  <DeleteProductButton
+                <div className="flex items-center shrink-0">
+                  <ProductActionsDropdown
                     productId={product.id}
                     productName={product.name}
                   />
-                  <Link
-                    href={`/products/${product.id}`}
-                    className="text-xs flex items-center justify-start text-muted-foreground group gap-x-1 hover:underline underline-offset-4"
-                  >
-                    View
-                    <ArrowRight className="size-3 opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                  </Link>
                 </div>
               </div>
             ))}

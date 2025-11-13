@@ -32,7 +32,7 @@ export default async function Home() {
               asChild
               variant={"secondary"}
               size={"lg"}
-              className="bg-blaze-orange/10 rounded-xl hover:bg-blaze-orange/20"
+              className="bg-blaze-orange/10 dark:bg-blaze-orange/10 rounded-xl hover:bg-blaze-orange/20 dark:hover:hover:bg-blaze-orange/20"
             >
               <Link href={"/products/new"}>Submit your SaaS</Link>
             </Button>

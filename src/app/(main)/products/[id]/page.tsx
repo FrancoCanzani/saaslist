@@ -129,7 +129,7 @@ export default async function ProductPage({
               <UpvoteButton
                 product={processedProduct}
                 label="Upvotes"
-                className="text-sm"
+                size="xs"
               />
               <a
                 href={product.website_url}
@@ -160,7 +160,7 @@ export default async function ProductPage({
             </a>
           </div>
 
-          <p className="text-pretty">{product.description}</p>
+          <p className="text-pretty text-sm">{product.description}</p>
 
           <div>
             <h4 className="font-medium mb-1.5 text-sm">Tags</h4>

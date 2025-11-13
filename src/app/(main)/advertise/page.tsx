@@ -121,7 +121,7 @@ const faqs = [
 export default function AdvertisePage() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
-    to: addDays(new Date(), 7),
+    to: addDays(new Date(), 6),
   });
 
   const calculateDailyPrice = () => {

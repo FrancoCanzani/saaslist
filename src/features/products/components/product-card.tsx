@@ -11,8 +11,9 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
+      prefetch
       href={`/products/${product.id}`}
-      className="flex border hover:bg-muted group rounded flex-col gap-2 py-2.5 px-4"
+      className="flex border bg-background hover:bg-accent hover:text-accent-foreground dark:hover:bg-neutral-950/50 group rounded flex-col gap-2 py-2.5 px-4"
     >
       <div className="flex items-center justify-between">
         <div className="flex shrink-0 size-9 items-end justify-start">
@@ -26,6 +27,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           label={product.is_upvoted ? "Upvoted" : "Upvote"}
           product={product}
           size="xs"
+          className="bg-blaze-orange/10 dark:bg-blaze-orange/10 rounded hover:bg-blaze-orange/20 dark:hover:hover:bg-blaze-orange/20"
         />
       </div>
 
