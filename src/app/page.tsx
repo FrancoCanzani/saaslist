@@ -5,10 +5,12 @@ import ProductList from "@/features/products/components/product-list";
 import Link from "next/link";
 import { Suspense } from "react";
 
+
 export default async function Home() {
+ 
   return (
-    <div className="min-h-screen relative max-w-6xl mx-auto">
-      <Header />
+      <div className="min-h-screen relative max-w-6xl mx-auto">
+        <Header />
 
       <div className="w-full py-12 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
         <Link

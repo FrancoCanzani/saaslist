@@ -3,9 +3,12 @@ import { Product } from "@/features/products/types";
 import { categories } from "@/utils/constants";
 import { getCategoryBySlug, getTagSlug } from "@/utils/helpers";
 import { createClient } from "@/utils/supabase/server";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const revalidate = 600;
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export async function generateStaticParams() {
   const params: { category: string; tag: string }[] = [];
@@ -20,6 +23,58 @@ export async function generateStaticParams() {
   });
 
   return params;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string; tag: string }>;
+}): Promise<Metadata> {
+  const { category: categorySlug, tag: tagSlug } = await params;
+  const category = getCategoryBySlug(categorySlug);
+
+  if (!category) {
+    return {
+      title: "Tag Not Found | SaasList",
+    };
+  }
+
+  const tag = category.tags.find((t) => getTagSlug(t) === tagSlug);
+
+  if (!tag) {
+    return {
+      title: "Tag Not Found | SaasList",
+    };
+  }
+
+  const supabase = await createClient();
+  const { data: products } = await supabase
+    .from("products")
+    .select("id")
+    .contains("tags", [tag])
+    .order("created_at", { ascending: false });
+
+  const productCount = products?.length || 0;
+  const description = `Discover ${productCount} ${productCount === 1 ? "SaaS tool" : "SaaS tools"} tagged with ${tag}. Browse ${tag} products in ${category.name} on SaasList.`;
+
+  return {
+    title: `${tag} SaaS Tools | SaasList`,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/browse/${categorySlug}/${tagSlug}`,
+    },
+    openGraph: {
+      title: `${tag} SaaS Tools`,
+      description,
+      type: "website",
+      url: `${baseUrl}/browse/${categorySlug}/${tagSlug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${tag} SaaS Tools`,
+      description,
+    },
+  };
 }
 
 export default async function CategoryTagPage({
@@ -60,34 +115,31 @@ export default async function CategoryTagPage({
       : false,
   })) as Product[];
 
-  const totalProducts = processedProducts.length;
-  const gridCols = 2;
-  const remainder = totalProducts % gridCols;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
-      <div className="flex items-center w-full justify-between gap-6">
-        <div>
-          <h1 className="text-xl font-medium">
-            {category.name} / {tag}
-          </h1>
+      <div className="p-4 sm:p-6 lg:p-8 space-y-8">
+        <div className="flex items-center w-full justify-between gap-6">
+          <div>
+            <h1 className="text-xl font-medium">
+              {category.name} / {tag}
+            </h1>
+          </div>
+
+          <div className="text-xs text-muted-foreground">
+            {processedProducts.length}{" "}
+            {processedProducts.length === 1 ? "product" : "products"}
+          </div>
         </div>
 
-        <div className="text-xs text-muted-foreground">
-          {processedProducts.length}{" "}
-          {processedProducts.length === 1 ? "product" : "products"}
-        </div>
+        {processedProducts.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-sm">
+              No products found with this tag yet.
+            </p>
+          </div>
+        ) : (
+          <ProductGrid products={processedProducts} />
+        )}
       </div>
-
-      {processedProducts.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground text-sm">
-            No products found with this tag yet.
-          </p>
-        </div>
-      ) : (
-        <ProductGrid products={processedProducts} />
-      )}
-    </div>
   );
 }

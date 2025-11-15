@@ -3,14 +3,69 @@ import { Product } from "@/features/products/types";
 import { categories } from "@/utils/constants";
 import { getCategoryBySlug } from "@/utils/helpers";
 import { createClient } from "@/utils/supabase/server";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const revalidate = 600;
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export async function generateStaticParams() {
   return categories.map((category) => ({
     category: category.slug,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}): Promise<Metadata> {
+  const { category: categorySlug } = await params;
+  const category = getCategoryBySlug(categorySlug);
+
+  if (!category) {
+    return {
+      title: "Category Not Found | SaasList",
+    };
+  }
+
+  const supabase = await createClient();
+  const categoryTagsLower = category.tags.map((tag) => tag.toLowerCase());
+
+  const { data: products } = await supabase
+    .from("products")
+    .select("id")
+    .order("created_at", { ascending: false });
+
+  const categoryProducts = (products || []).filter((product: any) => {
+    if (!product.tags || !Array.isArray(product.tags)) return false;
+    return product.tags.some((tag: string) =>
+      categoryTagsLower.includes(tag.toLowerCase()),
+    );
+  });
+
+  const productCount = categoryProducts.length;
+  const description = `${category.description} Discover ${productCount} ${productCount === 1 ? "product" : "products"} in ${category.name} on SaasList.`;
+
+  return {
+    title: `Best ${category.name} SaaS Products | SaasList`,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/browse/${categorySlug}`,
+    },
+    openGraph: {
+      title: `Best ${category.name} SaaS Products`,
+      description,
+      type: "website",
+      url: `${baseUrl}/browse/${categorySlug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Best ${category.name} SaaS Products`,
+      description,
+    },
+  };
 }
 
 export default async function CategoryPage({
@@ -68,46 +123,35 @@ export default async function CategoryPage({
     }
   });
 
-  const tagsWithProducts = Array.from(tagCounts.entries()).sort(
-    (a, b) => b[1] - a[1],
-  );
-
-  const totalProducts = categoryProducts.length;
-  const gridCols = 2;
-  const remainder = totalProducts % gridCols;
-  const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
-
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
-      <div className="flex items-center w-full justify-between gap-6">
-        <div>
-          <h1 className="text-xl font-medium">{category.name}</h1>
-          {category.description && (
-            <h2 className="text-muted-foreground text-sm">
-              {category.description}
-            </h2>
-          )}
+    <>
+      <div className="p-4 sm:p-6 lg:p-8 space-y-8">
+        <div className="flex items-center w-full justify-between gap-6">
+          <div>
+            <h1 className="text-xl font-medium">{category.name}</h1>
+            {category.description && (
+              <h2 className="text-muted-foreground text-sm">
+                {category.description}
+              </h2>
+            )}
+          </div>
+
+          <div className="text-xs text-muted-foreground">
+            {categoryProducts.length}{" "}
+            {categoryProducts.length === 1 ? "product" : "products"}
+          </div>
         </div>
 
-        <div className="text-xs text-muted-foreground">
-          {categoryProducts.length}{" "}
-          {categoryProducts.length === 1 ? "product" : "products"}
-        </div>
+        {categoryProducts.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-sm">
+              No products in this category yet.
+            </p>
+          </div>
+        ) : (
+          <ProductGrid products={categoryProducts} />
+        )}
       </div>
-
-      {categoryProducts.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground text-sm">
-            No products in this category yet.
-          </p>
-        </div>
-      ) : (
-        <>
-          {categoryProducts.map((product, index) => (
-            <ProductGrid key={product.id} products={categoryProducts} />
-          ))}
-        </>
-      )}
-    </div>
+    </>
   );
 }

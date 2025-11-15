@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { ProductNavigation } from "@/features/products/components/product-navigation";
 import { ProductShare } from "@/features/products/components/product-share";
 import { Product } from "@/features/products/types";
@@ -58,9 +59,10 @@ export default function ProductSidebar({
           <h4 className="font-medium mb-2 text-sm">Available on</h4>
           <div className="flex flex-wrap gap-1.5">
             {product.platforms.map((platform) => (
-              <span
+              <Badge
+                variant={"secondary"}
+                className="capitalize font-normal text-xs"
                 key={platform}
-                className="inline-block text-xs bg-gray-100 dark:bg-background px-2 py-1 rounded capitalize"
               >
                 {platform === "browser_extension"
                   ? "Browser Extension"
@@ -69,7 +71,7 @@ export default function ProductSidebar({
                     : platform === "ios"
                       ? "iOS"
                       : platform}
-              </span>
+              </Badge>
             ))}
           </div>
         </div>

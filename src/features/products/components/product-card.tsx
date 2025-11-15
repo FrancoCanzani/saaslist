@@ -12,7 +12,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link prefetch href={`/products/${product.id}`}>
-      <Card className="flex bg-surface hover:bg-surface/80 group flex-col gap-2 py-2.5 px-4">
+      <Card className="flex bg-surface/10 hover:bg-surface/80 group flex-col gap-2 py-2.5 px-4">
         <div className="flex items-center justify-between">
           <div className="flex shrink-0 size-9 items-end justify-start">
             <ProductLogo

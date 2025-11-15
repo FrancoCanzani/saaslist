@@ -19,33 +19,65 @@ const crimsonPro = Crimson_Pro({
   weight: "variable",
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  ),
-  title: "SaasList - Discover & Share SaaS Products",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "SaasList - Discover & Share the Best SaaS Products",
+    template: "%s | SaasList",
+  },
   description:
-    "A Product Hunt for SaaS products. Discover, share, and upvote the best SaaS tools.",
+    "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
+  keywords: [
+    "SaaS",
+    "SaaS products",
+    "SaaS tools",
+    "software discovery",
+    "Product Hunt alternative",
+    "SaaS reviews",
+    "best SaaS",
+  ],
+  authors: [{ name: "SaasList" }],
+  creator: "SaasList",
+  publisher: "SaasList",
   openGraph: {
-    title: "SaasList - Discover & Share SaaS Products",
-    description:
-      "A Product Hunt for SaaS products. Discover, share, and upvote the best SaaS tools.",
     type: "website",
+    locale: "en_US",
+    url: baseUrl,
+    siteName: "SaasList",
+    title: "SaasList - Discover & Share the Best SaaS Products",
+    description:
+    "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "SaasList - Discover & Share SaaS Products",
+        alt: "SaasList - Discover & Share the Best SaaS Products",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "SaasList - Discover & Share SaaS Products",
+    title: "SaasList - Discover & Share the Best SaaS Products",
     description:
-      "A Product Hunt for SaaS products. Discover, share, and upvote the best SaaS tools.",
+    "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
     images: ["/opengraph-image"],
+  },
+  alternates: {
+    canonical: baseUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

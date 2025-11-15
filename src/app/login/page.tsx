@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,18 +22,36 @@ export default function LoginPage() {
 
       if (error) {
         console.error("Error signing in:", error);
-        alert("Failed to sign in. Please try again.");
+        toast.error("Failed to sign in. Please try again.");
       }
     } catch (error) {
       console.error("Unexpected error:", error);
-      alert("An unexpected error occurred.");
+      toast.error("An unexpected error occurred.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleGitHubSignIn = () => {
-    alert("GitHub sign up coming soon!");
+  const handleGitHubSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        console.error("Error signing in:", error);
+        toast.error("Failed to sign in. Please try again.");
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      toast.error("An unexpected error occurred.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -52,7 +71,7 @@ export default function LoginPage() {
           <Button
             variant="default"
             size="lg"
-            className="w-full bg-foreground text-background hover:bg-foreground/90 h-12 text-base font-normal rounded-sm"
+            className="w-full dark:grayscale h-12 text-base font-normal rounded-sm"
             onClick={handleGoogleSignIn}
             disabled={isLoading}
           >
@@ -85,7 +104,7 @@ export default function LoginPage() {
           <Button
             variant="outline"
             size="lg"
-            className="w-full border border-foreground/20 bg-background hover:bg-muted/50 h-12 text-base font-normal rounded-sm"
+            className="w-full dark:grayscale border border-foreground/20 bg-background hover:bg-muted/50 h-12 text-base font-normal rounded-sm"
             onClick={handleGitHubSignIn}
             disabled={isLoading}
           >

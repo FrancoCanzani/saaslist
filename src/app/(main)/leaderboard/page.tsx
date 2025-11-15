@@ -3,10 +3,60 @@ import { LoadMoreButton } from "@/features/leaderboard/load-more-button";
 import { TimePeriodFilter } from "@/features/leaderboard/time-period-filter";
 import ProductGrid from "@/features/products/components/product-grid";
 import { createClient } from "@/utils/supabase/server";
+import type { Metadata } from "next";
 import { createLoader, parseAsInteger, parseAsStringEnum } from "nuqs/server";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
+  const loader = createLoader({
+    period: parseAsStringEnum([
+      "today",
+      "week",
+      "month",
+      "year",
+      "all",
+    ]).withDefault("week"),
+  });
+  const { period } = await loader(searchParams);
+
+  const periodTitles = {
+    today: "Today",
+    week: "This Week",
+    month: "This Month",
+    year: "This Year",
+    all: "All Time",
+  };
+
+  const periodTitle = periodTitles[period];
+  const description = `Discover the top upvoted SaaS products ${periodTitle.toLowerCase()}. See which products are trending and getting the most community support.`;
+
+  return {
+    title: `Top SaaS Products Leaderboard ${periodTitle} | SaasList`,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/leaderboard`,
+    },
+    openGraph: {
+      title: `Top SaaS Products Leaderboard ${periodTitle}`,
+      description,
+      type: "website",
+      url: `${baseUrl}/leaderboard`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Top SaaS Products Leaderboard ${periodTitle}`,
+      description,
+    },
+  };
+}
 
 const loadSearchParams = createLoader({
   period: parseAsStringEnum([
@@ -34,7 +84,6 @@ export default async function LeaderboardPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Calculate date range based on period
   const now = new Date();
   let startDate: Date | null = null;
 
@@ -72,12 +121,10 @@ export default async function LeaderboardPage({
     { count: "exact" },
   );
 
-  // Add date filter if applicable
   if (startDate) {
     query = query.gte("created_at", startDate.toISOString());
   }
 
-  // Execute query with ordering and pagination
   const {
     data: products,
     error,

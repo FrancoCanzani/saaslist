@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CommentSection from "@/features/products/components/comment-section";
 import ProductLogo from "@/features/products/components/product-logo";
@@ -12,8 +13,66 @@ import { Product } from "@/features/products/types";
 import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
 import { createClient } from "@/utils/supabase/server";
 import { ArrowUpRight } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"; 
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const supabase = await createClient();
+
+  const { data: product } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (!product) {
+    return {
+      title: "Product Not Found | SaasList",
+    };
+  }
+
+  const description = product.description
+    ? `${product.description.substring(0, 155)}${product.description.length > 155 ? "..." : ""}`
+    : `${product.tagline} - Discover ${product.name} and other SaaS products on SaasList.`;
+
+  const imageUrl = product.logo_url || product.images?.[0] || `${baseUrl}/opengraph-image`;
+
+  return {
+    title: `${product.name} - ${product.tagline} | SaasList`,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/products/${id}`,
+    },
+    openGraph: {
+      title: `${product.name} - ${product.tagline}`,
+      description,
+      type: "website",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${product.name} - ${product.tagline}`,
+        },
+      ],
+      url: `${baseUrl}/products/${id}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} - ${product.tagline}`,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
 
 export default async function ProductPage({
   params,
@@ -119,27 +178,27 @@ export default async function ProductPage({
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <div className="flex gap-6">
-        <main className="flex-1 flex flex-col gap-6">
-          <div className="flex items-center gap-x-6">
-            <div className="size-10 flex items-center justify-center shrink-0 rounded group-hover:scale-105 transition-all duration-300">
-              <ProductLogo
-                logoUrl={product.logo_url}
-                productName={product.name}
-                size={30}
-              />
-            </div>
+        <div className="flex gap-6">
+          <main className="flex-1 flex flex-col gap-6">
+            <div className="flex items-center gap-x-6">
+              <div className="size-10 flex items-center justify-center shrink-0 rounded group-hover:scale-105 transition-all duration-300">
+                <ProductLogo
+                  logoUrl={product.logo_url}
+                  productName={product.name}
+                  size={30}
+                />
+              </div>
 
-            <div className="flex-1">
-              <h2 className="text-xl xl:text-2xl font-medium">
-                {product.name}
-              </h2>
-              <h3 className="text-muted-foreground text-sm">
-                {product.tagline}
-              </h3>
-            </div>
+              <div className="flex-1">
+                <h1 className="text-xl xl:text-2xl font-medium">
+                  {product.name}
+                </h1>
+                <h2 className="text-muted-foreground text-sm">
+                  {product.tagline}
+                </h2>
+              </div>
 
-            <div className="space-x-1.5 hidden md:flex items-center justify-end">
+            <div className="space-x-1.5 hidden lg:flex items-center justify-end">
               <UpvoteButton product={processedProduct} size="xs" />
               <a
                 href={product.website_url}
@@ -153,7 +212,7 @@ export default async function ProductPage({
             </div>
           </div>
 
-          <div className="space-x-1.5 md:hidden flex items-center justify-start">
+          <div className="space-x-1.5 lg:hidden flex items-center justify-start">
             <UpvoteButton product={processedProduct} className="text-sm" />
             <a
               href={product.website_url}
@@ -176,18 +235,19 @@ export default async function ProductPage({
                 return category ? (
                   <Link
                     href={`/browse/${category.slug}/${getTagSlug(tag)}`}
-                    className="hover:underline text-xs bg-gray-50 px-2 py-1 rounded inline-block transition-colors hover:bg-gray-100 dark:bg-neutral-950"
                     key={index}
                   >
-                    {tag}
+                    <Badge
+                      className="hover:underline rounded font-normal text-xs"
+                      variant={"secondary"}
+                    >
+                      {tag}
+                    </Badge>
                   </Link>
                 ) : (
-                  <span
-                    className="text-xs bg-gray-50 dark:bg-neutral-950 px-2 py-1 rounded inline-block"
-                    key={index}
-                  >
+                  <Badge className="hover:underline text-xs" key={index}>
                     {tag}
-                  </span>
+                  </Badge>
                 );
               })}
             </div>
