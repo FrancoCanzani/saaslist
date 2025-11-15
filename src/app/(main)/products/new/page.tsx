@@ -13,9 +13,9 @@ export default function NewProductPage() {
 
   const handleSubmit = async (data: z.infer<typeof productSchema>) => {
     try {
-      await createProductMutation.mutateAsync(data);
+      const product = await createProductMutation.mutateAsync(data);
       toast.success("Product submitted successfully!");
-      router.push("/");
+      router.push(`/products/${product.id}/success`);
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes("logged in")) {
