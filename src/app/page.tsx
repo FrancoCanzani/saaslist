@@ -1,16 +1,18 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import ProductList from "@/features/products/components/product-list";
+import ProductGridSkeleton from "@/components/skeletons/product-grid-skeleton";
 import Link from "next/link";
 import { Suspense } from "react";
 
+export const revalidate = 600; // Revalidate every 10 minutes
 
 export default async function Home() {
- 
   return (
-      <div className="min-h-screen relative max-w-6xl mx-auto">
-        <Header />
+    <div className="min-h-screen relative max-w-6xl mx-auto">
+      <Header />
 
       <div className="w-full py-12 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
         <Link
@@ -20,7 +22,7 @@ export default async function Home() {
           Join our afiliate program
         </Link>
         <div className="space-y-4 relative">
-          <h1 className="custom-selection text-4xl sm:text-5xl leading-tight font-mono font-extralight tracking-tighter xl:leading-tight text-balance relative z-10">
+          <h1 className="custom-selection text-5xl sm:text-6xl xl:text-7xl leading-tight font-mono font-extralight tracking-tighter xl:leading-tight text-balance relative z-10">
             Get Noticed. Get Users. Get Results.
           </h1>
           <p className="text-muted-foreground text-sm md:text-base text-balance relative z-10">
@@ -49,7 +51,28 @@ export default async function Home() {
       </div>
 
       <main className="p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
-        <Suspense fallback={"Loading..."}>
+        <Suspense
+          fallback={
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <Skeleton className="h-7 w-48 rounded" />
+                <ProductGridSkeleton count={10} />
+              </div>
+              <div className="space-y-6">
+                <Skeleton className="h-7 w-48 rounded" />
+                <ProductGridSkeleton count={10} />
+              </div>
+              <div className="space-y-6">
+                <Skeleton className="h-7 w-48 rounded" />
+                <ProductGridSkeleton count={10} />
+              </div>
+              <div className="space-y-6">
+                <Skeleton className="h-7 w-48 rounded" />
+                <ProductGridSkeleton count={10} />
+              </div>
+            </div>
+          }
+        >
           <ProductList date="today" />
           <ProductList date="yesterday" />
           <ProductList date="week" />

@@ -1,5 +1,15 @@
 import { z } from "zod";
 
+const zEmptyStrToUndefined = z.preprocess(
+  (arg) => {
+    if (typeof arg === "string" && arg === "") {
+      return undefined;
+    }
+    return arg;
+  },
+  z.url("Please enter a valid URL").optional()
+);
+
 export const productSchema = z
   .object({
     name: z
@@ -11,7 +21,7 @@ export const productSchema = z
       .min(10, "Tagline must be at least 10 characters")
       .max(200, "Tagline must be at most 200 characters"),
     website_url: z.url("Please enter a valid URL"),
-    repo_url: z.url("Please enter a valid URL").optional(),
+    repo_url: zEmptyStrToUndefined,
     is_open_source: z.boolean(),
     description: z
       .string()
@@ -21,24 +31,12 @@ export const productSchema = z
       .array(z.string().min(1))
       .min(1, "Add at least 1 tag")
       .max(3, "Maximum 3 tags allowed"),
-    logo_url: z.url("Please enter a valid URL").optional(),
-    demo_url: z.url("Please enter a valid URL").optional(),
+    logo_url: zEmptyStrToUndefined,
+    demo_url: zEmptyStrToUndefined,
     pricing_model: z.enum(["free", "freemium", "premium"]),
-    twitter_url: z
-      .string()
-      .url("Please enter a valid URL")
-      .optional()
-      .or(z.literal("")),
-    linkedin_url: z
-      .string()
-      .url("Please enter a valid URL")
-      .optional()
-      .or(z.literal("")),
-    product_hunt_url: z
-      .string()
-      .url("Please enter a valid URL")
-      .optional()
-      .or(z.literal("")),
+    twitter_url: zEmptyStrToUndefined,
+    linkedin_url: zEmptyStrToUndefined,
+    product_hunt_url: zEmptyStrToUndefined,
     platforms: z
       .array(
         z.enum([

@@ -176,3 +176,24 @@ export function generateProductImagePath(
   const ext = filename.split('.').pop();
   return `${userId}/${productId}/${timestamp}-${random}.${ext}`;
 }
+
+
+export function extractStoragePathFromUrl(
+  url: string,
+  bucket: "product-logos" | "product-images"
+): string | null {
+  try {
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/');
+    const bucketIndex = pathParts.indexOf(bucket);
+    
+    if (bucketIndex === -1 || bucketIndex === pathParts.length - 1) {
+      return null;
+    }
+    
+    return pathParts.slice(bucketIndex + 1).join('/');
+  } catch (error) {
+    console.error('Failed to extract storage path from URL:', error);
+    return null;
+  }
+}

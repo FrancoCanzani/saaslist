@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { productSchema } from './schemas'
 import { ApiResponse, Product, ProductFormData } from './types'
-import { uploadProductLogo, uploadProductImages, deleteUploadedAssets } from './actions'
+import { uploadProductLogo, uploadProductImages, deleteUploadedAssets, updateProductAction } from './actions'
 
 const createProduct = async (data: ProductFormData): Promise<Product> => {
   let uploadedLogoPath: string | null = null;
@@ -95,6 +95,67 @@ export const useCreateProduct = () => {
     },
     onError: (error: Error) => {
       console.error('Product creation failed:', error)
+    },
+  })
+}
+
+const updateProduct = async (
+  productId: string,
+  data: ProductFormData & {
+    imagesToDelete?: string[];
+    removeLogo?: boolean;
+  }
+): Promise<Product> => {
+  let uploadedLogoPath: string | null = null;
+  let logoUrl = data.logo_url;
+
+  try {
+    if (data.logo_file) {
+      const { url, path } = await uploadProductLogo(data.logo_file);
+      logoUrl = url;
+      uploadedLogoPath = path;
+    }
+
+    const { logo_file, image_files, ...productData } = data;
+
+    const result = await updateProductAction(productId, {
+      ...productData,
+      logo_url: logoUrl,
+      logo_file: data.logo_file || undefined,
+      image_files: image_files || undefined,
+      imagesToDelete: data.imagesToDelete || undefined,
+      removeLogo: data.removeLogo || undefined,
+    });
+
+    if (!result.success || !result.data) {
+      if (uploadedLogoPath) {
+        await deleteUploadedAssets([uploadedLogoPath], 'product-logos');
+      }
+      throw new Error(result.error || 'Failed to update product');
+    }
+
+    return result.data;
+  } catch (error) {
+    if (uploadedLogoPath) {
+      await deleteUploadedAssets([uploadedLogoPath], 'product-logos');
+    }
+    throw error;
+  }
+}
+
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ productId, data }: { productId: string; data: ProductFormData & { imagesToDelete?: string[]; removeLogo?: boolean } }) =>
+      updateProduct(productId, data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+      queryClient.invalidateQueries({ queryKey: ['product', data.id] })
+      queryClient.invalidateQueries({ queryKey: ['user-products'] })
+    },
+    onError: (error: Error) => {
+      console.error('Product update failed:', error)
     },
   })
 }

@@ -42,13 +42,12 @@ export default function UpvoteButton({
     startTransition(async () => {
       addOptimisticProduct(!optimisticProduct.is_upvoted);
 
-      try {
-        const result = await handleUpvoteAction(optimisticProduct);
-      } catch (error) {
+      const result = await handleUpvoteAction(optimisticProduct);
+
+      if (!result.success) {
         addOptimisticProduct(optimisticProduct.is_upvoted);
 
-        const errorMessage =
-          error instanceof Error ? error.message : "Something went wrong";
+        const errorMessage = result.error || "Something went wrong";
         toast.error(errorMessage);
       }
     });
@@ -59,7 +58,7 @@ export default function UpvoteButton({
       variant={"secondary"}
       size={size}
       className={cn(
-        "bg-blaze-orange/10 hover:bg-blaze-orange/20 text-black dark:bg-background dark:text-white dark:hover:bg-background/80",
+        "bg-blaze-orange/10 hover:bg-blaze-orange/20 text-black dark:bg-secondary dark:text-white dark:hover:bg-secondary/80",
         optimisticProduct.is_upvoted &&
           "font-medium bg-emerald-100 hover:bg-emerald-50",
         isPending && "animate-pulse",

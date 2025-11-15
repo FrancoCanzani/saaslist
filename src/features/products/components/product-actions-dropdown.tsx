@@ -55,17 +55,17 @@ export function ProductActionsDropdown({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <MoreVertical className="h-4 w-4" />
+          <Button variant="ghost" size="icon" className="size-8">
+            <MoreVertical className="size-4" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="*:text-xs">
           <DropdownMenuItem asChild>
             <Link href={`/products/${productId}`}>View</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="#">Edit</Link>
+            <Link href={`/products/${productId}/edit`}>Edit</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -77,7 +77,10 @@ export function ProductActionsDropdown({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete {productName}?</AlertDialogTitle>
@@ -87,20 +90,21 @@ export function ProductActionsDropdown({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending} className="text-xs h-7">
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={isPending}
-              className="text-xs h-7 bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Delete
-            </AlertDialogAction>
+            <AlertDialogFooter>
+              <Button asChild size="xs" variant="outline">
+                <AlertDialogCancel disabled={isPending}>
+                  Cancel
+                </AlertDialogCancel>
+              </Button>
+              <Button asChild size="xs" variant="destructive">
+                <AlertDialogAction onClick={handleDelete} disabled={isPending}>
+                  Delete
+                </AlertDialogAction>
+              </Button>
+            </AlertDialogFooter>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </>
   );
 }
-

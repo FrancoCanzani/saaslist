@@ -17,7 +17,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"; 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export async function generateMetadata({
   params,
@@ -43,7 +43,8 @@ export async function generateMetadata({
     ? `${product.description.substring(0, 155)}${product.description.length > 155 ? "..." : ""}`
     : `${product.tagline} - Discover ${product.name} and other SaaS products on SaasList.`;
 
-  const imageUrl = product.logo_url || product.images?.[0] || `${baseUrl}/opengraph-image`;
+  const imageUrl =
+    product.logo_url || product.images?.[0] || `${baseUrl}/opengraph-image`;
 
   return {
     title: `${product.name} - ${product.tagline} | SaasList`,
@@ -178,25 +179,25 @@ export default async function ProductPage({
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-        <div className="flex gap-6">
-          <main className="flex-1 flex flex-col gap-6">
-            <div className="flex items-center gap-x-6">
-              <div className="size-10 flex items-center justify-center shrink-0 rounded group-hover:scale-105 transition-all duration-300">
-                <ProductLogo
-                  logoUrl={product.logo_url}
-                  productName={product.name}
-                  size={30}
-                />
-              </div>
+      <div className="flex gap-6">
+        <main className="flex-1 flex flex-col gap-6">
+          <div className="flex items-center gap-x-6">
+            <div className="size-10 flex items-center justify-center shrink-0 rounded group-hover:scale-105 transition-all duration-300">
+              <ProductLogo
+                logoUrl={product.logo_url}
+                productName={product.name}
+                size={30}
+              />
+            </div>
 
-              <div className="flex-1">
-                <h1 className="text-xl xl:text-2xl font-medium">
-                  {product.name}
-                </h1>
-                <h2 className="text-muted-foreground text-sm">
-                  {product.tagline}
-                </h2>
-              </div>
+            <div className="flex-1">
+              <h1 className="text-xl xl:text-2xl font-medium">
+                {product.name}
+              </h1>
+              <h2 className="text-muted-foreground text-sm">
+                {product.tagline}
+              </h2>
+            </div>
 
             <div className="space-x-1.5 hidden lg:flex items-center justify-end">
               <UpvoteButton product={processedProduct} size="xs" />
@@ -216,7 +217,7 @@ export default async function ProductPage({
             <UpvoteButton product={processedProduct} className="text-sm" />
             <a
               href={product.website_url}
-              className="text-sm flex items-center justify-start text-muted-foreground group gap-x-1 hover:underline underline-offset-4"
+              className="text-sm flex items-center justify-start group gap-x-1 hover:underline underline-offset-4"
               target="_blank"
               rel="noopener"
             >
@@ -245,7 +246,11 @@ export default async function ProductPage({
                     </Badge>
                   </Link>
                 ) : (
-                  <Badge className="hover:underline text-xs" key={index}>
+                  <Badge
+                    variant={"secondary"}
+                    className="hover:underline text-xs"
+                    key={index}
+                  >
                     {tag}
                   </Badge>
                 );

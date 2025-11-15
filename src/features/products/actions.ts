@@ -5,7 +5,7 @@ import { Product, Comment, Review, Update } from "./types";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "@/utils/types";
 import { commentSchema, reviewSchema, updateSchema } from "./schemas";
-import { generateStoragePath, generateProductImagePath } from "./helpers";
+import { generateStoragePath, generateProductImagePath, extractStoragePathFromUrl } from "./helpers";
 
 export async function handleUpvoteAction(
   product: Product
@@ -17,7 +17,10 @@ export async function handleUpvoteAction(
     } = await supabase.auth.getUser();
 
     if (!user) {
-      throw new Error("You must be logged in to upvote products");
+      return { 
+        success: false, 
+        error: "You must be logged in to upvote products" 
+      };
     }
 
     if (product.is_upvoted) {
@@ -29,7 +32,10 @@ export async function handleUpvoteAction(
         .select();
 
       if (deleteError) {
-        throw new Error("Failed to remove upvote. Please try again.");
+        return { 
+          success: false, 
+          error: "Failed to remove upvote. Please try again." 
+        };
       }
 
       revalidatePath("/");
@@ -48,10 +54,16 @@ export async function handleUpvoteAction(
 
       if (insertError) {        
         if (insertError.code === "23505") {
-          throw new Error("You have already upvoted this product");
+          return { 
+            success: false, 
+            error: "You have already upvoted this product" 
+          };
         }
         
-        throw new Error("Failed to add upvote. Please try again.");
+        return { 
+          success: false, 
+          error: "Failed to add upvote. Please try again." 
+        };
       }
 
       revalidatePath("/");
@@ -63,11 +75,14 @@ export async function handleUpvoteAction(
   } catch (error) {
     console.error("Upvote action error:", error);
     
-    if (error instanceof Error) {
-      throw error;
-    }
+    const errorMessage = error instanceof Error 
+      ? error.message 
+      : "Something went wrong. Please try again.";
     
-    throw new Error("Something went wrong. Please try again.");
+    return { 
+      success: false, 
+      error: errorMessage 
+    };
   }
 }
 
@@ -596,7 +611,6 @@ export async function updateUpdateAction(data: {
       throw new Error("You must be logged in to edit updates");
     }
 
-    // Verify user owns the update
     const { data: existingUpdate } = await supabase
       .from("product_updates")
       .select("user_id")
@@ -682,6 +696,169 @@ export async function deleteUpdateAction(
     return { success: true, action: "deleted" };
   } catch (error) {
     console.error("Delete update error:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Something went wrong");
+  }
+}
+
+export async function updateProductAction(
+  productId: string,
+  data: {
+    name?: string;
+    tagline?: string;
+    description?: string;
+    website_url?: string;
+    repo_url?: string;
+    logo_url?: string | null;
+    images?: string[];
+    demo_url?: string;
+    pricing_model?: "free" | "freemium" | "premium";
+    tags?: string[];
+    twitter_url?: string;
+    linkedin_url?: string;
+    product_hunt_url?: string;
+    platforms?: string[];
+    logo_file?: File | null;
+    image_files?: File[];
+    imagesToDelete?: string[];
+    removeLogo?: boolean;
+  }
+): Promise<ActionResponse<Product>> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to update products");
+    }
+
+    const { data: existingProduct, error: fetchError } = await supabase
+      .from("products")
+      .select("user_id, logo_url, images")
+      .eq("id", productId)
+      .single();
+
+    if (fetchError || !existingProduct) {
+      throw new Error("Product not found");
+    }
+
+    if (existingProduct.user_id !== user.id) {
+      throw new Error("You can only update your own products");
+    }
+
+    const uploadedAssets: Array<{ path: string; bucket: "product-logos" | "product-images" }> = [];
+    let logoUrl = data.logo_url;
+    let oldLogoPath: string | null = null;
+
+    if (data.logo_file) {
+      const { url, path } = await uploadProductLogo(data.logo_file);
+      logoUrl = url;
+      uploadedAssets.push({ path, bucket: "product-logos" });
+
+      if (existingProduct.logo_url) {
+        const oldPath = extractStoragePathFromUrl(
+          existingProduct.logo_url,
+          "product-logos"
+        );
+        if (oldPath) {
+          oldLogoPath = oldPath;
+        }
+      }
+    } else if (data.removeLogo || data.logo_url === null) {
+      logoUrl = null;
+      if (existingProduct.logo_url) {
+        const oldPath = extractStoragePathFromUrl(
+          existingProduct.logo_url,
+          "product-logos"
+        );
+        if (oldPath) {
+          oldLogoPath = oldPath;
+        }
+      }
+    } else if (data.logo_url !== undefined) {
+      logoUrl = data.logo_url;
+    }
+
+    const imagesToDeletePaths: string[] = [];
+    if (data.imagesToDelete && data.imagesToDelete.length > 0) {
+      data.imagesToDelete.forEach((url) => {
+        const path = extractStoragePathFromUrl(url, "product-images");
+        if (path) {
+          imagesToDeletePaths.push(path);
+        }
+      });
+    }
+
+    let newImageUrls: string[] = [];
+    if (data.image_files && data.image_files.length > 0) {
+      newImageUrls = await uploadProductImages(data.image_files, productId);
+       }
+
+    let finalImages: string[] = [];
+    if (data.images !== undefined) {
+      finalImages = data.images;
+    } else {
+      const existingImages = existingProduct.images || [];
+      const keptImages = existingImages.filter(
+        (url: string) => !data.imagesToDelete?.includes(url)
+      );
+      finalImages = [...keptImages, ...newImageUrls];
+    }
+
+    const updateData: any = {
+      updated_at: new Date().toISOString(),
+    };
+
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.tagline !== undefined) updateData.tagline = data.tagline;
+    if (data.description !== undefined) updateData.description = data.description;
+    if (data.website_url !== undefined) updateData.website_url = data.website_url;
+    if (data.repo_url !== undefined) updateData.repo_url = data.repo_url || null;
+    if (logoUrl !== undefined) updateData.logo_url = logoUrl;
+    if (finalImages !== undefined) updateData.images = finalImages;
+    if (data.demo_url !== undefined) updateData.demo_url = data.demo_url || null;
+    if (data.pricing_model !== undefined) updateData.pricing_model = data.pricing_model;
+    if (data.tags !== undefined) updateData.tags = data.tags;
+    if (data.twitter_url !== undefined) updateData.twitter_url = data.twitter_url || null;
+    if (data.linkedin_url !== undefined) updateData.linkedin_url = data.linkedin_url || null;
+    if (data.product_hunt_url !== undefined) updateData.product_hunt_url = data.product_hunt_url || null;
+    if (data.platforms !== undefined) updateData.platforms = data.platforms;
+
+    const { data: updatedProduct, error: updateError } = await supabase
+      .from("products")
+      .update(updateData)
+      .eq("id", productId)
+      .select()
+      .single();
+
+    if (updateError) {
+      if (uploadedAssets.length > 0) {
+        for (const asset of uploadedAssets) {
+          await deleteUploadedAssets([asset.path], asset.bucket);
+        }
+      }
+      throw new Error(`Failed to update product: ${updateError.message}`);
+    }
+
+    if (oldLogoPath) {
+      await deleteUploadedAssets([oldLogoPath], "product-logos");
+    }
+    if (imagesToDeletePaths.length > 0) {
+      await deleteUploadedAssets(imagesToDeletePaths, "product-images");
+    }
+
+    revalidatePath("/browse");
+    revalidatePath("/");
+    revalidatePath("/my-products");
+    revalidatePath(`/products/${productId}`);
+
+    return { success: true, data: updatedProduct, action: "updated" };
+  } catch (error) {
+    console.error("Update product error:", error);
     if (error instanceof Error) {
       throw error;
     }

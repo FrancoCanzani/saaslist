@@ -1,5 +1,6 @@
 import ProductLogo from "@/features/products/components/product-logo";
 import { createClient } from "@/utils/supabase/server";
+import { formatDate } from "date-fns";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -33,34 +34,36 @@ export default async function MakerProfilePage({
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <div>
-        <h1 className="text-xl font-medium">{profile.name || "User"}</h1>
-
-        <div>
-          {(profile.twitter || profile.website) && (
-            <div className="space-x-2">
-              {profile.twitter && (
-                <a
-                  href={profile.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm hover:underline text-blue-600 transition-colors"
-                >
-                  Twitter
-                </a>
-              )}
-              {profile.website && (
-                <a
-                  href={profile.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm hover:underline text-blue-600 transition-colors"
-                >
-                  Website
-                </a>
-              )}
-            </div>
-          )}
+        <div className="flex items-center justify-between space-x-2">
+          <h1 className="text-xl font-medium">{profile.name || "User"}</h1>
+          <div>
+            {(profile.twitter || profile.website) && (
+              <div className="space-x-2">
+                {profile.twitter && (
+                  <a
+                    href={profile.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm hover:underline text-blue-600 dark:text-blue-400 transition-colors"
+                  >
+                    Twitter
+                  </a>
+                )}
+                {profile.website && (
+                  <a
+                    href={profile.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm hover:underline text-blue-600 dark:text-blue-400 transition-colors"
+                  >
+                    Website
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
         </div>
+        <span className="text-muted-foreground text-xs">{`In SaasList since ${formatDate(new Date(profile.created_at), "yyyy-MM-dd")}`}</span>
       </div>
 
       <div>

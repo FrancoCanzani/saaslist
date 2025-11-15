@@ -19,10 +19,9 @@ export function UpdateEditor({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        heading: false,
-        blockquote: false,
-        codeBlock: false,
-        horizontalRule: false,
+        heading: {
+          levels: [2, 3],
+        },
       }),
       Placeholder.configure({
         placeholder,
@@ -35,9 +34,16 @@ export function UpdateEditor({
         class:
           "prose prose-sm max-w-none focus:outline-none min-h-[150px] px-3 py-2",
       },
+      transformPastedText(text) {
+        // Enable markdown paste
+        return text;
+      },
     },
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
+    },
+    parseOptions: {
+      preserveWhitespace: "full",
     },
   });
 
@@ -52,46 +58,13 @@ export function UpdateEditor({
   }
 
   return (
-    <div className="border rounded border-input bg-background">
-      <div className="flex gap-1 p-2 border-b border-input">
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`px-2 py-1 text-xs rounded hover:bg-muted ${
-            editor.isActive("bold") ? "bg-muted" : ""
-          }`}
-        >
-          <strong>B</strong>
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`px-2 py-1 text-xs rounded hover:bg-muted ${
-            editor.isActive("italic") ? "bg-muted" : ""
-          }`}
-        >
-          <em>I</em>
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={`px-2 py-1 text-xs rounded hover:bg-muted ${
-            editor.isActive("bulletList") ? "bg-muted" : ""
-          }`}
-        >
-          •
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={`px-2 py-1 text-xs rounded hover:bg-muted ${
-            editor.isActive("orderedList") ? "bg-muted" : ""
-          }`}
-        >
-          1.
-        </button>
+    <div className="space-y-2">
+      <div className="border rounded border-input bg-background">
+        <EditorContent editor={editor} />
       </div>
-      <EditorContent editor={editor} />
+      <p className="text-xs text-muted-foreground">
+        You can use Markdown formatting: **bold**, *italic*, `code`, # heading, - lists, etc.
+      </p>
     </div>
   );
 }

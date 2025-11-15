@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "@tanstack/react-form";
+import { useState } from "react";
 import { z } from "zod";
 import { productSchema } from "../schemas";
 import { ImagesUpload } from "./images-upload";
@@ -25,9 +26,13 @@ import { LogoUpload } from "./logo-upload";
 import TagSelector from "./tag-selector";
 
 interface ProductFormProps {
-  onSubmit: (data: z.infer<typeof productSchema>) => Promise<void>;
+  onSubmit: (data: z.infer<typeof productSchema> & { imagesToDelete?: string[]; removeLogo?: boolean }) => Promise<void>;
   defaultValues?: Partial<z.infer<typeof productSchema>>;
+  existingImages?: string[];
+  existingLogoUrl?: string;
   isSubmitting?: boolean;
+  submitButtonText?: string;
+  onCancel?: () => void;
 }
 
 const sections = [
@@ -39,29 +44,42 @@ const sections = [
 export function ProductForm({
   onSubmit,
   defaultValues,
+  existingImages = [],
+  existingLogoUrl,
   isSubmitting,
+  submitButtonText = "Submit Product",
+  onCancel,
 }: ProductFormProps) {
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
+  const [removeLogo, setRemoveLogo] = useState(false);
+  const [keptExistingImages, setKeptExistingImages] = useState<string[]>(existingImages);
+
   const form = useForm({
     defaultValues: {
       name: defaultValues?.name || "",
       tagline: defaultValues?.tagline || "",
       website_url: defaultValues?.website_url || "",
-      repo_url: defaultValues?.repo_url,
+      repo_url: defaultValues?.repo_url || "",
       is_open_source: !!defaultValues?.repo_url || false,
       description: defaultValues?.description || "",
       tags: defaultValues?.tags || [],
-      logo_url: defaultValues?.logo_url,
+      logo_url: defaultValues?.logo_url || "",
       logo_file: null as File | null,
       image_files: [] as File[],
-      demo_url: defaultValues?.demo_url,
+      demo_url: defaultValues?.demo_url || "",
       pricing_model: defaultValues?.pricing_model || "free",
-      twitter_url: defaultValues?.twitter_url,
-      linkedin_url: defaultValues?.linkedin_url,
-      product_hunt_url: defaultValues?.product_hunt_url,
+      twitter_url: defaultValues?.twitter_url || "",
+      linkedin_url: defaultValues?.linkedin_url || "",
+      product_hunt_url: defaultValues?.product_hunt_url || "",
       platforms: defaultValues?.platforms || ["web"],
     },
     onSubmit: async ({ value }) => {
-      await onSubmit(value);
+      const submitData = {
+        ...value,
+        imagesToDelete: imagesToDelete.length > 0 ? imagesToDelete : undefined,
+        removeLogo: removeLogo || undefined,
+      };
+      await onSubmit(submitData);
     },
   });
 
@@ -296,17 +314,8 @@ export function ProductForm({
                       </Field>
 
                       {field.state.value && (
-                        <form.Field
-                          name="repo_url"
-                          validators={{
-                            onChangeListenTo: ["is_open_source"],
-                            onChange: productSchema.shape.repo_url,
-                          }}
-                        >
+                        <form.Field name="repo_url">
                           {(repoField) => {
-                            const isInvalid =
-                              repoField.state.meta.isTouched &&
-                              !repoField.state.meta.isValid;
                             return (
                               <Field>
                                 <FieldLabel htmlFor="repo_url">
@@ -318,18 +327,10 @@ export function ProductForm({
                                   value={repoField.state.value || ""}
                                   onBlur={repoField.handleBlur}
                                   onChange={(e) =>
-                                    repoField.handleChange(
-                                      e.target.value || undefined,
-                                    )
+                                    repoField.handleChange(e.target.value)
                                   }
-                                  aria-invalid={isInvalid}
                                   placeholder="https://github.com/username/repo"
                                 />
-                                {isInvalid && (
-                                  <FieldError
-                                    errors={repoField.state.meta.errors}
-                                  />
-                                )}
                               </Field>
                             );
                           }}
@@ -453,7 +454,17 @@ export function ProductForm({
                       <FieldLabel>Logo</FieldLabel>
                       <LogoUpload
                         value={field.state.value}
-                        onChange={(file) => field.handleChange(file)}
+                        onChange={(file) => {
+                          field.handleChange(file);
+                          if (file) {
+                            setRemoveLogo(false);
+                          }
+                        }}
+                        existingLogoUrl={existingLogoUrl && !removeLogo ? existingLogoUrl : undefined}
+                        onExistingLogoRemove={() => {
+                          setRemoveLogo(true);
+                          field.handleChange(null);
+                        }}
                         disabled={isSubmitting}
                       />
                       <FieldDescription className="text-xs">
@@ -464,12 +475,7 @@ export function ProductForm({
                 }}
               </form.Field>
 
-              <form.Field
-                name="logo_url"
-                validators={{
-                  onChange: productSchema.shape.logo_url,
-                }}
-              >
+              <form.Field name="logo_url">
                 {(field) => {
                   return (
                     <Field>
@@ -482,7 +488,7 @@ export function ProductForm({
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
-                          field.handleChange(e.target.value || undefined)
+                          field.handleChange(e.target.value)
                         }
                         placeholder="https://example.com/logo.png"
                         disabled={isSubmitting}
@@ -503,6 +509,15 @@ export function ProductForm({
                       <ImagesUpload
                         value={field.state.value}
                         onChange={(files) => field.handleChange(files)}
+                        existingImages={keptExistingImages}
+                        onExistingImagesChange={(images) => {
+                          setKeptExistingImages(images);
+                          // Track which images were deleted
+                          const deleted = existingImages.filter(
+                            (url) => !images.includes(url)
+                          );
+                          setImagesToDelete(deleted);
+                        }}
                         disabled={isSubmitting}
                       />
                       <FieldDescription className="text-xs">
@@ -513,12 +528,7 @@ export function ProductForm({
                 }}
               </form.Field>
 
-              <form.Field
-                name="demo_url"
-                validators={{
-                  onChange: productSchema.shape.demo_url,
-                }}
-              >
+              <form.Field name="demo_url">
                 {(field) => {
                   return (
                     <Field>
@@ -531,7 +541,7 @@ export function ProductForm({
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
-                          field.handleChange(e.target.value || undefined)
+                          field.handleChange(e.target.value)
                         }
                         className="w-full border px-3 py-2"
                         placeholder="https://www.youtube.com/watch?v=1c6biyEsxyM..."
@@ -548,12 +558,7 @@ export function ProductForm({
             <h3 className="text-3xl capitalize">Social Media</h3>
 
             <div id="social-media" className="scroll-mt-24 space-y-6">
-              <form.Field
-                name="twitter_url"
-                validators={{
-                  onChange: productSchema.shape.twitter_url,
-                }}
-              >
+              <form.Field name="twitter_url">
                 {(field) => {
                   return (
                     <Field>
@@ -566,7 +571,7 @@ export function ProductForm({
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
-                          field.handleChange(e.target.value || undefined)
+                          field.handleChange(e.target.value)
                         }
                         placeholder="https://twitter.com/yourhandle"
                       />
@@ -575,12 +580,7 @@ export function ProductForm({
                 }}
               </form.Field>
 
-              <form.Field
-                name="linkedin_url"
-                validators={{
-                  onChange: productSchema.shape.linkedin_url,
-                }}
-              >
+              <form.Field name="linkedin_url">
                 {(field) => {
                   return (
                     <Field>
@@ -593,7 +593,7 @@ export function ProductForm({
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
-                          field.handleChange(e.target.value || undefined)
+                          field.handleChange(e.target.value)
                         }
                         placeholder="https://linkedin.com/company/yourcompany"
                       />
@@ -602,12 +602,7 @@ export function ProductForm({
                 }}
               </form.Field>
 
-              <form.Field
-                name="product_hunt_url"
-                validators={{
-                  onChange: productSchema.shape.product_hunt_url,
-                }}
-              >
+              <form.Field name="product_hunt_url">
                 {(field) => {
                   return (
                     <Field>
@@ -620,7 +615,7 @@ export function ProductForm({
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
-                          field.handleChange(e.target.value || undefined)
+                          field.handleChange(e.target.value)
                         }
                         placeholder="https://producthunt.com/posts/yourproduct"
                       />
@@ -631,9 +626,20 @@ export function ProductForm({
             </div>
           </FieldGroup>
 
-          <div className="mt-8 flex justify-end">
+          <div className="mt-8 flex justify-end gap-3">
+            {onCancel && (
+              <Button
+                type="button"
+                variant="outline"
+                size={"sm"}
+                onClick={onCancel}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+            )}
             <Button size={"sm"} type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Submit Product"}
+              {isSubmitting ? "Saving..." : submitButtonText}
             </Button>
           </div>
         </form>

@@ -89,8 +89,7 @@ export default async function Image() {
               fontFamily: "system-ui, -apple-system, sans-serif",
             }}
           >
-            A Product Hunt for SaaS products. Discover, share, and upvote the
-            best SaaS tools.
+            Discover, share, and upvote the best SaaS tools.
           </div>
 
           <div
@@ -107,7 +106,6 @@ export default async function Image() {
     ),
     {
       ...size,
-    }
+    },
   );
 }
-
