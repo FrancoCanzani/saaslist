@@ -128,6 +128,7 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
+          variant="destructive"
           onClick={handleSignOut}
           className="cursor-pointer text-xs"
         >

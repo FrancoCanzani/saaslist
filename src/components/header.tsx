@@ -1,7 +1,7 @@
 import { MobileNav } from "@/components/mobile-nav";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/features/profiles/api";
-import { ProfileDropdown } from "@/features/profiles/components/ProfileDropdown";
+import { ProfileDropdown } from "@/features/profiles/components/Profile-dropdown";
 import Link from "next/link";
 
 export default async function Header() {

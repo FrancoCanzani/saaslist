@@ -56,8 +56,11 @@ export async function updateSession(request: NextRequest) {
   );
 
   const isProductPage = /^\/products\/[^\/]+$/.test(request.nextUrl.pathname);
+  
+  // Allow robots.txt and sitemap.xml to be accessed without authentication
+  const isRobotsOrSitemap = /^\/(robots\.txt|sitemap\.xml)$/.test(request.nextUrl.pathname);
 
-  if (!user && !isPublicPath && !isProductPage) {
+  if (!user && !isPublicPath && !isProductPage && !isRobotsOrSitemap) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/login";
