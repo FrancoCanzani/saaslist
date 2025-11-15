@@ -59,9 +59,9 @@ export default function UpvoteButton({
       variant={"secondary"}
       size={size}
       className={cn(
-        "bg-blaze-orange/10 hover:bg-blaze-orange/20 dark:bg-blaze-orange/10 dark:hover:bg-blaze-orange/20",
+        "bg-blaze-orange/10 hover:bg-blaze-orange/20 text-black dark:bg-background dark:text-white dark:hover:bg-background/80",
         optimisticProduct.is_upvoted &&
-          "font-medium bg-emerald-100 hover:bg-emerald-50 dark:bg-emerald-100 dark:hover:bg-emerald-50 dark:text-black",
+          "font-medium bg-emerald-100 hover:bg-emerald-50",
         isPending && "animate-pulse",
         className,
       )}
