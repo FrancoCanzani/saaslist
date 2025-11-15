@@ -167,7 +167,7 @@ export function NewsletterForm({
         {isPending ? "Subscribing..." : "Subscribe to Newsletter"}
       </Button>
 
-      <p className="text-xs text-center">
+      <p className="text-xs text-muted-foreground text-center">
         By subscribing, you agree to receive weekly emails. You can unsubscribe
         at any time.
       </p>
