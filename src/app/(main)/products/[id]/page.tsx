@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ProductViewTracker } from "@/components/product-view-tracker";
 import CommentSection from "@/features/products/components/comment-section";
 import ProductLogo from "@/features/products/components/product-logo";
 import { ProductMediaCarousel } from "@/features/products/components/product-media-carousel";
@@ -179,6 +180,7 @@ export default async function ProductPage({
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+      <ProductViewTracker productId={id} />
       <div className="flex gap-6">
         <main className="flex-1 flex flex-col gap-6">
           <div className="flex items-center gap-x-6">
