@@ -865,3 +865,74 @@ export async function updateProductAction(
     throw new Error("Something went wrong");
   }
 }
+
+export async function toggleProductFeaturedAction(
+  productId: string,
+  isFeatured: boolean
+): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return {
+        success: false,
+        error: "You must be logged in to update product featured status",
+      };
+    }
+
+    const { data: product, error: productError } = await supabase
+      .from("products")
+      .select("user_id")
+      .eq("id", productId)
+      .single();
+
+    if (productError || !product) {
+      return {
+        success: false,
+        error: "Product not found",
+      };
+    }
+
+    if (product.user_id !== user.id) {
+      return {
+        success: false,
+        error: "You can only update your own products",
+      };
+    }
+
+    const { error: updateError } = await supabase
+      .from("products")
+      .update({
+        is_featured: isFeatured,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", productId);
+
+    if (updateError) {
+      return {
+        success: false,
+        error: "Failed to update product featured status",
+      };
+    }
+
+    revalidatePath("/my-products");
+    revalidatePath("/");
+    revalidatePath("/browse");
+    revalidatePath(`/products/${productId}`);
+
+    return {
+      success: true,
+      action: isFeatured ? "featured" : "unfeatured",
+    };
+  } catch (error) {
+    console.error("Toggle featured error:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Something went wrong",
+    };
+  }
+}

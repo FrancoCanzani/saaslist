@@ -1,5 +1,6 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ProductActionsDropdown } from "@/features/products/components/product-actions-dropdown";
+import { FeatureToggle } from "@/features/products/components/feature-toggle";
 import ProductLogo from "@/features/products/components/product-logo";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
@@ -69,7 +70,11 @@ export default async function MyProductsPage() {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center shrink-0">
+                <div className="flex items-center gap-4 shrink-0">
+                  <FeatureToggle
+                    productId={product.id}
+                    isFeatured={product.is_featured || false}
+                  />
                   <ProductActionsDropdown
                     productId={product.id}
                     productName={product.name}

@@ -22,7 +22,7 @@ export function ProductShare({
   productTagline: string;
   className?: string;
 }) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
   const productUrl = `${baseUrl}/products/${productId}`;
   const shareText = `Check out ${productName}: ${productTagline}`;
 

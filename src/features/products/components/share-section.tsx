@@ -15,7 +15,7 @@ export default function ShareSection({ productId }: ShareSectionProps) {
   const [productUrl, setProductUrl] = useState("");
 
   useEffect(() => {
-    const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
     setProductUrl(`${siteUrl}/products/${productId}`);
   }, [productId]);
 

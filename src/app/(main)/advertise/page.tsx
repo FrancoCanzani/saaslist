@@ -17,16 +17,17 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { addDays, differenceInDays, format } from "date-fns";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { useState } from "react";
 import type { DateRange } from "react-day-picker";
+import { toast } from "sonner";
 
 const pricingPlans = [
   {
     id: "daily",
     name: "Daily Boost",
     type: "daily",
-    pricePerDay: 10,
+    pricePerDay: 5,
     description: "Perfect for product launches and short campaigns.",
     features: [
       "Featured on homepage rotation",
@@ -43,7 +44,7 @@ const pricingPlans = [
     id: "monthly",
     name: "Growth Plan",
     type: "fixed",
-    price: 99,
+    price: 19,
     description: "Best value for sustained visibility and growth.",
     features: [
       "Featured on homepage for 30 days",
@@ -123,11 +124,12 @@ export default function AdvertisePage() {
     from: new Date(),
     to: addDays(new Date(), 6),
   });
+  const [processing, setProcessing] = useState<string | null>(null);
 
   const calculateDailyPrice = () => {
     if (!dateRange?.from || !dateRange?.to) return 0;
     const days = differenceInDays(dateRange.to, dateRange.from) + 1;
-    return days * 10;
+    return days * 5;
   };
 
   const dailyDays =
@@ -135,6 +137,44 @@ export default function AdvertisePage() {
       ? differenceInDays(dateRange.to, dateRange.from) + 1
       : 0;
   const dailyPrice = calculateDailyPrice();
+
+  const handleCheckout = async (planType: string) => {
+    setProcessing(planType);
+
+    try {
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          planType,
+          dateRange: planType === "daily" ? {
+            from: dateRange?.from?.toISOString(),
+            to: dateRange?.to?.toISOString(),
+          } : undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create checkout session");
+      }
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL received");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Failed to start checkout"
+      );
+      setProcessing(null);
+    }
+  };
 
   return (
     <main className="py-12 max-w-5xl mx-auto space-y-8">
@@ -151,6 +191,7 @@ export default function AdvertisePage() {
         {pricingPlans.map((plan) => {
           const isDaily = plan.type === "daily";
           const price = isDaily ? dailyPrice : plan.price;
+          const isProcessing = processing === plan.id;
 
           return (
             <Card
@@ -242,9 +283,20 @@ export default function AdvertisePage() {
               <Button
                 size="default"
                 className="w-full"
-                disabled={isDaily && (!dateRange?.from || !dateRange?.to)}
+                disabled={
+                  isProcessing ||
+                  (isDaily && (!dateRange?.from || !dateRange?.to))
+                }
+                onClick={() => handleCheckout(plan.id)}
               >
-                {plan.cta}
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  plan.cta
+                )}
               </Button>
 
               <div className="flex-1 space-y-3">
