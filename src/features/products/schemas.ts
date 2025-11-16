@@ -107,3 +107,64 @@ export const updateSchema = z.object({
 });
 
 export type UpdateFormData = z.infer<typeof updateSchema>;
+
+export const productUpdateSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Product name must be at least 3 characters")
+    .max(100, "Product name must be at most 100 characters")
+    .optional(),
+  tagline: z
+    .string()
+    .min(10, "Tagline must be at least 10 characters")
+    .max(200, "Tagline must be at most 200 characters")
+    .optional(),
+  website_url: z.url("Please enter a valid URL").optional(),
+  repo_url: zEmptyStrToUndefined,
+  is_open_source: z.boolean().optional(),
+  description: z
+    .string()
+    .min(50, "Description must be at least 50 characters")
+    .max(1000, "Description must be at most 1000 characters")
+    .optional(),
+  tags: z
+    .array(z.string().min(1))
+    .min(1, "Add at least 1 tag")
+    .max(3, "Maximum 3 tags allowed")
+    .optional(),
+  logo_url: zEmptyStrToUndefined,
+  demo_url: zEmptyStrToUndefined,
+  pricing_model: z.enum(["free", "freemium", "premium"]).optional(),
+  twitter_url: zEmptyStrToUndefined,
+  linkedin_url: zEmptyStrToUndefined,
+  product_hunt_url: zEmptyStrToUndefined,
+  platforms: z
+    .array(
+      z.enum([
+        "web",
+        "ios",
+        "android",
+        "desktop",
+        "api",
+        "browser_extension",
+        "other",
+      ]),
+    )
+    .min(1, "Select at least one platform")
+    .optional(),
+  images: z.array(z.string().url()).optional(),
+}).refine(
+  (data) => {
+    // If is_open_source is true and repo_url is provided, validate it exists
+    if (data.is_open_source === true && !data.repo_url) {
+      return false;
+    }
+    return true;
+  },
+  {
+    message: "Repository URL is required for open source projects",
+    path: ["repo_url"],
+  },
+);
+
+export type ProductUpdateData = z.infer<typeof productUpdateSchema>;

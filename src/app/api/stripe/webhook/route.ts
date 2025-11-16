@@ -30,6 +30,18 @@ export async function POST(request: NextRequest) {
       break;
     }
 
+    case "checkout.session.async_payment_succeeded": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      await handleCheckoutCompleted(supabase, session);
+      break;
+    }
+
+    case "checkout.session.async_payment_failed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      await handleCheckoutFailed(supabase, session);
+      break;
+    }
+
     case "customer.subscription.created":
     case "customer.subscription.updated": {
       const subscription = event.data.object as Stripe.Subscription;
@@ -49,6 +61,12 @@ export async function POST(request: NextRequest) {
       break;
     }
 
+    case "payment_intent.payment_failed": {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      await handlePaymentFailed(supabase, paymentIntent);
+      break;
+    }
+
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
@@ -62,6 +80,11 @@ async function handleCheckoutCompleted(
 ) {
   console.log("Processing checkout.session.completed", session.id);
   
+  if (session.payment_status !== "paid") {
+    console.log("Payment not completed, status:", session.payment_status);
+    return;
+  }
+
   const metadata = session.metadata;
   if (!metadata) {
     console.error("No metadata in checkout session");
@@ -123,6 +146,35 @@ async function handleCheckoutCompleted(
   }
 }
 
+async function handleCheckoutFailed(
+  supabase: any,
+  session: Stripe.Checkout.Session
+) {
+  console.log("Processing checkout.session.async_payment_failed", session.id);
+
+  const { data: subscription } = await supabase
+    .from("subscriptions")
+    .select("id")
+    .eq("stripe_checkout_session_id", session.id)
+    .single();
+
+  if (subscription) {
+    const { error } = await supabase
+      .from("subscriptions")
+      .update({
+        status: "cancelled",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", subscription.id);
+
+    if (error) {
+      console.error("Error updating failed subscription:", error);
+    } else {
+      console.log("❌ Subscription marked as cancelled due to payment failure");
+    }
+  }
+}
+
 async function handleSubscriptionUpdated(
   supabase: any,
   subscription: Stripe.Subscription
@@ -177,12 +229,45 @@ async function handlePaymentSucceeded(
     .single();
 
   if (subscription && subscription.status === "pending") {
-    await supabase
+    const { error } = await supabase
       .from("subscriptions")
       .update({
         status: "active",
         updated_at: new Date().toISOString(),
       })
       .eq("id", subscription.id);
+
+    if (error) {
+      console.error("Error updating subscription on payment success:", error);
+    } else {
+      console.log("✅ Subscription activated after payment success");
+    }
+  }
+}
+
+async function handlePaymentFailed(
+  supabase: any,
+  paymentIntent: Stripe.PaymentIntent
+) {
+  const { data: subscription } = await supabase
+    .from("subscriptions")
+    .select("id, status")
+    .eq("stripe_payment_intent_id", paymentIntent.id)
+    .single();
+
+  if (subscription && subscription.status === "pending") {
+    const { error } = await supabase
+      .from("subscriptions")
+      .update({
+        status: "cancelled",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", subscription.id);
+
+    if (error) {
+      console.error("Error updating subscription on payment failure:", error);
+    } else {
+      console.log("❌ Subscription cancelled due to payment failure");
+    }
   }
 }

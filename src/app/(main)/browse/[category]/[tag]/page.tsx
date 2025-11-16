@@ -2,7 +2,7 @@ import ProductGrid from "@/features/products/components/product-grid";
 import { Product } from "@/features/products/types";
 import { categories } from "@/utils/constants";
 import { getCategoryBySlug, getTagSlug } from "@/utils/helpers";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 

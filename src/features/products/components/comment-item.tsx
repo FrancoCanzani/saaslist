@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { sanitizeHtml } from "@/utils/sanitize";
 import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import { useState, useTransition } from "react";
@@ -205,7 +206,7 @@ export default function CommentItem({
           ) : (
             <div
               className="prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{ __html: comment.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(comment.content) }}
             />
           )}
 

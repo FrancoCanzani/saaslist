@@ -1,7 +1,8 @@
 import { ApiResponse, Product } from "@/features/products/types";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { productUpdateSchema } from "@/features/products/schemas";
 
 export async function GET(
   request: NextRequest,
@@ -90,10 +91,33 @@ export async function PATCH(
 
     const body = await request.json();
 
-    // Update the product
-    const { data: updatedProduct, error: updateError } = await supabase
+    const validationResult = productUpdateSchema.safeParse(body);
+    if (!validationResult.success) {
+      const response: ApiResponse<null> = {
+        data: null,
+        success: false,
+        error: "Validation error",
+        details: validationResult.error.issues
+          .map((issue) => {
+            const path = issue.path.length > 0 
+              ? issue.path.join(".") 
+              : "root";
+            return `${path}: ${issue.message}`;
+          })
+          .join(", "),
+      };
+      return NextResponse.json(response, { status: 400 });
+    }
+
+    const updateData = validationResult.data;
+
+    const updatePayload = Object.fromEntries(
+      Object.entries(updateData).filter(([_, v]) => v !== undefined)
+    );
+
+      const { data: updatedProduct, error: updateError } = await supabase
       .from("products")
-      .update(body)
+      .update(updatePayload as never)
       .eq("id", id)
       .select()
       .single();

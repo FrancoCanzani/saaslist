@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { categories } from "@/utils/constants";
 import { getTagSlug } from "@/utils/helpers";
 import { getAllPosts } from "@/lib/blog";

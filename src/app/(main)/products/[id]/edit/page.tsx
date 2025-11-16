@@ -7,7 +7,7 @@ import { productSchema } from "@/features/products/schemas";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
 

@@ -108,7 +108,6 @@ export interface FileValidationError {
 
 export function validateLogoFile(file: File): FileValidationError | null {
   if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-    const fileType = file.type || 'unknown';
     const extension = file.name.split('.').pop()?.toUpperCase() || 'unknown';
     return {
       file: file.name,

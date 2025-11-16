@@ -1,5 +1,5 @@
 import ProductLogo from "@/features/products/components/product-logo";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "date-fns";
 import Link from "next/link";
 import { notFound } from "next/navigation";

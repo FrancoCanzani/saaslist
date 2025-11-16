@@ -2,7 +2,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ProductActionsDropdown } from "@/features/products/components/product-actions-dropdown";
 import { FeatureToggle } from "@/features/products/components/feature-toggle";
 import ProductLogo from "@/features/products/components/product-logo";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

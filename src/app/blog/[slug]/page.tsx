@@ -1,4 +1,5 @@
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import { sanitizeHtml } from "@/utils/sanitize";
 import { format } from "date-fns";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
@@ -89,7 +90,7 @@ export default async function BlogPostPage({
 
           <div
             className="prose prose-sm dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
           />
         </article>
       </div>

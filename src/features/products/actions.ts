@@ -1,11 +1,11 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { Product, Comment, Review, Update } from "./types";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "@/utils/types";
 import { commentSchema, reviewSchema, updateSchema } from "./schemas";
-import { generateStoragePath, generateProductImagePath, extractStoragePathFromUrl } from "./helpers";
+import { generateStoragePath, generateProductImagePath, extractStoragePathFromUrl, validateLogoFile, validateImageFiles } from "./helpers";
 
 export async function handleLikeAction(
   product: Product
@@ -440,6 +440,11 @@ export async function uploadProductLogo(
       throw new Error("You must be logged in to upload files");
     }
 
+    const validationError = validateLogoFile(file);
+    if (validationError) {
+      throw new Error(validationError.error);
+    }
+
     const filePath = generateStoragePath(user.id, file.name);
     
     const { data, error } = await supabase.storage
@@ -479,6 +484,12 @@ export async function uploadProductImages(
 
     if (!user) {
       throw new Error("You must be logged in to upload files");
+    }
+
+    const validationErrors = validateImageFiles(files);
+    if (validationErrors.length > 0) {
+      const errorMessages = validationErrors.map((err) => err.error).join("; ");
+      throw new Error(errorMessages);
     }
 
     const uploadPromises = files.map(async (file) => {

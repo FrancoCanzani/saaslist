@@ -1,6 +1,7 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
+import { stripe } from "@/lib/stripe/server";
 import { revalidatePath } from "next/cache";
 import type { Subscription, SubscriptionStatus } from "./types";
 
@@ -107,15 +108,15 @@ export async function cancelSubscription(
       return { success: false, error: "Subscription is not active" };
     }
 
-    // If it's a monthly subscription with Stripe subscription ID, cancel in Stripe first
     if (
       subscription.plan_type === "monthly" &&
       subscription.stripe_subscription_id
     ) {
-      // TODO: Integrate with Stripe API to cancel subscription
-      // For now, we'll just mark it as cancelled in the database
-      // When Stripe integration is added, call:
-      // await stripe.subscriptions.cancel(subscription.stripe_subscription_id);
+      try {
+        await stripe.subscriptions.cancel(subscription.stripe_subscription_id);
+      } catch (error) {
+        console.error("Failed to cancel Stripe subscription:", error);
+      }
     }
 
     // Update subscription status to cancelled

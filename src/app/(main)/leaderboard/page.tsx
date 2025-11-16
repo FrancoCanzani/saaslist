@@ -2,7 +2,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LoadMoreButton } from "@/features/leaderboard/load-more-button";
 import { TimePeriodFilter } from "@/features/leaderboard/time-period-filter";
 import ProductGrid from "@/features/products/components/product-grid";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { createLoader, parseAsInteger, parseAsStringEnum } from "nuqs/server";
 

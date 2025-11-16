@@ -38,6 +38,7 @@ export interface Product {
   reviews_count: number;
   is_liked?: boolean;
   founder_name?: string;
+  is_featured?: boolean;
   created_at: string;
   updated_at: string;
 }

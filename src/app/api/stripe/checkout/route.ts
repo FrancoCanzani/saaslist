@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import Stripe from "stripe";
 
@@ -86,9 +86,19 @@ export async function POST(request: NextRequest) {
 
     const session = await stripe.checkout.sessions.create(sessionParams);
 
-    const subscriptionData: any = {
+    interface SubscriptionInsertData {
+      user_id: string;
+      plan_type: "daily" | "monthly" | "lifetime";
+      stripe_checkout_session_id: string;
+      status: "pending";
+      amount_paid: number;
+      start_date?: string;
+      end_date?: string;
+    }
+
+    const subscriptionData: SubscriptionInsertData = {
       user_id: user.id,
-      plan_type: planType,
+      plan_type: planType as "daily" | "monthly" | "lifetime",
       stripe_checkout_session_id: session.id,
       status: "pending",
       amount_paid: amount,

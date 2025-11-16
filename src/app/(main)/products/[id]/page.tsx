@@ -12,7 +12,7 @@ import { UpdateSection } from "@/features/products/components/update-section";
 import LikeButton from "@/features/products/components/like-button";
 import { Product } from "@/features/products/types";
 import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProductList from "@/features/products/components/product-list";
 import ProductGridSkeleton from "@/components/skeletons/product-grid-skeleton";
+import ProductsMarquee from "@/features/products/components/products-marquee";
+import ProductsMarqueeSkeleton from "@/components/skeletons/products-marquee-skeleton";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -11,7 +13,7 @@ export const revalidate = 600; // Revalidate every 10 minutes
 
 export default async function Home() {
   return (
-    <div className="min-h-screen relative max-w-6xl mx-auto">
+    <div className="min-h-screen relative max-w-6xl space-y-8 mx-auto">
       <Header />
 
       <div className="w-full py-12 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
@@ -49,6 +51,10 @@ export default async function Home() {
           </p>
         </div>
       </div>
+
+      <Suspense fallback={<ProductsMarqueeSkeleton />}>
+        <ProductsMarquee />
+      </Suspense>
 
       <main className="p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
         <Suspense

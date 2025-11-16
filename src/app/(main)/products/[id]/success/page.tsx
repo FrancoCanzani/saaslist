@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import DistributionChecklist from "../../../../../features/products/components/distribution-checklist";

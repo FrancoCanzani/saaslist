@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { sanitizeHtml } from "@/utils/sanitize";
 import { format } from "date-fns";
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -91,7 +92,7 @@ export function UpdateItem({ update, isOwner, productId }: UpdateItemProps) {
           </div>
           <div
             className="prose prose-sm max-w-none text-sm"
-            dangerouslySetInnerHTML={{ __html: update.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(update.content) }}
           />
           <p className="text-xs text-muted-foreground mt-2">
             {format(new Date(update.created_at), "MMM d, yyyy")}
