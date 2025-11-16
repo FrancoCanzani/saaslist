@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Product } from "../types";
 import ProductLogo from "./product-logo";
-import UpvoteButton from "./upvote-button";
+import LikeButton from "./like-button";
 import { Card } from "@/components/ui/card";
 
 interface ProductCardProps {
@@ -21,7 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               size={28}
             />
           </div>
-          <UpvoteButton product={product} size="xs" />
+          <LikeButton product={product} size="xs" />
         </div>
 
         <h3 className="flex items-center justify-start gap-x-1 underline underline-offset-2 line-clamp-1">

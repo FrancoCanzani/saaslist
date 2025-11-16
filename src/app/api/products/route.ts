@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       product_hunt_url: productData.product_hunt_url || null,
       platforms: productData.platforms,
       user_id: user.id,
-      upvotes_count: 0,
+      likes_count: 0,
       comments_count: 0,
     };
 

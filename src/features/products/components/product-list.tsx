@@ -35,7 +35,7 @@ export default async function ProductList({
 
   let query = supabase.from("products").select(`
       *,
-      upvotes!left(user_id)
+      likes!left(user_id)
     `);
 
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -64,19 +64,21 @@ export default async function ProductList({
   }
 
   const { data: products, error } = await query
-    .order("upvotes_count", { ascending: false })
+    .order("likes_count", { ascending: false })
     .limit(10);
 
   const processedProducts: Product[] =
     products?.map((product) => {
-      const { upvotes, ...rest } = product as Product & {
-        upvotes?: { user_id: string }[];
+      const { likes, likes_count, ...rest } = product as Product & {
+        likes?: { user_id: string }[];
+        likes_count: number;
       };
 
       return {
         ...rest,
-        is_upvoted: user
-          ? (upvotes?.some((upvote) => upvote.user_id === user.id) ?? false)
+        likes_count,
+        is_liked: user
+          ? (likes?.some((like) => like.user_id === user.id) ?? false)
           : false,
       };
     }) || [];

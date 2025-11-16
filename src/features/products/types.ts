@@ -33,10 +33,10 @@ export interface Product {
   product_hunt_url?: string;
   platforms: Platform[];
   user_id: string;
-  upvotes_count: number;
+  likes_count: number;
   comments_count: number;
   reviews_count: number;
-  is_upvoted?: boolean;
+  is_liked?: boolean;
   founder_name?: string;
   created_at: string;
   updated_at: string;

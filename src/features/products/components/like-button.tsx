@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChevronUp } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
-import { handleUpvoteAction } from "../actions";
+import { handleLikeAction } from "../actions";
 import { Product } from "../types";
 
-export default function UpvoteButton({
+export default function LikeButton({
   product,
   className,
   size = "sm",
@@ -21,31 +21,31 @@ export default function UpvoteButton({
 
   const [optimisticProduct, addOptimisticProduct] = useOptimistic(
     product,
-    (state, newUpvote) =>
-      newUpvote
+    (state, newLike) =>
+      newLike
         ? {
             ...state,
-            upvotes_count: state.upvotes_count + 1,
-            is_upvoted: true,
+            likes_count: state.likes_count + 1,
+            is_liked: true,
           }
         : {
             ...state,
-            upvotes_count: state.upvotes_count - 1,
-            is_upvoted: false,
+            likes_count: state.likes_count - 1,
+            is_liked: false,
           },
   );
 
-  async function handleUpvote(e: React.MouseEvent) {
+  async function handleLike(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
 
     startTransition(async () => {
-      addOptimisticProduct(!optimisticProduct.is_upvoted);
+      addOptimisticProduct(!optimisticProduct.is_liked);
 
-      const result = await handleUpvoteAction(optimisticProduct);
+      const result = await handleLikeAction(optimisticProduct);
 
       if (!result.success) {
-        addOptimisticProduct(optimisticProduct.is_upvoted);
+        addOptimisticProduct(optimisticProduct.is_liked);
 
         const errorMessage = result.error || "Something went wrong";
         toast.error(errorMessage);
@@ -59,20 +59,26 @@ export default function UpvoteButton({
       size={size}
       className={cn(
         "bg-blaze-orange/10 hover:bg-blaze-orange/20 text-black dark:bg-secondary dark:text-white dark:hover:bg-secondary/80",
-        optimisticProduct.is_upvoted &&
+        optimisticProduct.is_liked &&
           "font-medium bg-emerald-100 hover:bg-emerald-50",
         isPending && "animate-pulse",
         className,
       )}
-      onClick={handleUpvote}
+      onClick={handleLike}
     >
-      {optimisticProduct.is_upvoted && <ChevronUp className="size-3.5" />}{" "}
-      {optimisticProduct.is_upvoted ? (
-        <span>Upvoted</span>
+      <Heart
+        className={cn(
+          "size-3.5",
+          optimisticProduct.is_liked && "fill-current"
+        )}
+      />{" "}
+      {optimisticProduct.is_liked ? (
+        <span>Liked</span>
       ) : (
-        <span>Upvote</span>
+        <span>Like</span>
       )}
-      ({optimisticProduct.upvotes_count})
+      ({optimisticProduct.likes_count})
     </Button>
   );
 }
+

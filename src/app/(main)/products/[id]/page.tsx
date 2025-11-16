@@ -9,7 +9,7 @@ import { ProductShare } from "@/features/products/components/product-share";
 import ProductSidebar from "@/features/products/components/product-sidebar";
 import ReviewSection from "@/features/products/components/review-section";
 import { UpdateSection } from "@/features/products/components/update-section";
-import UpvoteButton from "@/features/products/components/upvote-button";
+import LikeButton from "@/features/products/components/like-button";
 import { Product } from "@/features/products/types";
 import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
 import { createClient } from "@/utils/supabase/server";
@@ -95,7 +95,7 @@ export default async function ProductPage({
     .select(
       `
       *,
-      upvotes!left(user_id),
+      likes!left(user_id),
       founder:profiles!products_user_id_fkey(name)
     `,
     )
@@ -106,10 +106,12 @@ export default async function ProductPage({
     notFound();
   }
 
+  const { likes_count, ...productRest } = product;
   const processedProduct: Product = {
-    ...product,
-    is_upvoted: user
-      ? (product.upvotes?.some((upvote: any) => upvote.user_id === user.id) ??
+    ...productRest,
+    likes_count,
+    is_liked: user
+      ? (product.likes?.some((like: any) => like.user_id === user.id) ??
         false)
       : false,
     founder_name: product.founder?.name,
@@ -202,7 +204,7 @@ export default async function ProductPage({
             </div>
 
             <div className="space-x-1.5 hidden lg:flex items-center justify-end">
-              <UpvoteButton product={processedProduct} size="xs" />
+              <LikeButton product={processedProduct} size="xs" />
               <a
                 href={product.website_url}
                 className="text-sm flex items-center justify-start text-muted-foreground group gap-x-1 hover:underline underline-offset-4"
@@ -216,7 +218,7 @@ export default async function ProductPage({
           </div>
 
           <div className="space-x-1.5 lg:hidden flex items-center justify-start">
-            <UpvoteButton product={processedProduct} className="text-sm" />
+            <LikeButton product={processedProduct} className="text-sm" />
             <a
               href={product.website_url}
               className="text-sm flex items-center justify-start group gap-x-1 hover:underline underline-offset-4"

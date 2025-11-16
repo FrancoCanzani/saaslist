@@ -36,7 +36,7 @@ export async function generateMetadata({
   };
 
   const periodTitle = periodTitles[period];
-  const description = `Discover the top upvoted SaaS products ${periodTitle.toLowerCase()}. See which products are trending and getting the most community support.`;
+  const description = `Discover the top liked SaaS products ${periodTitle.toLowerCase()}. See which products are trending and getting the most community support.`;
 
   return {
     title: `Top SaaS Products Leaderboard ${periodTitle} | SaasList`,
@@ -116,7 +116,7 @@ export default async function LeaderboardPage({
   let query = supabase.from("products").select(
     `
       *,
-      upvotes!left(user_id)
+      likes!left(user_id)
     `,
     { count: "exact" },
   );
@@ -130,16 +130,20 @@ export default async function LeaderboardPage({
     error,
     count,
   } = await query
-    .order("upvotes_count", { ascending: false })
+    .order("likes_count", { ascending: false })
     .range(offset, offset + limit - 1);
 
   const processedProducts =
-    products?.map((product) => ({
-      ...product,
-      is_upvoted: user
-        ? product.upvotes?.some((upvote: any) => upvote.user_id === user.id)
-        : false,
-    })) || [];
+    products?.map((product) => {
+      const { likes_count, ...rest } = product;
+      return {
+        ...rest,
+        likes_count,
+        is_liked: user
+          ? product.likes?.some((like: any) => like.user_id === user.id)
+          : false,
+      };
+    }) || [];
 
   if (error) {
     return (
@@ -151,10 +155,6 @@ export default async function LeaderboardPage({
     );
   }
 
-  const totalProducts = processedProducts.length;
-  const gridCols = 2;
-  const remainder = totalProducts % gridCols;
-  const emptyCells = remainder === 0 ? 0 : gridCols - remainder;
   const hasMore = count ? offset + limit < count : false;
 
   const periodTitles = {
@@ -171,7 +171,7 @@ export default async function LeaderboardPage({
         <div>
           <h1 className="text-xl font-medium">Leaderboard</h1>
           <h2 className="text-muted-foreground text-sm">
-            Top upvoted products {periodTitles[period].toLowerCase()}
+            Top liked products {periodTitles[period].toLowerCase()}
           </h2>
         </div>
 

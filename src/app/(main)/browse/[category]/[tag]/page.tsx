@@ -104,16 +104,23 @@ export default async function CategoryTagPage({
 
   const { data: products, error } = await supabase
     .from("products")
-    .select()
+    .select(`
+      *,
+      likes!left(user_id)
+    `)
     .contains("tags", [tag])
     .order("created_at", { ascending: false });
 
-  const processedProducts = (products || []).map((product: any) => ({
-    ...product,
-    is_upvoted: user
-      ? product.upvotes?.some((upvote: any) => upvote.user_id === user.id)
-      : false,
-  })) as Product[];
+  const processedProducts = (products || []).map((product: any) => {
+    const { likes_count, ...rest } = product;
+    return {
+      ...rest,
+      likes_count,
+      is_liked: user
+        ? product.likes?.some((like: any) => like.user_id === user.id)
+        : false,
+    };
+  }) as Product[];
 
 
   return (

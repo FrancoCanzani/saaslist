@@ -89,7 +89,7 @@ export default async function Image() {
               fontFamily: "system-ui, -apple-system, sans-serif",
             }}
           >
-            Discover, share, and upvote the best SaaS tools.
+            Discover, share, and like the best SaaS tools.
           </div>
 
           <div

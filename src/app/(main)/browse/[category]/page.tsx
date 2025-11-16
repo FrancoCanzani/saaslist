@@ -94,7 +94,7 @@ export default async function CategoryPage({
     .select(
       `
       *,
-      upvotes!left(user_id)
+      likes!left(user_id)
     `,
     )
     .order("created_at", { ascending: false });
@@ -106,12 +106,16 @@ export default async function CategoryPage({
         categoryTagsLower.includes(tag.toLowerCase()),
       );
     })
-    .map((product: any) => ({
-      ...product,
-      is_upvoted: user
-        ? product.upvotes?.some((upvote: any) => upvote.user_id === user.id)
-        : false,
-    })) as Product[];
+    .map((product: any) => {
+      const { likes_count, ...rest } = product;
+      return {
+        ...rest,
+        likes_count,
+        is_liked: user
+          ? product.likes?.some((like: any) => like.user_id === user.id)
+          : false,
+      };
+    }) as Product[];
 
   const tagCounts = new Map<string, number>();
   category.tags.forEach((tag) => {

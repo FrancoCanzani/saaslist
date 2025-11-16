@@ -7,7 +7,7 @@ import { ActionResponse } from "@/utils/types";
 import { commentSchema, reviewSchema, updateSchema } from "./schemas";
 import { generateStoragePath, generateProductImagePath, extractStoragePathFromUrl } from "./helpers";
 
-export async function handleUpvoteAction(
+export async function handleLikeAction(
   product: Product
 ): Promise<ActionResponse> {
   try {
@@ -19,13 +19,13 @@ export async function handleUpvoteAction(
     if (!user) {
       return { 
         success: false, 
-        error: "You must be logged in to upvote products" 
+        error: "You must be logged in to like products" 
       };
     }
 
-    if (product.is_upvoted) {
-      const { data: deletedUpvote, error: deleteError } = await supabase
-        .from("upvotes")
+    if (product.is_liked) {
+      const { data: deletedLike, error: deleteError } = await supabase
+        .from("likes")
         .delete()
         .eq("product_id", product.id)
         .eq("user_id", user.id)
@@ -34,7 +34,7 @@ export async function handleUpvoteAction(
       if (deleteError) {
         return { 
           success: false, 
-          error: "Failed to remove upvote. Please try again." 
+          error: "Failed to remove like. Please try again." 
         };
       }
 
@@ -42,10 +42,10 @@ export async function handleUpvoteAction(
       revalidatePath("/browse");
       revalidatePath(`/products/${product.id}`);
       
-      return { success: true, action: "removed", data: deletedUpvote };
+      return { success: true, action: "removed", data: deletedLike };
     } else {
-      const { data: insertedUpvote, error: insertError } = await supabase
-        .from("upvotes")
+      const { data: insertedLike, error: insertError } = await supabase
+        .from("likes")
         .insert({
           user_id: user.id,
           product_id: product.id,
@@ -56,13 +56,13 @@ export async function handleUpvoteAction(
         if (insertError.code === "23505") {
           return { 
             success: false, 
-            error: "You have already upvoted this product" 
+            error: "You have already liked this product" 
           };
         }
         
         return { 
           success: false, 
-          error: "Failed to add upvote. Please try again." 
+          error: "Failed to add like. Please try again." 
         };
       }
 
@@ -70,10 +70,10 @@ export async function handleUpvoteAction(
       revalidatePath("/browse");
       revalidatePath(`/products/${product.id}`);
       
-      return { success: true, action: "added", data: insertedUpvote };
+      return { success: true, action: "added", data: insertedLike };
     }
   } catch (error) {
-    console.error("Upvote action error:", error);
+    console.error("Like action error:", error);
     
     const errorMessage = error instanceof Error 
       ? error.message 
