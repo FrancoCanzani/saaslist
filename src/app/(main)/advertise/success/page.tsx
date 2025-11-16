@@ -34,7 +34,7 @@ export default function AdvertiseSuccessPage({
 
       <div className="flex gap-4 justify-center">
         <Button asChild variant="outline" size={"xs"}>
-          <Link href="/profile">View Subscription</Link>
+          <Link href="/profile">Manage Subscription</Link>
         </Button>
         <Button asChild size={"xs"}>
           <Link href="/my-products">My Products</Link>
