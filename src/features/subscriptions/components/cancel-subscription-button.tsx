@@ -35,13 +35,7 @@ export function CancelSubscriptionButton({
         toast.success("Subscription cancelled successfully");
         setOpen(false);
       } else {
-        if (result.requiresRefund) {
-          toast.error(result.error || "Failed to cancel subscription", {
-            duration: 10000,
-          });
-        } else {
-          toast.error(result.error || "Failed to cancel subscription");
-        }
+        toast.error(result.error || "Failed to cancel subscription");
       }
     });
   };
