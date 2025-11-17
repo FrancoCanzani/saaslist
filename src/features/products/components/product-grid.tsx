@@ -8,8 +8,8 @@ interface ProductGridProps {
 export default function ProductGrid({ products }: ProductGridProps) {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+      {products.map((product, index) => (
+        <ProductCard key={product.id} product={product} position={index + 1} />
       ))}
     </div>
   );

@@ -11,20 +11,14 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
     const { planType, dateRange } = body;
 
     if (!["daily", "monthly", "lifetime"].includes(planType)) {
-      return NextResponse.json(
-        { error: "Invalid plan type" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid plan type" }, { status: 400 });
     }
 
     let amount = 0;
@@ -35,19 +29,22 @@ export async function POST(request: NextRequest) {
       if (!dateRange?.from || !dateRange?.to) {
         return NextResponse.json(
           { error: "Date range is required for daily plan" },
-          { status: 400 }
+          { status: 400 },
         );
       }
       const startDate = new Date(dateRange.from);
       const endDate = new Date(dateRange.to);
-      const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+      const days =
+        Math.ceil(
+          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+        ) + 1;
       amount = days * 500; // $5 per day in cents
       description = `Daily Boost - ${days} day${days > 1 ? "s" : ""}`;
     } else if (planType === "monthly") {
-      amount = 4900; // $49 per month in cents
+      amount = 3900;
       description = "Growth Plan - Monthly";
     } else if (planType === "lifetime") {
-      amount = 99900; // $999 in cents
+      amount = 19900;
       description = "Lifetime Plan";
     }
 
@@ -76,10 +73,11 @@ export async function POST(request: NextRequest) {
       metadata: {
         user_id: user.id,
         plan_type: planType,
-        ...(planType === "daily" && dateRange && {
-          start_date: new Date(dateRange.from).toISOString(),
-          end_date: new Date(dateRange.to).toISOString(),
-        }),
+        ...(planType === "daily" &&
+          dateRange && {
+            start_date: new Date(dateRange.from).toISOString(),
+            end_date: new Date(dateRange.to).toISOString(),
+          }),
       },
       customer_email: user.email || undefined,
     };
@@ -102,10 +100,11 @@ export async function POST(request: NextRequest) {
       stripe_checkout_session_id: session.id,
       status: "pending",
       amount_paid: amount,
-      ...(planType === "daily" && dateRange && {
-        start_date: new Date(dateRange.from).toISOString(),
-        end_date: new Date(dateRange.to).toISOString(),
-      }),
+      ...(planType === "daily" &&
+        dateRange && {
+          start_date: new Date(dateRange.from).toISOString(),
+          end_date: new Date(dateRange.to).toISOString(),
+        }),
     };
 
     const { error: insertError } = await supabase
@@ -121,8 +120,7 @@ export async function POST(request: NextRequest) {
     console.error("Checkout error:", error);
     return NextResponse.json(
       { error: "Failed to create checkout session" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

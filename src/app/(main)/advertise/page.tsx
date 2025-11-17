@@ -41,7 +41,7 @@ const pricingPlans = [
     id: "monthly",
     name: "Growth Plan",
     type: "fixed",
-    price: 49,
+    price: 39,
     description: "Best value for sustained visibility and growth.",
     features: [
       "Featured on homepage marquee",
@@ -55,7 +55,7 @@ const pricingPlans = [
     id: "lifetime",
     name: "Lifetime",
     type: "fixed",
-    price: 999,
+    price: 199,
     description: "One-time payment for permanent premium visibility.",
     features: [
       "Permanent featured status",
@@ -131,10 +131,13 @@ export default function AdvertisePage() {
         },
         body: JSON.stringify({
           planType,
-          dateRange: planType === "daily" ? {
-            from: dateRange?.from?.toISOString(),
-            to: dateRange?.to?.toISOString(),
-          } : undefined,
+          dateRange:
+            planType === "daily"
+              ? {
+                  from: dateRange?.from?.toISOString(),
+                  to: dateRange?.to?.toISOString(),
+                }
+              : undefined,
         }),
       });
 
@@ -152,7 +155,7 @@ export default function AdvertisePage() {
     } catch (error) {
       console.error("Checkout error:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to start checkout"
+        error instanceof Error ? error.message : "Failed to start checkout",
       );
       setProcessing(null);
     }

@@ -46,14 +46,14 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500"
+          className="flex items-center justify-center size-7 rounded bg-gray-200 hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500"
           aria-label="Profile menu"
         >
           {profile.avatar_url ? (
             <img
               src={profile.avatar_url}
               alt={profile.name || "User"}
-              className="w-8 h-8 rounded-full object-cover"
+              className="size-7 rounded object-cover"
               onError={(e) => {
                 console.log("Image failed to load:", profile.avatar_url);
                 e.currentTarget.style.display = "none";

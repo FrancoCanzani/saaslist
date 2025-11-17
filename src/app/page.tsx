@@ -59,7 +59,7 @@ export default async function Home() {
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Free to submit • No credit card required • Launch in minutes
+            Free to submit • No credit card required • No waitlist
           </p>
         </div>
       </div>
