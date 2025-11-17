@@ -9,9 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { useDebounce } from "use-debounce";
 import { Product } from "@/features/products/types";
-import { X } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ProductLogo from "@/features/products/components/product-logo";
 import { Button } from "@/components/ui/button";
@@ -28,7 +26,6 @@ export function ProductSearchDialog() {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 300);
-  const router = useRouter();
 
   const { data: results = [], isLoading } = useQuery({
     queryKey: ["product-search", debouncedSearch],

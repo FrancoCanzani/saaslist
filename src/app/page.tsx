@@ -31,12 +31,12 @@ export default async function Home() {
       <div className="w-full py-12 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
         <Link
           href={"#"}
-          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-blaze-orange/10 dark:bg-background dark:border dark:border-blaze-orange/20 dark:hover:border-blaze-orange/30 transition-all duration-200 rounded px-2 py-0.5 dark:shadow-blaze-orange/10 dark:shadow-xl"
+          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-violet-50 dark:bg-background dark:border dark:border-violet-50/50 dark:hover:border-violet-50 transition-all duration-200 rounded px-2 py-0.5 dark:shadow-violet-50/10 dark:shadow-xl"
         >
           Join our affiliate program
         </Link>
         <div className="space-y-4 relative">
-          <h1 className="custom-selection text-5xl sm:text-6xl xl:text-7xl leading-tight font-mono font-extralight tracking-tighter xl:leading-tight text-balance relative z-10">
+          <h1 className="text-5xl sm:text-6xl xl:text-7xl leading-tight font-mono font-extralight tracking-tighter xl:leading-tight text-balance relative z-10">
             Get Noticed. Get Users. Get Results.
           </h1>
           <p className="text-muted-foreground text-sm md:text-base text-balance relative z-10">
@@ -50,7 +50,7 @@ export default async function Home() {
               asChild
               variant={"secondary"}
               size={"lg"}
-              className="bg-blaze-orange/10 rounded-xl dark:bg-blaze-orange/10 hover:bg-blaze-orange/20 dark:hover:hover:bg-blaze-orange/20"
+              className="bg-violet-50 rounded-xl dark:bg-[#02010a] hover:bg-violet-100"
             >
               <Link href={"/products/new"}>Submit your SaaS</Link>
             </Button>

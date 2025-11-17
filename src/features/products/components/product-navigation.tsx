@@ -35,8 +35,8 @@ export function ProductNavigation({
             className="w-full justify-start gap-2 h-auto py-2"
             asChild
           >
-            <Link href={`/products/${prevProduct.id}`}>
-              <ChevronLeft className="size-4 shrink-0 text-blaze-orange" />
+            <Link href={`/products/${prevProduct.id}`} prefetch>
+              <ChevronLeft className="size-4 shrink-0" />
               <div className="size-6 flex items-center justify-center shrink-0">
                 <ProductLogo
                   logoUrl={prevProduct.logo_url}
@@ -79,7 +79,7 @@ export function ProductNavigation({
                   {nextProduct.name}
                 </span>
               </div>
-              <ChevronRight className="size-4 shrink-0 text-blaze-orange" />
+              <ChevronRight className="size-4 shrink-0" />
             </Link>
           </Button>
         )}

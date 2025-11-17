@@ -29,7 +29,7 @@ export default async function BlogPage() {
           {posts.map((post) => (
             <article
               key={post.slug}
-              className="border rounded p-6 hover:border-blaze-orange transition-colors"
+              className="border rounded p-6 transition-colors"
             >
               <h2 className="text-xl font-medium mb-2 ">{post.title}</h2>
               {post.excerpt && (
@@ -43,10 +43,7 @@ export default async function BlogPage() {
                     {format(new Date(post.date), "MMMM d, yyyy")}
                   </time>
                 )}
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="text-blaze-orange hover:underline"
-                >
+                <Link href={`/blog/${post.slug}`} className="hover:underline">
                   Read more →
                 </Link>
               </div>

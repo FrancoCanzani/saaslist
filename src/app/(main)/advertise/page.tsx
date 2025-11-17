@@ -194,11 +194,8 @@ export default function AdvertisePage() {
                   <Badge className="rounded shrink-0">Popular</Badge>
                 )}
                 {plan.id === "lifetime" && (
-                  <Badge
-                    variant="secondary"
-                    className="rounded bg-blaze-orange/10 text-blaze-orange border-blaze-orange/20 shrink-0 text-xs"
-                  >
-                    13/50 spots
+                  <Badge variant="secondary" className="rounded text-xs">
+                    Limited spots
                   </Badge>
                 )}
               </div>
@@ -291,7 +288,7 @@ export default function AdvertisePage() {
                 <ul className="space-y-2.5">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2.5">
-                      <Check className="size-4 text-blaze-orange shrink-0 mt-0.5" />
+                      <Check className="size-4 shrink-0 mt-0.5" />
                       <span className="text-sm leading-relaxed">{feature}</span>
                     </li>
                   ))}

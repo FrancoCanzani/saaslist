@@ -26,17 +26,19 @@ export default async function Header() {
         <Link href={"/advertise"}>Advertise</Link>
       </div>
       <div className="flex items-center gap-4">
-        <ProductSearchDialog />
         <MobileNav />
         {user ? (
           <>
             <Button
-              className="bg-blaze-orange/10 dark:bg-blaze-orange/10 hover:bg-blaze-orange/20 dark:hover:hover:bg-blaze-orange/20"
+              className="bg-violet-50 dark:bg-[#02010a] hover:bg-violet-100"
               size={"xs"}
               variant={"secondary"}
             >
               <Link href={"/products/new"}>New Product</Link>
             </Button>
+
+            <ProductSearchDialog />
+
             {profile ? (
               <Suspense
                 fallback={<Skeleton className="w-8 h-8 rounded-full" />}
@@ -52,7 +54,7 @@ export default async function Header() {
             )}
           </>
         ) : (
-          <Link href="/login" className="font-medium">
+          <Link href="/login" className="font-medium text-xs">
             Sign In
           </Link>
         )}

@@ -28,31 +28,25 @@ export default function ProductSidebar({
   return (
     <div className="w-80 hidden md:block shrink-0 space-y-6">
       <div>
-        <h4 className="font-medium">
+        <div className="font-medium flex items-center justify-start gap-x-1">
           Launched{" "}
           {formatDistanceToNowStrict(new Date(product.created_at), {
             addSuffix: true,
-          })}
-        </h4>
+          })}{" "}
+          by{" "}
+          <Link
+            href={`/founders/${product.user_id}`}
+            className="flex underline hover:text-blue-600 items-center justify-start gap-x-1 hover:underline"
+          >
+            {product.founder_name}
+          </Link>
+        </div>
       </div>
 
       <ProductNavigation
         prevProduct={prevProduct ?? null}
         nextProduct={nextProduct ?? null}
       />
-
-      {product.founder_name && (
-        <div>
-          <h4 className="font-medium mb-2 text-sm">Founder</h4>
-          <Link
-            href={`/founders/${product.user_id}`}
-            className="text-sm font-medium group flex items-center justify-start gap-x-1 hover:underline"
-          >
-            {product.founder_name}
-            <ArrowRight className="size-3 opacity-0 group-hover:opacity-100 transition-all duration-300" />
-          </Link>
-        </div>
-      )}
 
       {product.platforms && product.platforms.length > 0 && (
         <div>

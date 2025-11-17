@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -118,12 +119,13 @@ export function ProductShare({
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <button
+              <Button
+                variant={"secondary"}
+                size={"xs"}
                 onClick={handleCopyLink}
-                className="size-8 sm:size-6 rounded bg-gray-50 hover:bg-gray-100 dark:bg-neutral-950 flex items-center justify-center transition-colors"
               >
                 <LinkIcon className="size-3" />
-              </button>
+              </Button>
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-xs">Copy link</p>
@@ -133,14 +135,11 @@ export function ProductShare({
           {shareButtons.map((button) => (
             <Tooltip key={button.name}>
               <TooltipTrigger asChild>
-                <a
-                  href={button.href}
-                  target="_blank"
-                  rel="noopener"
-                  className="size-8 sm:size-6 rounded bg-gray-50 hover:bg-gray-100 dark:bg-neutral-950 flex items-center justify-center transition-colors"
-                >
-                  {button.icon}
-                </a>
+                <Button asChild variant={"secondary"} size={"xs"}>
+                  <a href={button.href} target="_blank" rel="noopener">
+                    {button.icon}
+                  </a>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p className="text-xs">Share on {button.name}</p>
