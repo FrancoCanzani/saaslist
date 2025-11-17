@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import { useDebounce } from "@/hooks/use-debounce";
+import { useDebounce } from "use-debounce";
 
 const trackProductView = async (productId: string) => {
   const response = await fetch(`/api/products/${productId}/view`, {
@@ -23,7 +23,7 @@ const trackProductView = async (productId: string) => {
 
 export function ProductViewTracker({ productId }: { productId: string }) {
   const pathname = usePathname();
-  const debounced = useDebounce(productId, 1000);
+  const [debounced] = useDebounce(productId, 1000);
 
   const { mutate } = useMutation({
     mutationFn: trackProductView,

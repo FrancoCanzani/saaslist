@@ -1,10 +1,24 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ProductActionsDropdown } from "@/features/products/components/product-actions-dropdown";
-import { FeatureToggle } from "@/features/products/components/feature-toggle";
 import ProductLogo from "@/features/products/components/product-logo";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+export const metadata: Metadata = {
+  title: "My Products | SaasList",
+  description: "Manage and track your product launches on SaasList. View analytics, edit listings, and monitor performance.",
+  alternates: {
+    canonical: `${baseUrl}/my-products`,
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function MyProductsPage() {
   const supabase = await createClient();
@@ -71,10 +85,6 @@ export default async function MyProductsPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-4 shrink-0">
-                  <FeatureToggle
-                    productId={product.id}
-                    isFeatured={product.is_featured || false}
-                  />
                   <ProductActionsDropdown
                     productId={product.id}
                     productName={product.name}

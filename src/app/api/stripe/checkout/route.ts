@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       amount = days * 500; // $5 per day in cents
       description = `Daily Boost - ${days} day${days > 1 ? "s" : ""}`;
     } else if (planType === "monthly") {
-      amount = 1900; // $19 per month in cents
+      amount = 4900; // $49 per month in cents
       description = "Growth Plan - Monthly";
     } else if (planType === "lifetime") {
       amount = 99900; // $999 in cents

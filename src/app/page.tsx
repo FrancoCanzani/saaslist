@@ -8,8 +8,20 @@ import ProductsMarquee from "@/features/products/components/products-marquee";
 import ProductsMarqueeSkeleton from "@/components/skeletons/products-marquee-skeleton";
 import Link from "next/link";
 import { Suspense } from "react";
+import type { Metadata } from "next";
 
-export const revalidate = 600; // Revalidate every 10 minutes
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+export const metadata: Metadata = {
+  title: "SaasList - Discover & Share the Best SaaS Products",
+  description:
+    "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
+  alternates: {
+    canonical: baseUrl,
+  },
+};
+
+export const revalidate = 600;
 
 export default async function Home() {
   return (
@@ -21,7 +33,7 @@ export default async function Home() {
           href={"#"}
           className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-blaze-orange/10 dark:bg-background dark:border dark:border-blaze-orange/20 dark:hover:border-blaze-orange/30 transition-all duration-200 rounded px-2 py-0.5 dark:shadow-blaze-orange/10 dark:shadow-xl"
         >
-          Join our afiliate program
+          Join our affiliate program
         </Link>
         <div className="space-y-4 relative">
           <h1 className="custom-selection text-5xl sm:text-6xl xl:text-7xl leading-tight font-mono font-extralight tracking-tighter xl:leading-tight text-balance relative z-10">

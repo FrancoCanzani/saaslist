@@ -30,12 +30,9 @@ const pricingPlans = [
     pricePerDay: 5,
     description: "Perfect for product launches and short campaigns.",
     features: [
-      "Featured on homepage rotation",
-      "Highlighted in your category listings",
-      "Pinned to top of relevant tags",
-      "'Sponsored' badge on your listing",
-      "1 newsletter feature placement",
-      "Priority email support",
+      "Featured on homepage marquee",
+      "Featured badge on your product listing",
+      "Products marked as featured",
     ],
     cta: "Get started",
     popular: false,
@@ -44,17 +41,12 @@ const pricingPlans = [
     id: "monthly",
     name: "Growth Plan",
     type: "fixed",
-    price: 19,
+    price: 49,
     description: "Best value for sustained visibility and growth.",
     features: [
-      "Featured on homepage for 30 days",
-      "Pinned position in all relevant categories",
-      "Premium highlight styling on all listings",
-      "4 newsletter feature placements",
-      "Highlighted in browse page",
-      "Social media mention (1x)",
-      "Priority support",
-      "Weekly performance report",
+      "Featured on homepage marquee",
+      "Featured badge on your product listing",
+      "Products marked as featured for 30 days",
     ],
     cta: "Get started",
     popular: true,
@@ -66,15 +58,10 @@ const pricingPlans = [
     price: 999,
     description: "One-time payment for permanent premium visibility.",
     features: [
-      "Permanent homepage featured rotation",
-      "Always pinned in relevant categories",
-      "Exclusive 'Partner' badge",
-      "Unlimited newsletter placements",
-      "Featured in monthly roundup posts",
-      "Monthly social media mentions",
-      "Custom featured section (optional)",
-      "Dedicated account manager",
-      "Priority in all future features",
+      "Permanent featured status",
+      "Featured on homepage marquee",
+      "Featured badge on your product listing",
+      "Products always marked as featured",
     ],
     cta: "Get started",
     popular: false,
@@ -83,39 +70,34 @@ const pricingPlans = [
 
 const faqs = [
   {
-    question: "How quickly will my sponsored listing go live?",
+    question: "How quickly will my product be featured?",
     answer:
-      "Your sponsored listing goes live within 24 hours of payment confirmation. We'll send you a confirmation email once it's active.",
+      "Your product will be marked as featured within 24 hours of payment confirmation. We'll send you a confirmation email once it's active.",
   },
   {
     question: "Where exactly will my product be featured?",
     answer:
-      "Your product will appear in multiple places: homepage featured rotation (alongside top products), pinned to the top of relevant category pages, highlighted in tag pages, and featured in our weekly newsletter sent every Sunday.",
+      "Featured products appear in the homepage marquee (rotating display of product logos) and display a featured badge on their product listing page. The featured badge helps your product stand out to visitors.",
   },
   {
-    question: "Can I choose which categories my product is featured in?",
+    question: "What does the featured badge look like?",
     answer:
-      "Yes! When you upgrade, you'll select the categories and tags that match your product. Your product will then be prominently featured in those specific sections for maximum relevant exposure.",
+      "The featured badge appears on your product card with a gold olive branch icon and 'Featured' text, making your product easily identifiable as a featured listing.",
   },
   {
     question: "Can I pause or cancel my plan?",
     answer:
-      "Daily plans run for your selected dates and end automatically. Monthly plans can be cancelled anytime with no penalty. Lifetime plans are non-refundable but include unlimited modifications and support.",
-  },
-  {
-    question: "How does the newsletter feature work?",
-    answer:
-      "Our newsletter goes out every Sunday to all subscribers. Featured products are showcased with logo, tagline, description, and a direct link. Daily plans get 1 placement, Monthly plans get 4 placements (one per week), and Lifetime plans get monthly features.",
+      "Daily plans run for your selected dates and end automatically. Monthly plans can be cancelled anytime with no penalty. Lifetime plans are non-refundable but provide permanent featured status.",
   },
   {
     question: "What makes this different from a free listing?",
     answer:
-      "Free listings are sorted by upvotes and recency, competing with all other products. Sponsored listings get permanent visibility in featured sections, highlighted styling with badges, newsletter placements, and priority positioning in categories regardless of upvotes.",
+      "Free listings are sorted by upvotes and recency, competing with all other products. Featured listings appear in the homepage marquee and display a featured badge, giving them increased visibility and credibility.",
   },
   {
     question: "Do you offer custom or enterprise plans?",
     answer:
-      "Yes! For multiple products, larger campaigns, or specific needs, contact us for custom packages with additional features and dedicated account management.",
+      "For multiple products, larger campaigns, or specific needs, please contact us to discuss custom packages and additional features.",
   },
 ];
 

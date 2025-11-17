@@ -70,6 +70,7 @@
         "sonner": "^2.0.7",
         "stripe": "^19.3.1",
         "tailwind-merge": "^3.3.1",
+        "tailwindcss-corner-shape": "^1.4.6",
         "use-debounce": "^10.0.6",
         "vaul": "^1.1.2",
         "zod": "^4.1.12",
@@ -1513,6 +1514,8 @@
     "tailwind-merge": ["tailwind-merge@3.3.1", "", {}, "sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g=="],
 
     "tailwindcss": ["tailwindcss@4.1.15", "", {}, "sha512-k2WLnWkYFkdpRv+Oby3EBXIyQC8/s1HOFMBUViwtAh6Z5uAozeUSMQlIsn/c6Q2iJzqG6aJT3wdPaRNj70iYxQ=="],
+
+    "tailwindcss-corner-shape": ["tailwindcss-corner-shape@1.4.6", "", { "peerDependencies": { "tailwindcss": ">=3.0.0" }, "bin": { "tailwindcss-corner-shape": "cli.js" } }, "sha512-Uc1K+3Z21GOkQKdHrDuuipwpKQ8SEe/I9rV75UCnZBgAwSyfSHXpy37nGKEuqlXonfVsPsoUt1YN04lfAl5bEw=="],
 
     "tapable": ["tapable@2.3.0", "", {}, "sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg=="],
 

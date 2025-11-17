@@ -103,7 +103,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/#"
+                  href="/privacy"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Privacy Policy
@@ -111,18 +111,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#"
+                  href="/terms"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Cookie Policy
                 </Link>
               </li>
             </ul>

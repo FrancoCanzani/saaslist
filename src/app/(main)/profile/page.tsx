@@ -1,9 +1,24 @@
 import { ProfileForm } from "@/features/profiles/components/profile-form";
 import { getCurrentUser } from "@/features/profiles/api";
-import { getActiveSubscription, getUserSubscriptions } from "@/features/subscriptions/actions";
+import { getActiveSubscription } from "@/features/subscriptions/queries";
 import { SubscriptionInfo } from "@/features/subscriptions/components/subscription-info";
 import { redirect } from "next/navigation";
 import { format } from "date-fns";
+import type { Metadata } from "next";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+export const metadata: Metadata = {
+  title: "My Profile | SaasList",
+  description: "Manage your profile information, subscriptions, and account settings on SaasList.",
+  alternates: {
+    canonical: `${baseUrl}/profile`,
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function ProfilePage() {
   const { user, profile } = await getCurrentUser();
@@ -12,10 +27,7 @@ export default async function ProfilePage() {
     redirect("/login");
   }
 
-  const [activeSubscription, allSubscriptions] = await Promise.all([
-    getActiveSubscription(),
-    getUserSubscriptions(),
-  ]);
+  const activeSubscription = await getActiveSubscription();
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-8">
@@ -38,19 +50,6 @@ export default async function ProfilePage() {
           </div>
         )}
 
-        {allSubscriptions.length > 0 && (
-          <div className="pt-8 border-t space-y-4">
-            <div>
-              <h3 className="text-sm font-medium mb-4">Subscription History</h3>
-              <div className="space-y-4">
-                {allSubscriptions.map((subscription) => (
-                  <SubscriptionInfo key={subscription.id} subscription={subscription} />
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
         <div className="pt-8 border-t space-y-4">
           <div>
             <h3 className="text-sm font-medium mb-2">Account Information</h3>
@@ -62,17 +61,6 @@ export default async function ProfilePage() {
                 <span className="font-medium">Account Created:</span>{" "}
                 {format(new Date(user.created_at), "MMM d, yyyy")}
               </div>
-              {profile?.is_featured && (
-                <div>
-                  <span className="font-medium">Featured Status:</span>{" "}
-                  <span className="text-green-600 dark:text-green-400">Active</span>
-                  {profile.featured_until && (
-                    <span className="ml-2">
-                      (until {format(new Date(profile.featured_until), "MMM d, yyyy")})
-                    </span>
-                  )}
-                </div>
-              )}
             </div>
           </div>
         </div>

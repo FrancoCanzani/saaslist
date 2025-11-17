@@ -1,5 +1,17 @@
 import { NewsletterForm } from "@/features/newsletter/components/newsletter-form";
 import { getCurrentUser } from "@/features/profiles/api";
+import type { Metadata } from "next";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+export const metadata: Metadata = {
+  title: "Weekly Drops Newsletter | SaasList",
+  description:
+    "Get the best SaaS products of the week delivered to your inbox every Sunday. Stay updated with the latest tools and innovations.",
+  alternates: {
+    canonical: `${baseUrl}/newsletter`,
+  },
+};
 
 export default async function NewsletterPage() {
   const { user, profile } = await getCurrentUser();

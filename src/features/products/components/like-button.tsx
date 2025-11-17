@@ -55,30 +55,16 @@ export default function LikeButton({
 
   return (
     <Button
-      variant={"secondary"}
+      variant={"outline"}
       size={size}
-      className={cn(
-        "bg-blaze-orange/10 hover:bg-blaze-orange/20 text-black dark:bg-secondary dark:text-white dark:hover:bg-secondary/80",
-        optimisticProduct.is_liked &&
-          "font-medium bg-emerald-100 hover:bg-emerald-50",
-        isPending && "animate-pulse",
-        className,
-      )}
+      className={cn("", isPending && "animate-pulse", className)}
       onClick={handleLike}
     >
       <Heart
-        className={cn(
-          "size-3.5",
-          optimisticProduct.is_liked && "fill-current"
-        )}
+        className={cn("size-3.5", optimisticProduct.is_liked && "fill-red-600")}
       />{" "}
-      {optimisticProduct.is_liked ? (
-        <span>Liked</span>
-      ) : (
-        <span>Like</span>
-      )}
-      ({optimisticProduct.likes_count})
+      {optimisticProduct.is_liked ? <span>Liked</span> : <span>Like</span>}
+      <span className="border-l pl-2">{optimisticProduct.likes_count}</span>
     </Button>
   );
 }
-

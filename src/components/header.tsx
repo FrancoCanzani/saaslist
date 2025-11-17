@@ -1,7 +1,10 @@
 import { MobileNav } from "@/components/mobile-nav";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentUser } from "@/features/profiles/api";
 import { ProfileDropdown } from "@/features/profiles/components/Profile-dropdown";
+import { ProductSearchDialog } from "@/components/product-search";
+import { Suspense } from "react";
 import Link from "next/link";
 
 export default async function Header() {
@@ -23,6 +26,7 @@ export default async function Header() {
         <Link href={"/advertise"}>Advertise</Link>
       </div>
       <div className="flex items-center gap-4">
+        <ProductSearchDialog />
         <MobileNav />
         {user ? (
           <>
@@ -34,7 +38,11 @@ export default async function Header() {
               <Link href={"/products/new"}>New Product</Link>
             </Button>
             {profile ? (
-              <ProfileDropdown profile={profile} />
+              <Suspense
+                fallback={<Skeleton className="w-8 h-8 rounded-full" />}
+              >
+                <ProfileDropdown profile={profile} />
+              </Suspense>
             ) : (
               <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                 <span className="text-sm font-medium text-muted-foreground">

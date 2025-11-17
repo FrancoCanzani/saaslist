@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/server";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import Stripe from "stripe";
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     console.error("Webhook signature verification failed.", err);
     return NextResponse.json(
       { error: "Webhook signature verification failed." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -76,10 +76,10 @@ export async function POST(request: NextRequest) {
 
 async function handleCheckoutCompleted(
   supabase: any,
-  session: Stripe.Checkout.Session
+  session: Stripe.Checkout.Session,
 ) {
   console.log("Processing checkout.session.completed", session.id);
-  
+
   if (session.payment_status !== "paid") {
     console.log("Payment not completed, status:", session.payment_status);
     return;
@@ -125,7 +125,7 @@ async function handleCheckoutCompleted(
       .from("subscriptions")
       .update(subscriptionData)
       .eq("id", existingSubscription.id);
-    
+
     if (error) console.error("Error updating subscription:", error);
     else console.log("✅ Subscription updated:", existingSubscription.id);
   } else {
@@ -140,7 +140,7 @@ async function handleCheckoutCompleted(
       end_date: endDate,
       amount_paid: session.amount_total || 0,
     });
-    
+
     if (error) console.error("Error creating subscription:", error);
     else console.log("✅ Subscription created");
   }
@@ -148,7 +148,7 @@ async function handleCheckoutCompleted(
 
 async function handleCheckoutFailed(
   supabase: any,
-  session: Stripe.Checkout.Session
+  session: Stripe.Checkout.Session,
 ) {
   console.log("Processing checkout.session.async_payment_failed", session.id);
 
@@ -177,7 +177,7 @@ async function handleCheckoutFailed(
 
 async function handleSubscriptionUpdated(
   supabase: any,
-  subscription: Stripe.Subscription
+  subscription: Stripe.Subscription,
 ) {
   const { data: existingSubscription } = await supabase
     .from("subscriptions")
@@ -207,7 +207,7 @@ async function handleSubscriptionUpdated(
 
 async function handleSubscriptionDeleted(
   supabase: any,
-  subscription: Stripe.Subscription
+  subscription: Stripe.Subscription,
 ) {
   await supabase
     .from("subscriptions")
@@ -220,7 +220,7 @@ async function handleSubscriptionDeleted(
 
 async function handlePaymentSucceeded(
   supabase: any,
-  paymentIntent: Stripe.PaymentIntent
+  paymentIntent: Stripe.PaymentIntent,
 ) {
   const { data: subscription } = await supabase
     .from("subscriptions")
@@ -247,7 +247,7 @@ async function handlePaymentSucceeded(
 
 async function handlePaymentFailed(
   supabase: any,
-  paymentIntent: Stripe.PaymentIntent
+  paymentIntent: Stripe.PaymentIntent,
 ) {
   const { data: subscription } = await supabase
     .from("subscriptions")

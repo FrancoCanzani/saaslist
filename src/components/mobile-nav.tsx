@@ -8,14 +8,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menu } from "lucide-react";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export function MobileNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="md:hidden">
-        <button aria-label="Navigation menu">
+        <Button         variant="ghost"
+        size="xs" aria-label="Navigation menu">
           <Menu className="size-4" />
-        </button>
+        </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-48">
