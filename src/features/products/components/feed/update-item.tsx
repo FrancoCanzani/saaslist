@@ -13,8 +13,8 @@ import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { deleteUpdateAction } from "../actions";
-import { Update } from "../types";
+import { deleteUpdateAction } from "../../actions";
+import { Update } from "../../types";
 import { UpdateForm } from "./update-form";
 
 interface UpdateItemProps {

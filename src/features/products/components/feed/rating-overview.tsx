@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
-import { Review } from "../types";
+import { Review } from "../../types";
 import StarRating from "./star-rating";
 
 interface RatingOverviewProps {

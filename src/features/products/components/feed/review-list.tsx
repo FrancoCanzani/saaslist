@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/select";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { useMemo } from "react";
-import { sortReviews } from "../helpers";
-import { Review, ReviewSortOption } from "../types";
+import { sortReviews } from "../../helpers";
+import { Review, ReviewSortOption } from "../../types";
 import ReviewItem from "./review-item";
 
 interface ReviewListProps {

@@ -5,9 +5,9 @@ import {
   MarqueeItem,
 } from "@/components/ui/marquee";
 import { createClient } from "@/lib/supabase/server";
-import { Product } from "../types";
 import Image from "next/image";
 import Link from "next/link";
+import { Product } from "../types";
 
 async function getFeaturedProducts(): Promise<Product[]> {
   const supabase = await createClient();
@@ -34,7 +34,7 @@ export default async function ProductsMarquee() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
       <div className="space-y-6">
         <h2 className="capitalize text-muted-foreground leading-tight text-center text-sm">
           Trusted by these Featured Products

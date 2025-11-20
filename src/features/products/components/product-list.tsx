@@ -1,7 +1,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { createClient } from "@/lib/supabase/server";
 import { Product } from "../types";
-import ProductGrid from "./product-grid";
+import ProductCard from "./product-card";
 
 export default async function ProductList({
   date,
@@ -107,7 +107,15 @@ export default async function ProductList({
   return (
     <div className="space-y-6">
       <h2 className="text-xl leading-tight font-medium">{title}</h2>
-      <ProductGrid products={processedProducts} />
+      <div className="space-y-4 flex flex-col">
+        {processedProducts.map((product, index) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            position={index + 1}
+          />
+        ))}
+      </div>
     </div>
   );
 }

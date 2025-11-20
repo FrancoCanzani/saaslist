@@ -16,8 +16,8 @@ import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { deleteReviewAction } from "../actions";
-import { Review } from "../types";
+import { deleteReviewAction } from "../../actions";
+import { Review } from "../../types";
 import StarRating from "./star-rating";
 
 interface ReviewItemProps {

@@ -30,7 +30,7 @@ export default function ProductLogo({
   }
 
   return (
-    <div className="size-9 flex items-center font-medium justify-start p-2">
+    <div className="size-9 flex items-center font-medium justify-center p-2">
       {productName.split("")[0]}
     </div>
   );

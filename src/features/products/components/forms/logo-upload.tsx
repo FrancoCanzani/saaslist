@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { validateLogoFile } from "../helpers";
+import { validateLogoFile } from "../../helpers";
 import { FileDropzone } from "./file-dropzone";
 
 interface LogoUploadProps {

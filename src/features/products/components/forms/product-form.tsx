@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { z } from "zod";
-import { productSchema } from "../schemas";
+import { productSchema } from "../../schemas";
 import { ImagesUpload } from "./images-upload";
 import { LogoUpload } from "./logo-upload";
 import TagSelector from "./tag-selector";

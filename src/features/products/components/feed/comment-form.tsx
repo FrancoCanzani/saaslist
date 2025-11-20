@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { createCommentAction, updateCommentAction } from "../actions";
+import { createCommentAction, updateCommentAction } from "../../actions";
 
 interface CommentFormProps {
   productId: string;

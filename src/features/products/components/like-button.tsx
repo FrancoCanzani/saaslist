@@ -62,9 +62,13 @@ export default function LikeButton({
     >
       <Heart
         className={cn("size-3.5", optimisticProduct.is_liked && "fill-red-600")}
-      />{" "}
-      {optimisticProduct.is_liked ? <span>Liked</span> : <span>Like</span>}
-      <span className="border-l pl-2">{optimisticProduct.likes_count}</span>
+      />
+      <span className="hidden md:block">
+        {optimisticProduct.is_liked ? "Liked" : "Like"}
+      </span>
+      <span className="md:border-l md:pl-2">
+        {optimisticProduct.likes_count}
+      </span>
     </Button>
   );
 }

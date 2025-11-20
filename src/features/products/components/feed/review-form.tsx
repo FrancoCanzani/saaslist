@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { createReviewAction } from "../actions";
+import { createReviewAction } from "../../actions";
 import StarRating from "./star-rating";
 
 interface ReviewFormProps {

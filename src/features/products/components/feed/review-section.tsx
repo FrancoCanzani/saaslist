@@ -2,7 +2,7 @@
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
-import { Review } from "../types";
+import { Review } from "../../types";
 import RatingOverview from "./rating-overview";
 import ReviewForm from "./review-form";
 import ReviewList from "./review-list";

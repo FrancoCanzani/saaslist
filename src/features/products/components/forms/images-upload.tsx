@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { validateImageFiles } from "../helpers";
+import { validateImageFiles } from "../../helpers";
 import { FileDropzone } from "./file-dropzone";
 
 interface ImagesUploadProps {

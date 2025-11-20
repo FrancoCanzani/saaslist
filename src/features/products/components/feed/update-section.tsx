@@ -2,7 +2,7 @@
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
-import { Update } from "../types";
+import { Update } from "../../types";
 import { UpdateForm } from "./update-form";
 import { UpdateItem } from "./update-item";
 

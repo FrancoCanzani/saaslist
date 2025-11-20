@@ -11,8 +11,8 @@ import {
 import { useRouter } from "next/navigation";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { useMemo } from "react";
-import { buildCommentTree, sortComments } from "../helpers";
-import { Comment, SortOption } from "../types";
+import { buildCommentTree, sortComments } from "../../helpers";
+import { Comment, SortOption } from "../../types";
 import CommentForm from "./comment-form";
 import CommentList from "./comment-list";
 

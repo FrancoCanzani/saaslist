@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import {
   createUpdateAction,
   updateUpdateAction,
-} from "../actions";
+} from "../../actions";
 
 interface UpdateFormProps {
   productId: string;

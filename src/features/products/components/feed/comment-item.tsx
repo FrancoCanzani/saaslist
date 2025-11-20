@@ -18,8 +18,8 @@ import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { deleteCommentAction, flagCommentAction } from "../actions";
-import { Comment } from "../types";
+import { deleteCommentAction, flagCommentAction } from "../../actions";
+import { Comment } from "../../types";
 import CommentForm from "./comment-form";
 
 interface CommentItemProps {
@@ -206,7 +206,9 @@ export default function CommentItem({
           ) : (
             <div
               className="prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(comment.content) }}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(comment.content),
+              }}
             />
           )}
 

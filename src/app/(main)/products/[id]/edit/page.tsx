@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductForm } from "@/features/products/components/product-form";
+import { ProductForm } from "@/features/products/components/forms/product-form";
 import { useProduct } from "@/features/products/queries";
 import { useUpdateProduct } from "@/features/products/mutations";
 import { productSchema } from "@/features/products/schemas";
