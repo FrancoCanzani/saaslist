@@ -4,9 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProductNavigation } from "@/features/products/components/product-navigation";
 import { ProductShare } from "@/features/products/components/product-share";
 import { Product } from "@/features/products/types";
-import { formatDistanceToNowStrict } from "date-fns";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 interface NavigationProduct {
   id: string;
@@ -27,22 +25,6 @@ export default function ProductSidebar({
 }: ProductSidebarProps) {
   return (
     <div className="w-80 hidden md:block shrink-0 space-y-6">
-      <div>
-        <div className="font-medium flex items-center justify-start gap-x-1">
-          Launched{" "}
-          {formatDistanceToNowStrict(new Date(product.created_at), {
-            addSuffix: true,
-          })}{" "}
-          by{" "}
-          <Link
-            href={`/founders/${product.user_id}`}
-            className="flex underline hover:text-blue-600 items-center justify-start gap-x-1 hover:underline"
-          >
-            {product.founder_name}
-          </Link>
-        </div>
-      </div>
-
       <ProductNavigation
         prevProduct={prevProduct ?? null}
         nextProduct={nextProduct ?? null}

@@ -1,8 +1,8 @@
-import ProductGrid from "@/features/products/components/product-grid";
+import ProductCard from "@/features/products/components/product-card";
 import { Product } from "@/features/products/types";
+import { createClient } from "@/lib/supabase/server";
 import { categories } from "@/utils/constants";
 import { getCategoryBySlug } from "@/utils/helpers";
-import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -153,7 +153,15 @@ export default async function CategoryPage({
             </p>
           </div>
         ) : (
-          <ProductGrid products={categoryProducts} />
+          <div className="space-y-4 flex flex-col">
+            {categoryProducts.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                position={index + 1}
+              />
+            ))}
+          </div>
         )}
       </div>
     </>

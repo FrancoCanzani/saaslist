@@ -1,7 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { type VariantProps } from "class-variance-authority";
 import { Heart } from "lucide-react";
 import { useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
@@ -11,12 +12,12 @@ import { Product } from "../types";
 export default function LikeButton({
   product,
   className,
-  size = "sm",
+  size = "xs",
+  variant = "outline",
 }: {
   product: Product;
   className?: string;
-  size?: "xs" | "sm" | "default" | "lg" | "icon";
-}) {
+} & Pick<VariantProps<typeof buttonVariants>, "size" | "variant">) {
   const [isPending, startTransition] = useTransition();
 
   const [optimisticProduct, addOptimisticProduct] = useOptimistic(
@@ -55,7 +56,7 @@ export default function LikeButton({
 
   return (
     <Button
-      variant={"outline"}
+      variant={variant}
       size={size}
       className={cn("", isPending && "animate-pulse", className)}
       onClick={handleLike}
@@ -63,12 +64,8 @@ export default function LikeButton({
       <Heart
         className={cn("size-3.5", optimisticProduct.is_liked && "fill-red-600")}
       />
-      <span className="hidden md:block">
-        {optimisticProduct.is_liked ? "Liked" : "Like"}
-      </span>
-      <span className="md:border-l md:pl-2">
-        {optimisticProduct.likes_count}
-      </span>
+      <span>{optimisticProduct.is_liked ? "Liked" : "Like"}</span>
+      <span className="border-l pl-2">{optimisticProduct.likes_count}</span>
     </Button>
   );
 }

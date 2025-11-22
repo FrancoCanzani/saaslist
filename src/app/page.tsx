@@ -1,12 +1,14 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import ProductGridSkeleton from "@/components/skeletons/product-grid-skeleton";
+import LatestProductUpdatesSkeleton from "@/components/skeletons/product-updates-skeleton";
 import ProductsMarqueeSkeleton from "@/components/skeletons/products-marquee-skeleton";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import LatestFounderUpdates from "@/features/products/components/latest-founder-updates";
+import LatestProductUpdates from "@/features/products/components/latest-product-updates";
 import ProductList from "@/features/products/components/product-list";
 import ProductsMarquee from "@/features/products/components/products-marquee";
+import { ProductDiscoverySection } from "@/features/products/components/product-discovery-section";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -100,8 +102,13 @@ export default async function Home() {
               <ProductList date="month" />
             </Suspense>
           </div>
-          <div className="lg:w-80 lg:shrink-0">
-            <LatestFounderUpdates />
+          <div className="lg:w-80 lg:shrink-0 space-y-8">
+            <Suspense fallback={<LatestProductUpdatesSkeleton />}>
+              <ProductDiscoverySection />
+            </Suspense>
+            <Suspense fallback={<LatestProductUpdatesSkeleton />}>
+              <LatestProductUpdates />
+            </Suspense>
           </div>
         </div>
       </main>

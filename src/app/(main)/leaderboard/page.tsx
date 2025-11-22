@@ -1,7 +1,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LoadMoreButton } from "@/features/leaderboard/load-more-button";
 import { TimePeriodFilter } from "@/features/leaderboard/time-period-filter";
-import ProductGrid from "@/features/products/components/product-grid";
+import ProductCard from "@/features/products/components/product-card";
 import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { createLoader, parseAsInteger, parseAsStringEnum } from "nuqs/server";
@@ -186,8 +186,15 @@ export default async function LeaderboardPage({
         </Alert>
       ) : (
         <>
-          <ProductGrid products={processedProducts} />
-
+          <div className="space-y-4 flex flex-col">
+            {processedProducts.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                position={index + 1}
+              />
+            ))}
+          </div>
           {hasMore && <LoadMoreButton currentPage={page} />}
         </>
       )}

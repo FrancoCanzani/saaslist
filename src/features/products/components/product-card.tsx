@@ -33,10 +33,10 @@ export default function ProductCard({
 
   return (
     <Link prefetch href={`/products/${product.id}`}>
-      <Card className="flex rounded-xl bg-surface/20 border-border/50 hover:border-border transition-all duration-300 hover:bg-surface/80 group flex-col gap-3 p-3">
+      <Card className="flex rounded-xl isolate bg-surface/20 border-border/50 hover:border-border transition-all duration-300 hover:bg-surface/80 group flex-col gap-3 p-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start justify-start gap-3 flex-1 min-w-0">
-            <div className="size-9 rounded-lg group-hover:bg-background flex items-center justify-center shrink-0">
+            <div className="size-9 pt-2 rounded-xl group-hover:bg-background flex items-center justify-center shrink-0">
               <ProductLogo
                 logoUrl={product.logo_url}
                 productName={product.name}
@@ -45,7 +45,7 @@ export default function ProductCard({
             </div>
 
             <div className="flex-1 flex flex-col min-w-0">
-              <div className="flex items-center gap-1">
+              <div className="flex leading-0 items-center gap-1">
                 {position && (
                   <span className="text-muted-foreground font-medium">
                     #{position}

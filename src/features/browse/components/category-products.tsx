@@ -3,7 +3,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import ProductGrid from "@/features/products/components/product-grid";
+import ProductCard from "@/features/products/components/product-card";
 import { Product } from "@/features/products/types";
 import { Category } from "@/utils/types";
 import Fuse from "fuse.js";
@@ -138,7 +138,15 @@ export default function CategoryProducts({
           </AlertDescription>
         </Alert>
       ) : (
-        <ProductGrid products={filteredProducts} />
+        <div className="space-y-4 flex flex-col">
+          {filteredProducts.map((product, index) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              position={index + 1}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

@@ -174,7 +174,7 @@ export default async function ProductPage({
             </div>
 
             <div className="space-x-1.5 hidden xl:flex items-center justify-end">
-              <LikeButton product={processedProduct} size="xs" />
+              <LikeButton product={processedProduct} variant={"secondary"} />
               <Button
                 asChild
                 variant={"secondary"}
@@ -220,7 +220,11 @@ export default async function ProductPage({
           </div>
 
           <div className="space-x-1.5 xl:hidden flex items-center justify-start">
-            <LikeButton product={processedProduct} size="sm" />
+            <LikeButton
+              product={processedProduct}
+              variant={"secondary"}
+              size={"sm"}
+            />
             <Button
               asChild
               variant={"secondary"}

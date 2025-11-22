@@ -1,8 +1,8 @@
-import ProductGrid from "@/features/products/components/product-grid";
+import ProductCard from "@/features/products/components/product-card";
 import { Product } from "@/features/products/types";
+import { createClient } from "@/lib/supabase/server";
 import { categories } from "@/utils/constants";
 import { getCategoryBySlug, getTagSlug } from "@/utils/helpers";
-import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -104,10 +104,12 @@ export default async function CategoryTagPage({
 
   const { data: products, error } = await supabase
     .from("products")
-    .select(`
+    .select(
+      `
       *,
       likes!left(user_id)
-    `)
+    `,
+    )
     .contains("tags", [tag])
     .order("created_at", { ascending: false });
 
@@ -122,31 +124,38 @@ export default async function CategoryTagPage({
     };
   }) as Product[];
 
-
   return (
-      <div className="p-4 sm:p-6 lg:p-8 space-y-8">
-        <div className="flex items-center w-full justify-between gap-6">
-          <div>
-            <h1 className="text-xl font-medium">
-              {category.name} / {tag}
-            </h1>
-          </div>
-
-          <div className="text-xs text-muted-foreground">
-            {processedProducts.length}{" "}
-            {processedProducts.length === 1 ? "product" : "products"}
-          </div>
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
+      <div className="flex items-center w-full justify-between gap-6">
+        <div>
+          <h1 className="text-xl font-medium">
+            {category.name} / {tag}
+          </h1>
         </div>
 
-        {processedProducts.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground text-sm">
-              No products found with this tag yet.
-            </p>
-          </div>
-        ) : (
-          <ProductGrid products={processedProducts} />
-        )}
+        <div className="text-xs text-muted-foreground">
+          {processedProducts.length}{" "}
+          {processedProducts.length === 1 ? "product" : "products"}
+        </div>
       </div>
+
+      {processedProducts.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground text-sm">
+            No products found with this tag yet.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4 flex flex-col">
+          {processedProducts.map((product, index) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              position={index + 1}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
