@@ -45,14 +45,14 @@ export default function ProductCard({
             </div>
 
             <div className="flex-1 flex flex-col min-w-0">
-              <div className="flex leading-0 items-center gap-1">
+              <div className="flex leading-0 items-center gap-1 min-w-0">
                 {position && (
-                  <span className="text-muted-foreground font-medium">
+                  <span className="text-muted-foreground font-medium shrink-0">
                     #{position}
                   </span>
                 )}
-                <h3 className="flex line-clamp-1 items-center font-medium text-base md:text-lg truncate gap-x-1">
-                  {product.name}
+                <h3 className="flex items-center font-medium text-base md:text-lg min-w-0 flex-1 gap-x-1">
+                  <span className="truncate">{product.name}</span>
                   <ArrowRight className="opacity-0 transition-all group-hover:opacity-100 duration-300 size-3.5 shrink-0" />
                 </h3>
               </div>
@@ -96,7 +96,7 @@ export default function ProductCard({
                 </span>
               </div>
             )}
-            <LikeButton product={product} size="xs" />
+            <LikeButton product={product} size="xs" hideText/>
           </div>
         </div>
       </Card>

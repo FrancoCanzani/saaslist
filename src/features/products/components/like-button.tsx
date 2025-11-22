@@ -14,9 +14,11 @@ export default function LikeButton({
   className,
   size = "xs",
   variant = "outline",
+  hideText = false,
 }: {
   product: Product;
   className?: string;
+  hideText?: boolean;
 } & Pick<VariantProps<typeof buttonVariants>, "size" | "variant">) {
   const [isPending, startTransition] = useTransition();
 
@@ -64,8 +66,12 @@ export default function LikeButton({
       <Heart
         className={cn("size-3.5", optimisticProduct.is_liked && "fill-red-600")}
       />
-      <span>{optimisticProduct.is_liked ? "Liked" : "Like"}</span>
-      <span className="border-l pl-2">{optimisticProduct.likes_count}</span>
+      {!hideText && (
+        <span>{optimisticProduct.is_liked ? "Liked" : "Like"}</span>
+      )}
+      <span className={cn(!hideText && "border-l pl-2")}>
+        {optimisticProduct.likes_count}
+      </span>
     </Button>
   );
 }

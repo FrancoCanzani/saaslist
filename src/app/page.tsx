@@ -31,7 +31,7 @@ export default async function Home() {
     <div className="min-h-screen max-w-7xl relative space-y-8 mx-auto">
       <Header />
 
-      <div className="w-full max-w-6xl mx-auto py-12 text-start md:text-center flex-col px-6 flex items-start md:items-center justify-start gap-8 overflow-hidden relative">
+      <div className="w-full max-w-6xl mx-auto py-12 text-center flex-col px-6 flex items-center md:items-center justify-start gap-8 overflow-hidden relative">
         <Link
           href={"#"}
           className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-violet-50 dark:bg-background dark:border dark:border-violet-50/50 dark:hover:border-violet-50 transition-all duration-200 rounded px-2 py-0.5 dark:shadow-violet-50/10 dark:shadow-xl"
