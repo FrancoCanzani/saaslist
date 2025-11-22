@@ -11,3 +11,10 @@ export interface Category {
   description?: string;
   tags: string[];
 }
+
+export interface ApiResponse<T> {
+  data: T | null;
+  success: boolean;
+  error: string | null;
+  details?: string;
+}

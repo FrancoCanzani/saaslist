@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { ApiResponse, Product } from './types'
+import {  Product } from './types'
+import { ApiResponse } from '@/utils/types'
 
 const fetchProduct = async (id: string): Promise<Product> => {
   const response = await fetch(`/api/products/${id}`)

@@ -54,3 +54,4 @@ export async function updateProfile(userId: string, updates: Partial<Omit<Profil
 
   return data
 }
+

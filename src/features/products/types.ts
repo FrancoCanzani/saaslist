@@ -1,10 +1,3 @@
-export interface ApiResponse<T> {
-  data: T | null;
-  success: boolean;
-  error: string | null;
-  details?: string;
-}
-
 export type PricingModel = "free" | "freemium" | "premium";
 
 export type Platform =

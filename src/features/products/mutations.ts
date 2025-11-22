@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { productSchema } from './schemas'
-import { ApiResponse, Product, ProductFormData } from './types'
+import {  Product, ProductFormData } from './types'
 import { uploadProductLogo, uploadProductImages, deleteUploadedAssets, updateProductAction } from './actions'
+import { ApiResponse } from '@/utils/types'
 
 const createProduct = async (data: ProductFormData): Promise<Product> => {
   let uploadedLogoPath: string | null = null;

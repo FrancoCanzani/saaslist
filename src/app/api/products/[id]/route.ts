@@ -1,8 +1,9 @@
-import { ApiResponse, Product } from "@/features/products/types";
+import {  Product } from "@/features/products/types";
 import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { productUpdateSchema } from "@/features/products/schemas";
+import { ApiResponse } from "@/utils/types";
 
 export async function GET(
   request: NextRequest,

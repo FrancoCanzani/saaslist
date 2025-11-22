@@ -2,6 +2,7 @@ import { ProductViewTracker } from "@/components/product-view-tracker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FeedSection } from "@/features/products/components/feed/feed-section";
+import { FounderHoverCard } from "@/features/products/components/founder-hover-card";
 import LikeButton from "@/features/products/components/like-button";
 import ProductLogo from "@/features/products/components/product-logo";
 import { ProductMediaCarousel } from "@/features/products/components/product-media-carousel";
@@ -202,21 +203,16 @@ export default async function ProductPage({
               })}
             </span>
             <span>by</span>
-            {processedProduct.founder_name ? (
+            <FounderHoverCard
+              userId={product.user_id}
+            >
               <Link
                 href={`/founders/${product.user_id}`}
                 className="underline hover:text-blue-600 transition-colors"
               >
-                {processedProduct.founder_name}
+                {processedProduct.founder_name || "Founder"}
               </Link>
-            ) : (
-              <Link
-                href={`/founders/${product.user_id}`}
-                className="underline hover:text-blue-600 transition-colors"
-              >
-                Founder
-              </Link>
-            )}
+            </FounderHoverCard>
           </div>
 
           <div className="space-x-1.5 xl:hidden flex items-center justify-start">

@@ -32,7 +32,7 @@ export function UpdateEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm max-w-none focus:outline-none min-h-[150px] px-3 py-2",
+          "prose prose-sm max-w-none dark:prose-invert focus:outline-none min-h-[200px] px-3 py-2",
       },
       transformPastedText(text) {
         // Enable markdown paste
@@ -59,8 +59,8 @@ export function UpdateEditor({
 
   return (
     <div className="space-y-2">
-      <div className="border rounded border-input bg-background">
-        <EditorContent editor={editor} />
+      <div className="border rounded-xl border-input bg-background">
+        <EditorContent editor={editor}/>
       </div>
       <p className="text-xs text-muted-foreground">
         You can use Markdown formatting: **bold**, *italic*, `code`, # heading, - lists, etc.

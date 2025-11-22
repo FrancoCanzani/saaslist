@@ -3,17 +3,16 @@ import { Suspense } from "react";
 import { FeedContent } from "./feed-content";
 import { FeedContentSkeleton } from "./feed-content-skeleton";
 
-interface FeedSectionProps {
-  productId: string;
-  currentUserId?: string;
-  isOwner: boolean;
-}
 
 export async function FeedSection({
   productId,
   currentUserId,
   isOwner,
-}: FeedSectionProps) {
+}: {
+  productId: string;
+  currentUserId?: string;
+  isOwner: boolean;
+}) {
   const supabase = await createClient();
 
   const [commentsResult, reviewsResult, updatesResult] = await Promise.all([

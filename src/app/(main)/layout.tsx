@@ -7,9 +7,11 @@ export default async function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       <Header />
+      <main>
       {children}
+      </main>
       <Footer />
     </div>
   );

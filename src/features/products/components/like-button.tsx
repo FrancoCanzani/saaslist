@@ -66,10 +66,10 @@ export default function LikeButton({
       <Heart
         className={cn("size-3.5", optimisticProduct.is_liked && "fill-red-600")}
       />
-      {!hideText && (
-        <span>{optimisticProduct.is_liked ? "Liked" : "Like"}</span>
-      )}
-      <span className={cn(!hideText && "border-l pl-2")}>
+      <span className={cn(hideText && "hidden md:inline")}>
+        {optimisticProduct.is_liked ? "Liked" : "Like"}
+      </span>
+      <span className={cn(hideText ? "md:border-l md:pl-2" : "border-l pl-2")}>
         {optimisticProduct.likes_count}
       </span>
     </Button>

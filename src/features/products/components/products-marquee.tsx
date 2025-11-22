@@ -36,7 +36,7 @@ export default async function ProductsMarquee() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
       <div className="space-y-6">
-        <h2 className="capitalize text-muted-foreground leading-tight text-center text-sm">
+        <h2 className="capitalize text-muted-foreground font-medium leading-tight text-center text-sm">
           Trusted by these Featured Products
         </h2>
         <div className="flex size-full items-center justify-center bg-background">

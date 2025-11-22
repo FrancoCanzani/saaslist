@@ -18,17 +18,15 @@ import {
 } from "@/components/ui/sheet";
 import ReviewForm from "./review-form";
 
-interface ReviewActionDialogProps {
-  productId: string;
-  isMobile: boolean;
-  children: React.ReactNode;
-}
-
 export function ReviewActionDialog({
   productId,
   isMobile,
   children,
-}: ReviewActionDialogProps) {
+}: {
+  productId: string;
+  isMobile: boolean;
+  children: React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -56,7 +54,7 @@ export function ReviewActionDialog({
     return (
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>{children}</SheetTrigger>
-        <SheetContent side="bottom" className="max-h-[90vh] overflow-y-auto">
+        <SheetContent side="bottom" className="max-h-[90vh]">
           {content}
         </SheetContent>
       </Sheet>

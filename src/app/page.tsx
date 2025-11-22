@@ -34,7 +34,7 @@ export default async function Home() {
       <div className="w-full max-w-6xl mx-auto py-12 text-center flex-col px-6 flex items-center md:items-center justify-start gap-8 overflow-hidden relative">
         <Link
           href={"#"}
-          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 bg-violet-50 dark:bg-background dark:border dark:border-violet-50/50 dark:hover:border-violet-50 transition-all duration-200 rounded px-2 py-0.5 dark:shadow-violet-50/10 dark:shadow-xl"
+          className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 dark:bg-background dark:border dark:border-violet-50/50 dark:hover:border-violet-50 transition-all duration-200 rounded px-2 py-0.5 dark:shadow-violet-50/10 dark:shadow-xl"
         >
           Join our affiliate program
         </Link>
@@ -51,9 +51,8 @@ export default async function Home() {
           <div className="space-x-2">
             <Button
               asChild
-              variant={"secondary"}
               size={"lg"}
-              className="bg-violet-50 rounded-xl dark:bg-[#02010a] hover:bg-violet-100"
+              className="rounded-xl"
             >
               <Link href={"/products/new"}>Submit your SaaS</Link>
             </Button>
