@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
     images: [
       {
-        url: "/opengraph-image",
+        url: new URL("/opengraph-image", baseUrl).toString(),
         width: 1200,
         height: 630,
         alt: "SaasList - Discover & Share the Best SaaS Products",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: "SaasList - Discover & Share the Best SaaS Products",
     description:
     "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
-    images: ["/opengraph-image"],
+    images: [new URL("/opengraph-image", baseUrl).toString()],
   },
   alternates: {
     canonical: baseUrl,
