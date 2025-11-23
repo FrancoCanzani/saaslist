@@ -67,7 +67,7 @@ export function ProductSearchDialog() {
             </form>
 
             {(results.length > 0 || isLoading || debouncedSearch) && (
-              <div className="border rounded max-h-96 overflow-y-auto">
+              <div className="border rounded-xl max-h-96 overflow-y-auto">
                 {isLoading ? (
                   <div className="p-2 text-xs text-muted-foreground text-center">
                     Searching...

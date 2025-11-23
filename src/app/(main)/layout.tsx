@@ -9,7 +9,7 @@ export default async function MainLayout({
   return (
     <div className="max-w-6xl mx-auto flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 flex">
+      <main className="flex-1 flex w-full">
       {children}
       </main>
       <Footer />

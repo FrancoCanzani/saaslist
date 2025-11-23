@@ -1,6 +1,6 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import ProductGridSkeleton from "@/components/skeletons/product-grid-skeleton";
+import ProductListSkeleton from "@/components/skeletons/product-list-skeleton";
 import LatestProductUpdatesSkeleton from "@/components/skeletons/product-updates-skeleton";
 import ProductsMarqueeSkeleton from "@/components/skeletons/products-marquee-skeleton";
 import { Button } from "@/components/ui/button";
@@ -78,19 +78,19 @@ export default async function Home() {
                 <div className="space-y-8">
                   <div className="space-y-6">
                     <Skeleton className="h-7 w-48 rounded" />
-                    <ProductGridSkeleton count={10} />
+                    <ProductListSkeleton count={10} />
                   </div>
                   <div className="space-y-6">
                     <Skeleton className="h-7 w-48 rounded" />
-                    <ProductGridSkeleton count={10} />
+                    <ProductListSkeleton count={10} />
                   </div>
                   <div className="space-y-6">
                     <Skeleton className="h-7 w-48 rounded" />
-                    <ProductGridSkeleton count={10} />
+                    <ProductListSkeleton count={10} />
                   </div>
                   <div className="space-y-6">
                     <Skeleton className="h-7 w-48 rounded" />
-                    <ProductGridSkeleton count={10} />
+                    <ProductListSkeleton count={10} />
                   </div>
                 </div>
               }

@@ -166,7 +166,7 @@ export default async function LeaderboardPage({
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
         <div>
           <h1 className="text-xl font-medium">Leaderboard</h1>
