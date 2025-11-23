@@ -727,9 +727,10 @@ export async function updateProductAction(
     demo_url?: string;
     pricing_model?: "free" | "freemium" | "premium";
     tags?: string[];
+    techstack?: string[];
     twitter_url?: string;
     linkedin_url?: string;
-    product_hunt_url?: string;
+    instagram_url?: string;
     platforms?: string[];
     logo_file?: File | null;
     image_files?: File[];
@@ -834,9 +835,10 @@ export async function updateProductAction(
     if (data.demo_url !== undefined) updateData.demo_url = data.demo_url || null;
     if (data.pricing_model !== undefined) updateData.pricing_model = data.pricing_model;
     if (data.tags !== undefined) updateData.tags = data.tags;
+    if (data.techstack !== undefined) updateData.techstack = data.techstack || [];
     if (data.twitter_url !== undefined) updateData.twitter_url = data.twitter_url || null;
     if (data.linkedin_url !== undefined) updateData.linkedin_url = data.linkedin_url || null;
-    if (data.product_hunt_url !== undefined) updateData.product_hunt_url = data.product_hunt_url || null;
+    if (data.instagram_url !== undefined) updateData.instagram_url = data.instagram_url || null;
     if (data.platforms !== undefined) updateData.platforms = data.platforms;
 
     const { data: updatedProduct, error: updateError } = await supabase

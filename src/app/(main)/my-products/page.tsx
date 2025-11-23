@@ -130,7 +130,7 @@ export default async function MyProductsPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
       <div>
         <h1 className="text-xl font-medium">My Products</h1>
         <h2 className="text-muted-foreground text-sm">

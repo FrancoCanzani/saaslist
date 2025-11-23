@@ -6,6 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
+import { Spinner } from "@/components/ui/spinner"
 import { useProfile } from "@/features/profiles/queries"
 import { formatDate } from "date-fns"
 import { Globe } from "lucide-react"
@@ -41,17 +42,17 @@ export function FounderHoverCard({
       <HoverCardContent className="w-80">
         {isLoading ? (
           <div className="flex items-center justify-center py-4">
-            <div className="text-xs text-muted-foreground">Loading...</div>
+            <div className="text-xs text-muted-foreground"><Spinner className="size-3.5" /></div>
           </div>
         ) : profile ? (
-          <div className="flex gap-3">
+          <div className="flex items-center gap-3">
             <Avatar>
               <AvatarImage src={profile.avatar_url || undefined} />
               <AvatarFallback>{getInitials(profile.name)}</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between gap-2">
-                <h4 className="text-sm font-semibold">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm leading-none font-semibold">
                   {profile.name || "User"}
                 </h4>
                 {(profile.twitter || profile.website) && (
@@ -87,7 +88,7 @@ export function FounderHoverCard({
                   </div>
                 )}
               </div>
-              <div className="text-muted-foreground text-xs">
+              <div className="text-muted-foreground leading-none text-xs">
                 Joined {formatDate(new Date(profile.created_at), "MMMM yyyy")}
               </div>
             </div>

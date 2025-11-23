@@ -31,7 +31,7 @@ export default async function Home() {
     <div className="min-h-screen max-w-7xl relative space-y-8 mx-auto">
       <Header />
 
-      <div className="w-full max-w-6xl mx-auto py-12 text-center flex-col px-6 flex items-center md:items-center justify-start gap-8 overflow-hidden relative">
+      <div className="w-full max-w-6xl mx-auto py-12 text-center flex-col md:px-6 flex items-center md:items-center justify-start gap-8 overflow-hidden relative">
         <Link
           href={"#"}
           className="leading-snug text-sm font-medium tracking-tight capitalize flex items-center gap-x-2 dark:bg-background dark:border dark:border-violet-50/50 dark:hover:border-violet-50 transition-all duration-200 rounded px-2 py-0.5 dark:shadow-violet-50/10 dark:shadow-xl"
@@ -39,10 +39,10 @@ export default async function Home() {
           Join our affiliate program
         </Link>
         <div className="space-y-4 relative">
-          <h1 className="text-5xl sm:text-6xl xl:text-7xl leading-tight font-mono font-extralight tracking-tighter xl:leading-tight text-balance relative z-10">
+          <h1 className="text-5xl sm:text-6xl xl:text-7xl leading-tight font-mono font-extralight tracking-tighter xl:leading-tight text-balance">
             Get Noticed. Get Users. Get Results.
           </h1>
-          <p className="text-muted-foreground text-sm md:text-base text-balance relative z-10">
+          <p className="text-muted-foreground text-sm md:text-base text-balance">
             Showcase your SaaS product to thousands of early adopters,
             entrepreneurs, and tech enthusiasts.
           </p>

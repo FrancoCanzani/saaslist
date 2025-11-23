@@ -3,15 +3,14 @@
 import { Button } from "@/components/ui/button";
 import {
   Field,
-  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldLegend,
-  FieldSeparator,
   FieldSet,
   FieldTitle,
+  FieldContent,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,10 +22,17 @@ import { z } from "zod";
 import { productSchema } from "../../schemas";
 import { ImagesUpload } from "./images-upload";
 import { LogoUpload } from "./logo-upload";
-import TagSelector from "./tag-selector";
+import ProductTagsSelector from "./product-tags-selector";
+import { TechStackSelector } from "./tech-stack-selector";
+import type { Platform, PricingModel } from "../../types";
 
 interface ProductFormProps {
-  onSubmit: (data: z.infer<typeof productSchema> & { imagesToDelete?: string[]; removeLogo?: boolean }) => Promise<void>;
+  onSubmit: (
+    data: z.infer<typeof productSchema> & {
+      imagesToDelete?: string[];
+      removeLogo?: boolean;
+    }
+  ) => Promise<void>;
   defaultValues?: Partial<z.infer<typeof productSchema>>;
   existingImages?: string[];
   existingLogoUrl?: string;
@@ -35,11 +41,42 @@ interface ProductFormProps {
   onCancel?: () => void;
 }
 
-const sections = [
-  { id: "main-info", label: "Main Info" },
-  { id: "images-media", label: "Images & Media" },
-  { id: "social-media", label: "Social Media" },
-];
+type FormValues = {
+  name: string;
+  tagline: string;
+  website_url: string;
+  repo_url: string;
+  description: string;
+  tags: string[];
+  techstack: string[];
+  logo_url: string;
+  logo_file: File | null;
+  image_files: File[];
+  demo_url: string;
+  pricing_model: PricingModel;
+  twitter_url: string;
+  linkedin_url: string;
+  instagram_url: string;
+  platforms: Platform[];
+};
+
+const step_titles = [
+  "basic information",
+  "product details",
+  "tech stack",
+  "media & assets",
+  "social links",
+] as const;
+
+const total_steps = step_titles.length;
+
+const step_fields: Record<number, (keyof FormValues)[]> = {
+  0: ["name", "tagline", "website_url", "description"],
+  1: ["platforms", "pricing_model", "tags"],
+  2: ["techstack"],
+  3: ["logo_file", "logo_url", "image_files", "demo_url"],
+  4: ["twitter_url", "linkedin_url", "instagram_url", "repo_url"],
+};
 
 export function ProductForm({
   onSubmit,
@@ -50,9 +87,11 @@ export function ProductForm({
   submitButtonText = "Submit Product",
   onCancel,
 }: ProductFormProps) {
+  const [currentStep, setCurrentStep] = useState(0);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [removeLogo, setRemoveLogo] = useState(false);
-  const [keptExistingImages, setKeptExistingImages] = useState<string[]>(existingImages);
+  const [keptExistingImages, setKeptExistingImages] =
+    useState<string[]>(existingImages);
 
   const form = useForm({
     defaultValues: {
@@ -60,9 +99,9 @@ export function ProductForm({
       tagline: defaultValues?.tagline || "",
       website_url: defaultValues?.website_url || "",
       repo_url: defaultValues?.repo_url || "",
-      is_open_source: !!defaultValues?.repo_url || false,
       description: defaultValues?.description || "",
       tags: defaultValues?.tags || [],
+      techstack: defaultValues?.techstack || [],
       logo_url: defaultValues?.logo_url || "",
       logo_file: null as File | null,
       image_files: [] as File[],
@@ -70,7 +109,7 @@ export function ProductForm({
       pricing_model: defaultValues?.pricing_model || "free",
       twitter_url: defaultValues?.twitter_url || "",
       linkedin_url: defaultValues?.linkedin_url || "",
-      product_hunt_url: defaultValues?.product_hunt_url || "",
+      instagram_url: defaultValues?.instagram_url || "",
       platforms: defaultValues?.platforms || ["web"],
     },
     onSubmit: async ({ value }) => {
@@ -83,34 +122,80 @@ export function ProductForm({
     },
   });
 
+  const validateStep = (step: number): boolean => {
+    const fieldsToValidate = step_fields[step];
+    if (!fieldsToValidate) return true;
+
+    const formValues = form.state.values;
+    const schemaShape = productSchema.shape as Record<string, z.ZodTypeAny>;
+    const fileFields = new Set(["logo_file", "image_files"]);
+
+    for (const fieldName of fieldsToValidate) {
+      if (fileFields.has(fieldName)) {
+        continue;
+      }
+
+      const fieldValue = formValues[fieldName];
+      const fieldSchema = schemaShape[fieldName];
+
+      if (fieldSchema) {
+        const result = fieldSchema.safeParse(fieldValue);
+        if (!result.success) {
+          return false;
+        }
+      }
+
+      const fieldMeta = form.state.fieldMeta[fieldName as keyof typeof form.state.fieldMeta];
+      if (fieldMeta?.errors && fieldMeta.errors.length > 0) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const hasStepErrors = (): boolean => {
+    const fieldsToValidate = step_fields[currentStep];
+    if (!fieldsToValidate) return false;
+
+    return fieldsToValidate.some((fieldName) => {
+      const fieldMeta = form.state.fieldMeta[fieldName];
+      return fieldMeta?.errors && fieldMeta.errors.length > 0;
+    });
+  };
+
+  const handleNext = () => {
+    if (validateStep(currentStep) && currentStep < total_steps - 1) {
+      setCurrentStep((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep((prev) => prev - 1);
+    }
+  };
+
   return (
     <div>
-      <div className="flex gap-4">
-        <nav className="hidden md:block w-48 shrink-0 sticky top-24 h-fit">
-          <div className="space-y-1">
-            {sections.map((section) => (
-              <a
-                key={section.id}
-                href={`#${section.id}`}
-                className="block w-full text-left p-1.5 text-sm hover:text-muted-foreground"
-              >
-                {section.label}
-              </a>
-            ))}
-          </div>
-        </nav>
+        <div className="flex items-end justify-start space-x-2 mb-6">
+          <h2 className="text-xl leading-none font-medium capitalize">
+            {step_titles[currentStep]}
+          </h2>
+          <span className="text-xs text-muted-foreground">
+            {currentStep + 1} / {total_steps}
+          </span>
+      </div>
 
-        <form
-          className="flex-1"
-          onSubmit={(e) => {
-            e.preventDefault();
-            form.handleSubmit();
-          }}
-        >
-          <FieldGroup>
-            <h3 className="text-3xl capitalize">Main info</h3>
-
-            <div id="main-info" className="scroll-mt-24 space-y-6">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit();
+        }}
+      >
+        <div className="min-h-[400px]">
+          {currentStep === 0 && (
+            <FieldGroup>
               <form.Field
                 name="name"
                 validators={{
@@ -122,9 +207,7 @@ export function ProductForm({
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field>
-                      <FieldLabel htmlFor="name">
-                        Name of your Saas *
-                      </FieldLabel>
+                      <FieldLabel htmlFor="name">Name *</FieldLabel>
                       <Input
                         id="name"
                         type="text"
@@ -182,9 +265,7 @@ export function ProductForm({
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field>
-                      <FieldLabel htmlFor="website_url">
-                        Website URL *
-                      </FieldLabel>
+                      <FieldLabel htmlFor="website_url">Website URL *</FieldLabel>
                       <Input
                         id="website_url"
                         type="url"
@@ -213,9 +294,7 @@ export function ProductForm({
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field>
-                      <FieldLabel htmlFor="description">
-                        Description *
-                      </FieldLabel>
+                      <FieldLabel htmlFor="description">Description *</FieldLabel>
                       <Textarea
                         id="description"
                         value={field.state.value}
@@ -223,10 +302,10 @@ export function ProductForm({
                         onChange={(e) => field.handleChange(e.target.value)}
                         className="min-h-[120px]"
                         aria-invalid={isInvalid}
-                        placeholder="Tell us about your product, its features, and what makes it unique..."
+                        placeholder="Tell us about your product..."
                       />
                       <FieldDescription className="text-xs">
-                        Detailed description (50-1000 characters)
+                        50-1000 characters
                       </FieldDescription>
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
@@ -235,7 +314,11 @@ export function ProductForm({
                   );
                 }}
               </form.Field>
+            </FieldGroup>
+          )}
 
+          {currentStep === 1 && (
+            <FieldGroup>
               <form.Field
                 name="platforms"
                 validators={{
@@ -245,7 +328,7 @@ export function ProductForm({
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
-                  const platformOptions = [
+                  const platformOptions: Array<{ value: Platform; label: string }> = [
                     { value: "web", label: "Web" },
                     { value: "ios", label: "iOS" },
                     { value: "android", label: "Android" },
@@ -254,12 +337,12 @@ export function ProductForm({
                     { value: "browser_extension", label: "Browser Extension" },
                   ];
 
-                  const togglePlatform = (platform: string) => {
+                  const togglePlatform = (platform: Platform) => {
                     const current = field.state.value;
-                    if (current.includes(platform as any)) {
-                      field.handleChange(current.filter((p) => p !== platform));
+                    if (current.includes(platform)) {
+                      field.handleChange(current.filter((p: Platform) => p !== platform));
                     } else {
-                      field.handleChange([...current, platform as any]);
+                      field.handleChange([...current, platform]);
                     }
                   };
 
@@ -274,9 +357,7 @@ export function ProductForm({
                           >
                             <Input
                               type="checkbox"
-                              checked={field.state.value.includes(
-                                option.value as any,
-                              )}
+                              checked={field.state.value.includes(option.value)}
                               onChange={() => togglePlatform(option.value)}
                               className="w-4 h-4"
                             />
@@ -284,80 +365,6 @@ export function ProductForm({
                           </Label>
                         ))}
                       </div>
-                      <FieldDescription className="text-xs">
-                        Select all platforms where your product is available
-                      </FieldDescription>
-                      {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
-                      )}
-                    </Field>
-                  );
-                }}
-              </form.Field>
-
-              <form.Field name="is_open_source">
-                {(field) => {
-                  return (
-                    <>
-                      <Field orientation="horizontal">
-                        <Input
-                          id="is_open_source"
-                          type="checkbox"
-                          checked={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.checked)}
-                          className="w-4 h-4"
-                        />
-                        <FieldLabel htmlFor="is_open_source">
-                          Is your product open source?
-                        </FieldLabel>
-                      </Field>
-
-                      {field.state.value && (
-                        <form.Field name="repo_url">
-                          {(repoField) => {
-                            return (
-                              <Field>
-                                <FieldLabel htmlFor="repo_url">
-                                  Repository URL *
-                                </FieldLabel>
-                                <Input
-                                  id="repo_url"
-                                  type="url"
-                                  value={repoField.state.value || ""}
-                                  onBlur={repoField.handleBlur}
-                                  onChange={(e) =>
-                                    repoField.handleChange(e.target.value)
-                                  }
-                                  placeholder="https://github.com/username/repo"
-                                />
-                              </Field>
-                            );
-                          }}
-                        </form.Field>
-                      )}
-                    </>
-                  );
-                }}
-              </form.Field>
-
-              <form.Field
-                name="tags"
-                validators={{
-                  onChange: productSchema.shape.tags,
-                }}
-              >
-                {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
-                  return (
-                    <Field>
-                      <FieldLabel>Launch Tags * (up to 3)</FieldLabel>
-                      <TagSelector
-                        selectedTags={field.state.value}
-                        onTagsChange={(tags) => field.handleChange(tags)}
-                        maxTags={3}
-                      />
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
                       )}
@@ -376,7 +383,11 @@ export function ProductForm({
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
 
-                  const pricingOptions = [
+                  const pricingOptions: Array<{
+                    id: PricingModel;
+                    title: string;
+                    description: string;
+                  }> = [
                     {
                       id: "free",
                       title: "Free",
@@ -392,30 +403,27 @@ export function ProductForm({
                       title: "Premium",
                       description: "Paid subscription required",
                     },
-                  ] as const;
+                  ];
 
                   return (
                     <FieldSet>
                       <FieldLegend>Pricing Model *</FieldLegend>
-                      <FieldDescription className="text-xs">
-                        How do you monetize your product?
-                      </FieldDescription>
                       <RadioGroup
                         name={field.name}
                         value={field.state.value}
                         onValueChange={(value) =>
-                          field.handleChange(
-                            value as "free" | "freemium" | "premium",
-                          )
+                          field.handleChange(value as PricingModel)
                         }
                       >
                         {pricingOptions.map((option) => (
                           <FieldLabel
                             key={option.id}
                             htmlFor={`pricing-${option.id}`}
+                            className="has-[>[data-slot=field]]:!rounded-xl"
                           >
                             <Field
                               orientation="horizontal"
+                              className="rounded-xl"
                               data-invalid={isInvalid}
                             >
                               <FieldContent>
@@ -440,36 +448,94 @@ export function ProductForm({
                   );
                 }}
               </form.Field>
-            </div>
 
-            <FieldSeparator />
+              <form.Field
+                name="tags"
+                validators={{
+                  onChange: productSchema.shape.tags,
+                }}
+              >
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field>
+                      <FieldLabel>Launch Tags * (up to 3)</FieldLabel>
+                      <ProductTagsSelector
+                        selectedTags={field.state.value}
+                        onTagsChange={(tags) => field.handleChange(tags)}
+                        maxTags={3}
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+            </FieldGroup>
+          )}
 
-            <h3 className="text-3xl capitalize">Images & Media</h3>
+          {currentStep === 2 && (
+            <FieldGroup>
+              <form.Field
+                name="techstack"
+                validators={{
+                  onChange: ({ value }) => {
+                    if (Array.isArray(value) && value.length > 10) {
+                      return { message: "Maximum 10 technologies allowed" };
+                    }
+                    return undefined;
+                  },
+                }}
+              >
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field>
+                      <FieldLabel>Technologies Used</FieldLabel>
+                      <TechStackSelector
+                        selected={field.state.value || []}
+                        onChange={(tech) => field.handleChange(tech)}
+                        maxTech={10}
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+            </FieldGroup>
+          )}
 
-            <div id="images-media" className="scroll-mt-24 space-y-6">
+          {currentStep === 3 && (
+            <FieldGroup>
               <form.Field name="logo_file">
                 {(field) => {
                   return (
                     <Field>
                       <FieldLabel>Logo</FieldLabel>
                       <LogoUpload
-                        value={field.state.value}
+                        value={(field.state.value as unknown) as File | null}
                         onChange={(file) => {
-                          field.handleChange(file);
+                          (field.handleChange as unknown as (value: File | null) => void)(file);
                           if (file) {
                             setRemoveLogo(false);
                           }
                         }}
-                        existingLogoUrl={existingLogoUrl && !removeLogo ? existingLogoUrl : undefined}
+                        existingLogoUrl={
+                          existingLogoUrl && !removeLogo
+                            ? existingLogoUrl
+                            : undefined
+                        }
                         onExistingLogoRemove={() => {
                           setRemoveLogo(true);
-                          field.handleChange(null);
+                          (field.handleChange as unknown as (value: File | null) => void)(null);
                         }}
                         disabled={isSubmitting}
                       />
-                      <FieldDescription className="text-xs">
-                        Upload your product logo (PNG, JPG, WebP up to 2MB)
-                      </FieldDescription>
                     </Field>
                   );
                 }}
@@ -479,23 +545,16 @@ export function ProductForm({
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="logo_url">
-                        Or use a Logo URL
-                      </FieldLabel>
+                      <FieldLabel htmlFor="logo_url">Or use a Logo URL</FieldLabel>
                       <Input
                         id="logo_url"
                         type="url"
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
+                        onChange={(e) => field.handleChange(e.target.value)}
                         placeholder="https://example.com/logo.png"
                         disabled={isSubmitting}
                       />
-                      <FieldDescription className="text-xs">
-                        Provide an external URL if you prefer not to upload
-                      </FieldDescription>
                     </Field>
                   );
                 }}
@@ -505,14 +564,13 @@ export function ProductForm({
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel>Product Images (Optional)</FieldLabel>
+                      <FieldLabel>Product Images</FieldLabel>
                       <ImagesUpload
-                        value={field.state.value}
-                        onChange={(files) => field.handleChange(files)}
+                        value={(field.state.value as unknown) as File[]}
+                        onChange={(files) => (field.handleChange as unknown as (value: File[]) => void)(files)}
                         existingImages={keptExistingImages}
                         onExistingImagesChange={(images) => {
                           setKeptExistingImages(images);
-                          // Track which images were deleted
                           const deleted = existingImages.filter(
                             (url) => !images.includes(url)
                           );
@@ -520,9 +578,6 @@ export function ProductForm({
                         }}
                         disabled={isSubmitting}
                       />
-                      <FieldDescription className="text-xs">
-                        Upload up to 5 product screenshots or images
-                      </FieldDescription>
                     </Field>
                   );
                 }}
@@ -540,39 +595,30 @@ export function ProductForm({
                         type="url"
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
-                        className="w-full border px-3 py-2"
-                        placeholder="https://www.youtube.com/watch?v=1c6biyEsxyM..."
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="https://www.youtube.com/watch?v=..."
                         disabled={isSubmitting}
                       />
                     </Field>
                   );
                 }}
               </form.Field>
-            </div>
+            </FieldGroup>
+          )}
 
-            <FieldSeparator />
-
-            <h3 className="text-3xl capitalize">Social Media</h3>
-
-            <div id="social-media" className="scroll-mt-24 space-y-6">
+          {currentStep === 4 && (
+            <FieldGroup>
               <form.Field name="twitter_url">
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="twitter_url">
-                        Twitter/X URL
-                      </FieldLabel>
+                      <FieldLabel htmlFor="twitter_url">Twitter/X URL</FieldLabel>
                       <Input
                         id="twitter_url"
                         type="url"
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
+                        onChange={(e) => field.handleChange(e.target.value)}
                         placeholder="https://twitter.com/yourhandle"
                       />
                     </Field>
@@ -584,17 +630,13 @@ export function ProductForm({
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="linkedin_url">
-                        LinkedIn URL
-                      </FieldLabel>
+                      <FieldLabel htmlFor="linkedin_url">LinkedIn URL</FieldLabel>
                       <Input
                         id="linkedin_url"
                         type="url"
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
+                        onChange={(e) => field.handleChange(e.target.value)}
                         placeholder="https://linkedin.com/company/yourcompany"
                       />
                     </Field>
@@ -602,48 +644,100 @@ export function ProductForm({
                 }}
               </form.Field>
 
-              <form.Field name="product_hunt_url">
+              <form.Field name="instagram_url">
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="product_hunt_url">
-                        Product Hunt URL
+                      <FieldLabel htmlFor="instagram_url">
+                        Instagram URL
                       </FieldLabel>
                       <Input
-                        id="product_hunt_url"
+                        id="instagram_url"
+                        type="url"
+                        value={field.state.value || ""}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="https://instagram.com/yourhandle"
+                      />
+                    </Field>
+                  );
+                }}
+              </form.Field>
+
+              <form.Field name="repo_url">
+                {(field) => {
+                  return (
+                    <Field>
+                      <FieldLabel htmlFor="repo_url">
+                        Repository URL (optional)
+                      </FieldLabel>
+                      <Input
+                        id="repo_url"
                         type="url"
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
                           field.handleChange(e.target.value)
                         }
-                        placeholder="https://producthunt.com/posts/yourproduct"
+                        placeholder="https://github.com/username/repo"
                       />
+                      <FieldDescription className="text-xs">
+                        Add if your product is open source
+                      </FieldDescription>
                     </Field>
                   );
                 }}
               </form.Field>
-            </div>
-          </FieldGroup>
+            </FieldGroup>
+          )}
+        </div>
 
-          <div className="mt-8 flex justify-end gap-3">
+        <div className="flex mt-8 items-center justify-between">
+          <div>
             {onCancel && (
               <Button
                 type="button"
-                variant="outline"
-                size={"sm"}
+                variant="secondary"
+                size="xs"
                 onClick={onCancel}
                 disabled={isSubmitting}
               >
                 Cancel
               </Button>
             )}
-            <Button size={"sm"} type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : submitButtonText}
-            </Button>
           </div>
-        </form>
-      </div>
+
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              size="xs"
+              onClick={handlePrevious}
+              disabled={currentStep === 0 || isSubmitting}
+            >
+              Previous
+            </Button>
+
+            {currentStep < total_steps - 1 ? (
+              <Button
+                type="button"
+                size="xs"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNext();
+                }}
+                disabled={isSubmitting || hasStepErrors()}
+              >
+                Next
+              </Button>
+            ) : (
+              <Button type="submit" size="xs" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : submitButtonText}
+              </Button>
+            )}
+          </div>
+        </div>
+      </form>
     </div>
   );
 }

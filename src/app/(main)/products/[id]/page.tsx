@@ -141,7 +141,7 @@ export default async function ProductPage({
           {isOwner && !product.is_featured && (
             <Link
               href={"/advertise"}
-              className="text-center group bg-violet-50/50 hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 text-xs gap-x-1.5 p-2 outline-transparent not-disabled:cursor-pointer hover:not-disabled:outline-2 hover:not-disabled:outline-border/50 hover:not-disabled:border-ring focus-visible:outline-2 focus-visible:outline-border/50 focus-visible:border-ring flex w-full border rounded font-medium flex-row justify-between items-center"
+              className="text-center group bg-violet-50/50 hover:text-accent-foreground dark:bg-input/30 rounded-xl dark:border-input dark:hover:bg-input/50 text-xs gap-x-1.5 p-2 outline-transparent not-disabled:cursor-pointer hover:not-disabled:outline-2 hover:not-disabled:outline-border/50 hover:not-disabled:border-ring focus-visible:outline-2 focus-visible:outline-border/50 focus-visible:border-ring flex w-full border rounded-xl font-medium flex-row justify-between items-center"
             >
               <div className="flex items-center justify-start gap-x-1.5">
                 <span className="bg-black text-white px-1 rounded shadow">

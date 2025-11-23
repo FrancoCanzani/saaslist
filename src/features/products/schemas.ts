@@ -21,7 +21,6 @@ const baseProductSchema = z.object({
     .max(200, "Tagline must be at most 200 characters"),
   website_url: z.url("Please enter a valid URL"),
   repo_url: zEmptyStrToUndefined,
-  is_open_source: z.boolean(),
   description: z
     .string()
     .min(50, "Description must be at least 50 characters")
@@ -35,7 +34,7 @@ const baseProductSchema = z.object({
   pricing_model: z.enum(["free", "freemium", "premium"]),
   twitter_url: zEmptyStrToUndefined,
   linkedin_url: zEmptyStrToUndefined,
-  product_hunt_url: zEmptyStrToUndefined,
+  instagram_url: zEmptyStrToUndefined,
   platforms: z
     .array(
       z.enum([
@@ -49,25 +48,14 @@ const baseProductSchema = z.object({
       ]),
     )
     .min(1, "Select at least one platform"),
+  techstack: z
+    .array(z.string().min(1))
+    .max(10, "Maximum 10 technologies allowed")
+    .optional()
+    .default([]),
 });
 
-const openSourceRepoRefine = (data: {
-  is_open_source?: boolean;
-  repo_url?: string | undefined;
-}) => {
-  if (data.is_open_source === true && !data.repo_url) {
-    return false;
-  }
-  return true;
-};
-
-export const productSchema = baseProductSchema.refine(
-  openSourceRepoRefine,
-  {
-    message: "Repository URL is required for open source projects",
-    path: ["repo_url"],
-  },
-);
+export const productSchema = baseProductSchema;
 
 export type ProductFormData = z.infer<typeof productSchema>;
 
@@ -116,10 +104,6 @@ export const productUpdateSchema = baseProductSchema
   .partial()
   .extend({
     images: z.array(z.string().url()).optional(),
-  })
-  .refine(openSourceRepoRefine, {
-    message: "Repository URL is required for open source projects",
-    path: ["repo_url"],
   });
 
 export type ProductUpdateData = z.infer<typeof productUpdateSchema>;

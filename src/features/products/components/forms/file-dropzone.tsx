@@ -68,7 +68,7 @@ export function FileDropzone({
       <div
         {...getRootProps()}
         className={cn(
-          "border border-dashed rounded p-8 text-center cursor-pointer transition-colors",
+          "border border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors",
           isDragActive && !isDragReject
             ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20"
             : isDragReject

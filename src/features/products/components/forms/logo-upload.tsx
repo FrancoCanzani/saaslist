@@ -68,7 +68,7 @@ export function LogoUpload({
 
     return (
       <div className="space-y-2">
-        <div className="relative w-32 h-32 border rounded overflow-hidden">
+        <div className="relative w-32 h-32 border rounded-xl overflow-hidden">
           <Image
             src={preview}
             alt="Logo preview"

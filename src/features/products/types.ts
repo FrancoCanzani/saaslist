@@ -23,8 +23,9 @@ export interface Product {
   tags: string[];
   twitter_url?: string;
   linkedin_url?: string;
-  product_hunt_url?: string;
+  instagram_url?: string;
   platforms: Platform[];
+  techstack?: string[];
   user_id: string;
   likes_count: number;
   comments_count: number;
@@ -41,7 +42,6 @@ export interface ProductFormData {
   tagline: string;
   website_url: string;
   repo_url?: string;
-  is_open_source: boolean;
   description: string;
   tags: string[];
   logo_url?: string;
@@ -51,8 +51,9 @@ export interface ProductFormData {
   pricing_model: PricingModel;
   twitter_url?: string;
   linkedin_url?: string;
-  product_hunt_url?: string;
+  instagram_url?: string;
   platforms: Platform[];
+  techstack?: string[];
 }
 
 export interface Comment {

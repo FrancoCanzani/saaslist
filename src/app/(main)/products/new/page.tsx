@@ -34,7 +34,7 @@ export default function NewProductPage() {
       <div className="">
         <h1 className="text-xl font-medium">Submit a Product</h1>
         <h2 className="text-sm text-muted-foreground">
-          Share your SaaS with the community
+          It will only take a minute
         </h2>
       </div>
 

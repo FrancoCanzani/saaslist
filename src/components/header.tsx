@@ -29,11 +29,7 @@ export default async function Header() {
         <MobileNav />
         {user ? (
           <>
-            <Button
-              className="bg-violet-50 dark:bg-[#02010a] hover:bg-violet-100"
-              size={"xs"}
-              variant={"secondary"}
-            >
+            <Button size={"xs"}>
               <Link href={"/products/new"}>New Product</Link>
             </Button>
 

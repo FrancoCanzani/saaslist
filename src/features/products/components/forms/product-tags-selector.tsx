@@ -18,23 +18,29 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { categories } from "@/utils/constants";
 import { X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-interface TagSelectorProps {
+interface ProductTagsSelectorProps {
   selectedTags: string[];
   onTagsChange: (tags: string[]) => void;
   maxTags?: number;
 }
 
-export default function TagSelector({
+export default function ProductTagsSelector({
   selectedTags,
   onTagsChange,
   maxTags = 3,
-}: TagSelectorProps) {
+}: ProductTagsSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [tempSelectedTags, setTempSelectedTags] =
     useState<string[]>(selectedTags);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTempSelectedTags(selectedTags);
+    }
+  }, [isOpen, selectedTags]);
 
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -73,13 +79,18 @@ export default function TagSelector({
 
   const handleOpenChange = (open: boolean) => {
     if (open) {
-      setTempSelectedTags(selectedTags);
       setSearchQuery("");
     }
     setIsOpen(open);
   };
 
-  const removeTag = (tag: string) => {
+  const handleClearAll = () => {
+    onTagsChange([]);
+    setTempSelectedTags([]);
+  };
+
+  const handleTagRemove = (tag: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     onTagsChange(selectedTags.filter((t) => t !== tag));
   };
 
@@ -89,17 +100,18 @@ export default function TagSelector({
         type="button"
         onClick={() => setIsOpen(true)}
         className={cn(
-          "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-xl border bg-transparent px-2 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
           "hover:border-ring/50 text-left flex items-center justify-between gap-2",
           selectedTags.length === 0 && "text-muted-foreground",
         )}
       >
-        <span className="flex-1 flex items-center gap-1.5 flex-wrap">
+        <span className="flex-1 rounded-xl flex items-center gap-1.5 flex-wrap">
           {selectedTags.length > 0 ? (
             selectedTags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 bg-gray-100 border border-gray-200 rounded px-2 py-0.5 text-xs"
+                onClick={(e) => handleTagRemove(tag, e)}
+                className="inline-flex items-center gap-1 rounded-md bg-gray-100 border border-gray-200 rounded px-2 py-0.5 text-xs cursor-pointer hover:bg-gray-200 transition-colors"
               >
                 {tag}
               </span>
@@ -117,7 +129,7 @@ export default function TagSelector({
           </span>
           <button
             type="button"
-            onClick={() => onTagsChange([])}
+            onClick={handleClearAll}
             className="text-red-600 hover:text-red-700 hover:underline"
           >
             Clear all
@@ -126,7 +138,7 @@ export default function TagSelector({
       )}
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col">
+        <DialogContent className="max-w-5xl max-h-[80vh] flex flex-col">
           <DialogHeader>
             <DialogTitle className="font-medium">
               Select launch tags
@@ -142,7 +154,7 @@ export default function TagSelector({
               placeholder="Search for launch tags"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="text-xs"
+              className="text-xs rounded-xl"
             />
           </div>
 
@@ -175,11 +187,11 @@ export default function TagSelector({
                             disabled={isDisabled}
                             size={"xs"}
                             variant={"outline"}
-                            className={`
-                              font-normal transition-all
-                              ${isSelected && "bg-accent"}
-                              ${isDisabled && "opacity-40 cursor-not-allowed"}
-                            `}
+                            className={cn(
+                              "font-normal transition-all",
+                              isSelected && "bg-accent",
+                              isDisabled && "opacity-40 cursor-not-allowed"
+                            )}
                           >
                             <span className="flex items-center gap-1">
                               {isSelected && <X className="size-3" />}
@@ -213,3 +225,4 @@ export default function TagSelector({
     </div>
   );
 }
+

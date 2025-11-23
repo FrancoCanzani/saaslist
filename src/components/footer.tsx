@@ -8,8 +8,8 @@ export default function Footer() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <footer className="border-t border-dashed dark:border-surface border-surface mt-20">
-      <div className="max-w-6xl mx-auto px-6 py-12">
+    <footer className="border-t border-dashed dark:border-surface border-surface">
+      <div className="max-w-6xl mx-auto p-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
             <h3 className="font-mono font-medium text-xl">SaasList</h3>

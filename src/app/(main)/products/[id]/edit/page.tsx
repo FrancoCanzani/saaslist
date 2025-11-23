@@ -10,9 +10,11 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function EditProductPage() {
   const params = useParams();
+  // fix this
   const productId = params?.id as string;
   const router = useRouter();
   const updateProductMutation = useUpdateProduct();
@@ -75,7 +77,7 @@ export default function EditProductPage() {
 
   if (isLoading || !productId) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center flex-1">
         <Spinner />
       </div>
     );
@@ -83,21 +85,20 @@ export default function EditProductPage() {
 
   if (error || !product) {
     return (
-      <div className="p-4 sm:p-6 lg:p-8">
-        <div className="text-center space-y-4">
-          <h1 className="text-xl font-medium">Product Not Found</h1>
-          <p className="text-sm text-muted-foreground">
+<div className="flex items-center justify-center flex-1">
+<Alert className="max-w-lg mx-auto">
+          <AlertDescription className="mx-auto text-balance text-center">
             The product you're trying to edit doesn't exist or you don't have
             permission to edit it.
-          </p>
-        </div>
-      </div>
+          </AlertDescription>
+        </Alert>
+</div>
     );
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
-      <div className="">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
+      <div>
         <h1 className="text-xl font-medium">Edit Product</h1>
         <h2 className="text-sm text-muted-foreground">
           Update your product information
@@ -111,15 +112,15 @@ export default function EditProductPage() {
           tagline: product.tagline,
           website_url: product.website_url,
           repo_url: product.repo_url,
-          is_open_source: !!product.repo_url,
           description: product.description,
           tags: product.tags,
+          techstack: product.techstack || [],
           logo_url: product.logo_url,
           demo_url: product.demo_url,
           pricing_model: product.pricing_model,
           twitter_url: product.twitter_url,
           linkedin_url: product.linkedin_url,
-          product_hunt_url: product.product_hunt_url,
+          instagram_url: product.instagram_url,
           platforms: product.platforms,
         }}
         existingImages={product.images || []}
