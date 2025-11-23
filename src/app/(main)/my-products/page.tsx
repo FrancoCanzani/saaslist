@@ -166,14 +166,14 @@ export default async function MyProductsPage() {
                 {products?.map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center justify-between p-4"
+                    className="flex items-center justify-between p-2"
                   >
                     <div className="flex items-center gap-4 flex-1 min-w-0">
-                      <div className="size-9 flex items-center justify-center shrink-0">
+                      <div className="size-8 flex items-center justify-center shrink-0">
                         <ProductLogo
                           logoUrl={product.logo_url}
                           productName={product.name}
-                          size={28}
+                          size={25}
                         />
                       </div>
                       <div className="min-w-0 flex-1">
