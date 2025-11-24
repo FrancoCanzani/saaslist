@@ -6,9 +6,9 @@ import ProductsMarqueeSkeleton from "@/components/skeletons/products-marquee-ske
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import LatestProductUpdates from "@/features/products/components/latest-product-updates";
+import { ProductDiscoverySection } from "@/features/products/components/product-discovery-section";
 import ProductList from "@/features/products/components/product-list";
 import ProductsMarquee from "@/features/products/components/products-marquee";
-import { ProductDiscoverySection } from "@/features/products/components/product-discovery-section";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -49,11 +49,7 @@ export default async function Home() {
         </div>
         <div className="space-y-4 relative z-10">
           <div className="space-x-2">
-            <Button
-              asChild
-              size={"lg"}
-              className="rounded-xl"
-            >
+            <Button asChild size={"lg"} className="rounded-xl">
               <Link href={"/products/new"}>Submit your SaaS</Link>
             </Button>
             <Button asChild variant={"secondary"} size={"lg"}>
@@ -112,7 +108,7 @@ export default async function Home() {
         </div>
       </main>
 
-      <Footer containerClassName="max-w-7xl" />
+      <Footer />
     </div>
   );
 }
