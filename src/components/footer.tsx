@@ -1,15 +1,20 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-export default function Footer() {
+interface FooterProps {
+  containerClassName?: string;
+}
+
+export default function Footer({ containerClassName }: FooterProps = {}) {
   const { theme, setTheme } = useTheme();
 
   return (
     <footer className="border-t border-dashed dark:border-surface border-surface">
-      <div className="max-w-6xl mx-auto p-6">
+      <div className={cn("max-w-6xl mx-auto p-6", containerClassName)}>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
             <h3 className="font-mono font-medium text-xl">SaasList</h3>

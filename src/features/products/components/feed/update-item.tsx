@@ -91,7 +91,7 @@ export function UpdateItem({ update, isOwner, productId }: UpdateItemProps) {
             )}
           </div>
           <div
-            className="prose prose-sm max-w-none text-sm"
+            className="prose dark:prose-invert leading-normal prose-sm max-w-none"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(update.content) }}
           />
           <p className="text-xs text-muted-foreground mt-2">

@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ReviewActionDialog } from "./review-action-dialog";
-import { CommentActionDialog } from "./comment-action-dialog";
-import { UpdateActionDialog } from "./update-action-dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
+import Link from "next/link";
+import { CommentActionDialog } from "./comment-action-dialog";
+import { ReviewActionDialog } from "./review-action-dialog";
+import { UpdateActionDialog } from "./update-action-dialog";
 
 interface FeedActionsProps {
   productId: string;
@@ -21,9 +22,12 @@ export function FeedActions({
 }: FeedActionsProps) {
   const isMobile = useIsMobile();
 
-  if (!currentUserId) {
-    return null;
-  }
+  if (!currentUserId)
+    return (
+      <Button asChild size={"xs"} variant={"secondary"}>
+        <Link href="/login">Sign In to Post</Link>
+      </Button>
+    );
 
   return (
     <div className="flex items-center gap-2">
@@ -49,4 +53,3 @@ export function FeedActions({
     </div>
   );
 }
-

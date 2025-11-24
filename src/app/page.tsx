@@ -29,7 +29,7 @@ export const revalidate = 600;
 export default async function Home() {
   return (
     <div className="min-h-screen max-w-7xl relative space-y-8 mx-auto">
-      <Header />
+      <Header containerClassName="max-w-7xl" />
 
       <div className="w-full max-w-6xl mx-auto py-12 text-center flex-col md:px-6 flex items-center md:items-center justify-start gap-8 overflow-hidden relative">
         <Link
@@ -112,7 +112,7 @@ export default async function Home() {
         </div>
       </main>
 
-      <Footer />
+      <Footer containerClassName="max-w-7xl" />
     </div>
   );
 }

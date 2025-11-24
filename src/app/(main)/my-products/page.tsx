@@ -169,13 +169,11 @@ export default async function MyProductsPage() {
                     className="flex items-center justify-between p-2"
                   >
                     <div className="flex items-center gap-4 flex-1 min-w-0">
-                      <div className="size-8 flex items-center justify-center shrink-0">
-                        <ProductLogo
-                          logoUrl={product.logo_url}
-                          productName={product.name}
-                          size={25}
-                        />
-                      </div>
+                      <ProductLogo
+                        logoUrl={product.logo_url}
+                        productName={product.name}
+                        size="sm"
+                      />
                       <div className="min-w-0 flex-1">
                         <h3 className="truncate">{product.name}</h3>
                         <p className="text-xs hidden sm:block text-muted-foreground truncate">

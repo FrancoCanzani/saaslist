@@ -52,7 +52,7 @@ export function ProductMediaCarousel({
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
+    <div className="w-full max-w-3xl shadow-xs mx-auto">
       <Carousel
         opts={{
           align: "start",
@@ -63,7 +63,7 @@ export function ProductMediaCarousel({
         <CarouselContent>
           {mediaItems.map((item, index) => (
             <CarouselItem key={index}>
-              <div className="relative w-full aspect-video rounded overflow-hidden">
+              <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                 {item.type === "video" ? (
                   <iframe
                     src={extractYouTubeEmbedUrl(item.url)}

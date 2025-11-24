@@ -115,7 +115,7 @@ export function ProductDiscoverySection() {
         <h2 className="text-xl leading-tight font-medium">
           Discover New Products
         </h2>
-        <Card className="p-8 text-center text-muted-foreground">
+        <Card className="p-8 text-center text-xs text-muted-foreground">
           <p>Loading products...</p>
         </Card>
       </div>

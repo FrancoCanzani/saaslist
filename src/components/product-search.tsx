@@ -84,7 +84,7 @@ export function ProductSearchDialog() {
                         <ProductLogo
                           logoUrl={product.logo_url}
                           productName={product.name}
-                          size={30}
+                          size="sm"
                         />
                         <div className="flex-1 min-w-0">
                           <div className="font-medium text-sm truncate">

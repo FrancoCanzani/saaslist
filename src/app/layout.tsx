@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     siteName: "SaasList",
     title: "SaasList - Discover & Share the Best SaaS Products",
     description:
-    "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
+      "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
     images: [
       {
         url: new URL("/opengraph-image", baseUrl).toString(),
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SaasList - Discover & Share the Best SaaS Products",
     description:
-    "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
+      "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
     images: [new URL("/opengraph-image", baseUrl).toString()],
   },
   alternates: {
@@ -89,7 +89,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${crimsonPro.variable} antialiased dark:bg-background`}
+        className={`${inter.variable} ${crimsonPro.variable} antialiased bg-surface/20 dark:bg-background`}
       >
         <ThemeProvider
           attribute="class"

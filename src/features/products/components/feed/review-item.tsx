@@ -50,15 +50,15 @@ export default function ReviewItem({
   };
 
   return (
-    <div className="border rounded p-3 space-y-3">
+    <div className="border rounded-xl p-3 space-y-3">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3">
           {review.user.avatar_url ? (
             <Image
               src={review.user.avatar_url}
               alt={review.user.name}
-              width={40}
-              height={40}
+              width={38}
+              height={38}
               className="rounded-full"
             />
           ) : (
@@ -121,9 +121,11 @@ export default function ReviewItem({
         )}
       </div>
 
-      {review.title && <h3 className="font-medium">{review.title}</h3>}
+      {review.title && <h3 className="font-medium text-sm">{review.title}</h3>}
 
-      <p className="text-sm text-pretty">{review.content}</p>
+      <p className="text-sm prose dark:prose-invert leading-normal prose-sm max-w-none">
+        {review.content}
+      </p>
     </div>
   );
 }

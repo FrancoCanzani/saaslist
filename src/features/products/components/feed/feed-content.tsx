@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
-import { parseAsStringLiteral, useQueryState } from "nuqs";
-import { Comment, Review, Update } from "../../types";
-import { FeedItem } from "./feed-item";
-import { FeedFilter } from "./feed-filter";
-import { FeedActions } from "./feed-actions";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { parseAsStringLiteral, useQueryState } from "nuqs";
+import { useMemo } from "react";
 import { buildCommentTree } from "../../helpers";
+import { Comment, Review, Update } from "../../types";
+import { FeedActions } from "./feed-actions";
+import { FeedFilter } from "./feed-filter";
+import { FeedItem } from "./feed-item";
 
 interface FeedContentProps {
   productId: string;
@@ -32,7 +32,12 @@ export function FeedContent({
 }: FeedContentProps) {
   const [filter, setFilter] = useQueryState(
     "feed",
-    parseAsStringLiteral<FeedType>(["all", "reviews", "comments", "updates"]).withDefault("all")
+    parseAsStringLiteral<FeedType>([
+      "all",
+      "reviews",
+      "comments",
+      "updates",
+    ]).withDefault("all"),
   );
 
   const feedItems = useMemo(() => {
@@ -79,15 +84,15 @@ export function FeedContent({
 
     return items.sort(
       (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     );
   }, [reviews, comments, updates, filter]);
 
   return (
     <div className="py-8 space-y-6">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <h2 className="font-medium text-lg">Activity Feed</h2>
-        <div className="flex w-full md:w-auto items-center justify-between md:justify-start gap-2">
+        <h2 className="font-medium text-lg">Feed</h2>
+        <div className="flex w-full md:w-auto items-center justify-end gap-2">
           <FeedActions
             productId={productId}
             currentUserId={currentUserId}
@@ -99,7 +104,7 @@ export function FeedContent({
       </div>
 
       {feedItems.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {feedItems.map((item) => (
             <FeedItem
               key={`${item.type}-${item.id}`}
@@ -123,4 +128,3 @@ export function FeedContent({
     </div>
   );
 }
-

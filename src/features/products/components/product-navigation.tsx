@@ -37,13 +37,11 @@ export function ProductNavigation({
           >
             <Link href={`/products/${prevProduct.id}`} prefetch>
               <ChevronLeft className="size-4 shrink-0" />
-              <div className="size-6 flex items-center justify-center shrink-0">
-                <ProductLogo
-                  logoUrl={prevProduct.logo_url}
-                  productName={prevProduct.name}
-                  size={20}
-                />
-              </div>
+              <ProductLogo
+                logoUrl={prevProduct.logo_url}
+                productName={prevProduct.name}
+                size="sm"
+              />
               <div className="flex flex-col items-start text-left min-w-0">
                 <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
                   Previous
@@ -64,13 +62,11 @@ export function ProductNavigation({
             asChild
           >
             <Link href={`/products/${nextProduct.id}`}>
-              <div className="size-6 flex items-center justify-center shrink-0">
-                <ProductLogo
-                  logoUrl={nextProduct.logo_url}
-                  productName={nextProduct.name}
-                  size={20}
-                />
-              </div>
+              <ProductLogo
+                logoUrl={nextProduct.logo_url}
+                productName={nextProduct.name}
+                size="sm"
+              />
               <div className="flex flex-col items-start text-left min-w-0">
                 <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
                   Next

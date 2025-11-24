@@ -79,152 +79,155 @@ export default function CommentItem({
   return (
     <div
       className={cn(
-        "border-x border-b rounded-r-xl rounded-b-xl p-3 transition-colors group-hover/thread:bg-gray-50",
+        "border-x border-b rounded-r-xl rounded-b-xl p-3 space-y-3 transition-colors group-hover/thread:bg-surface/20",
         showTopBorder && "border-t rounded-t-xl",
         isReply && "border-l",
       )}
     >
-      <div className="flex gap-2">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between">
-            <div className="gap-2 flex items-center justify-start">
-              {comment.user.avatar_url ? (
-                <Image
-                  src={comment.user.avatar_url}
-                  alt={comment.user.name}
-                  width={20}
-                  height={20}
-                  className="rounded-full"
-                />
-              ) : (
-                <div className="size-6 rounded-full flex items-center justify-center text-sm font-medium">
-                  {comment.user.name.charAt(0).toUpperCase()}
-                </div>
-              )}
-              <span className="font-medium text-sm">{comment.user.name}</span>
-              <span className="text-xs text-muted-foreground">
-                {formatDistanceToNowStrict(new Date(comment.created_at), {
-                  addSuffix: true,
-                })}
-              </span>
-              {isEdited && (
-                <span className="text-xs text-muted-foreground italic">
-                  (Edited)
-                </span>
-              )}
-              {comment.is_flagged && (
-                <span className="text-xs text-red-500">Flagged</span>
-              )}
+      <div className="flex items-start justify-between">
+        <div className="flex items-start gap-3">
+          {comment.user.avatar_url ? (
+            <Image
+              src={comment.user.avatar_url}
+              alt={comment.user.name}
+              width={38}
+              height={38}
+              className="rounded-full"
+            />
+          ) : (
+            <div className="size-10 rounded-full bg-muted flex items-center justify-center text-lg font-medium">
+              {comment.user.name.charAt(0).toUpperCase()}
             </div>
+          )}
 
-            <div className="flex">
-              {canReply && currentUserId && (
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  onClick={() => {
-                    setIsReplying(!isReplying);
-                    setIsEditing(false);
-                  }}
-                >
-                  Reply
-                </Button>
-              )}
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-col">
+              <span className="font-medium text-sm">{comment.user.name}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">
+                  {formatDistanceToNowStrict(new Date(comment.created_at), {
+                    addSuffix: true,
+                  })}
+                </span>
+                {isEdited && (
+                  <span className="text-xs text-muted-foreground italic">
+                    (Edited)
+                  </span>
+                )}
+                {comment.is_flagged && (
+                  <span className="text-xs text-red-500">Flagged</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
 
-              {isOwner && (
-                <>
+        <div className="flex">
+          {canReply && currentUserId && (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => {
+                setIsReplying(!isReplying);
+                setIsEditing(false);
+              }}
+            >
+              Reply
+            </Button>
+          )}
+
+          {isOwner && (
+            <>
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => {
+                  setIsReplying(false);
+                  setIsEditing(true);
+                }}
+              >
+                Edit
+              </Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
                   <Button
                     variant="ghost"
                     size="xs"
-                    onClick={() => {
-                      setIsReplying(false);
-                      setIsEditing(true);
-                    }}
+                    className="text-red-600 hover:text-red-700"
                   >
-                    Edit
+                    Delete
                   </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete comment?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently
+                      delete your comment.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <Button asChild size={"xs"} variant={"outline"}>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    </Button>
 
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="xs"
-                        className=" text-red-600 hover:text-red-700"
-                      >
+                    <Button asChild size={"xs"} variant={"destructive"}>
+                      <AlertDialogAction onClick={handleDelete}>
                         Delete
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete comment?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your comment.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <Button asChild size={"xs"} variant={"outline"}>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        </Button>
-
-                        <Button asChild size={"xs"} variant={"destructive"}>
-                          <AlertDialogAction onClick={handleDelete}>
-                            Delete
-                          </AlertDialogAction>
-                        </Button>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </>
-              )}
-
-              {!isOwner && currentUserId && !comment.is_flagged && (
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  onClick={handleFlag}
-                  disabled={isPending}
-                >
-                  Flag
-                </Button>
-              )}
-            </div>
-          </div>
-
-          {isEditing ? (
-            <div className="my-3">
-              <CommentForm
-                productId={productId}
-                commentId={comment.id}
-                initialContent={comment.content}
-                onSuccess={() => setIsEditing(false)}
-                onCancel={() => setIsEditing(false)}
-                submitLabel="Save"
-                placeholder="Edit your comment..."
-              />
-            </div>
-          ) : (
-            <div
-              className="prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{
-                __html: sanitizeHtml(comment.content),
-              }}
-            />
+                      </AlertDialogAction>
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </>
           )}
 
-          {isReplying && (
-            <div className="my-3">
-              <CommentForm
-                productId={productId}
-                parentId={comment.id}
-                onSuccess={() => setIsReplying(false)}
-                onCancel={() => setIsReplying(false)}
-                submitLabel="Reply"
-              />
-            </div>
+          {!isOwner && currentUserId && !comment.is_flagged && (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={handleFlag}
+              disabled={isPending}
+            >
+              Flag
+            </Button>
           )}
         </div>
       </div>
+
+      {isEditing ? (
+        <div className="my-3">
+          <CommentForm
+            productId={productId}
+            commentId={comment.id}
+            initialContent={comment.content}
+            onSuccess={() => setIsEditing(false)}
+            onCancel={() => setIsEditing(false)}
+            submitLabel="Save"
+            placeholder="Edit your comment..."
+          />
+        </div>
+      ) : (
+        <div
+          className="text-sm prose dark:prose-invert leading-normal prose-sm max-w-none"
+          dangerouslySetInnerHTML={{
+            __html: sanitizeHtml(comment.content),
+          }}
+        />
+      )}
+
+      {isReplying && (
+        <div className="my-3">
+          <CommentForm
+            productId={productId}
+            parentId={comment.id}
+            onSuccess={() => setIsReplying(false)}
+            onCancel={() => setIsReplying(false)}
+            submitLabel="Reply"
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,10 +1,9 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Comment, Review, Update } from "../../types";
-import ReviewItem from "./review-item";
 import CommentItem from "./comment-item";
 import CommentList from "./comment-list";
+import ReviewItem from "./review-item";
 import { UpdateItem } from "./update-item";
 
 interface FeedItemProps {
@@ -33,9 +32,10 @@ export function FeedItem({
 
   return (
     <div className="space-y-2">
-      <Badge variant="secondary" className="text-xs">
-        {typeLabels[type]}
-      </Badge>
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-medium">{typeLabels[type]}</span>
+        <div className="flex-1 mt-1 h-px bg-border w-full" />
+      </div>
       <div>
         {type === "review" && (
           <ReviewItem
@@ -55,7 +55,7 @@ export function FeedItem({
               isFirst={true}
             />
             {hasReplies && (
-              <div className="pl-4 sm:pl-8">
+              <div className="pl-3 sm:pl-6">
                 <CommentList
                   comments={comment.replies!}
                   currentUserId={currentUserId}

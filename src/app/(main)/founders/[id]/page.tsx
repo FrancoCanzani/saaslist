@@ -85,13 +85,11 @@ export default async function MakerProfilePage({
                 href={`/products/${product.id}`}
                 className="flex items-center gap-3 p-2 rounded-xl border hover:bg-muted/50 transition-colors"
               >
-                <div className="size-10 flex items-center justify-center shrink-0">
-                  <ProductLogo
-                    logoUrl={product.logo_url}
-                    productName={product.name}
-                    size={24}
-                  />
-                </div>
+                <ProductLogo
+                  logoUrl={product.logo_url}
+                  productName={product.name}
+                  size="md"
+                />
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm truncate">
                     {product.name}

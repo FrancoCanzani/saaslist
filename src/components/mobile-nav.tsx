@@ -14,8 +14,7 @@ export function MobileNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="md:hidden">
-        <Button         variant="ghost"
-        size="xs" aria-label="Navigation menu">
+        <Button variant="secondary" size="xs" aria-label="Navigation menu">
           <Menu className="size-4" />
         </Button>
       </DropdownMenuTrigger>
