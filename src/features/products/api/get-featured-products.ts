@@ -1,18 +1,21 @@
 import { createClient } from "@/lib/supabase/server";
 import { cache } from "react";
+import { Product } from "../types";
 
-export const getProductTags = cache(async () => {
+export const getFeaturedProducts = cache(async (): Promise<Product[]> => {
   const supabase = await createClient();
 
   const { data: products, error } = await supabase
     .from("products")
-    .select("id, tags")
+    .select("*")
+    .eq("is_featured", true)
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Error fetching product tags:", error);
+    console.error("Error fetching featured products:", error);
     return [];
   }
 
-  return products || [];
+  return (products as Product[]) || [];
 });
+

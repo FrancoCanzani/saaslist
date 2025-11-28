@@ -20,7 +20,6 @@ const trackProductView = async (productId: string) => {
   return response.json();
 };
 
-
 export function ProductViewTracker({ productId }: { productId: string }) {
   const pathname = usePathname();
   const [debounced] = useDebounce(productId, 1000);
@@ -38,3 +37,4 @@ export function ProductViewTracker({ productId }: { productId: string }) {
 
   return null;
 }
+

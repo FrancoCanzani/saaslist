@@ -29,24 +29,24 @@ export default async function BlogPage() {
           {posts.map((post) => (
             <article
               key={post.slug}
-              className="border rounded p-6 transition-colors"
+              className="border rounded-xl p-6 group transition-colors"
             >
-              <h2 className="text-xl font-medium mb-2 ">{post.title}</h2>
-              {post.excerpt && (
-                <p className="text-muted-foreground text-sm mb-4">
-                  {post.excerpt}
-                </p>
-              )}
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                {post.date && (
-                  <time dateTime={post.date}>
-                    {format(new Date(post.date), "MMMM d, yyyy")}
-                  </time>
+              <Link href={`/blog/${post.slug}`}>
+                <h2 className="text-xl font-medium mb-2 ">{post.title}</h2>
+                {post.excerpt && (
+                  <p className="text-muted-foreground text-sm mb-4">
+                    {post.excerpt}
+                  </p>
                 )}
-                <Link href={`/blog/${post.slug}`} className="hover:underline">
-                  Read more →
-                </Link>
-              </div>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  {post.date && (
+                    <time dateTime={post.date}>
+                      {format(new Date(post.date), "MMMM d, yyyy")}
+                    </time>
+                  )}
+                  <span className="group-hover:underline">Read more</span>
+                </div>
+              </Link>
             </article>
           ))}
         </div>

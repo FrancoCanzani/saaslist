@@ -1,5 +1,5 @@
 import { NewsletterForm } from "@/features/newsletter/components/newsletter-form";
-import { getCurrentUser } from "@/features/profiles/api";
+import { getCurrentUser } from "@/features/profiles/api/get-current-user";
 import type { Metadata } from "next";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";

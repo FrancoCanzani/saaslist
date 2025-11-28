@@ -1,12 +1,17 @@
+import { cn } from "@/lib/utils";
 import { OliveBranchIcon } from "@/utils/icons";
 
-export default function FeaturedBadge() {
+export default function FeaturedBadge({ className }: { className?: string }) {
   return (
-    <div className="flex shadow-xs items-center border h-7 px-2 py-1.5 text-xs rounded-lg gap-1.5">
+    <div
+      title="Featured product"
+      className={cn(
+        "flex shadow-xs bg-muted/50 items-center border px-1.5 py-0.5 text-xs rounded-lg gap-1.5",
+        className,
+      )}
+    >
       <OliveBranchIcon className="text-amber-500" />
-      <span className="font-medium hidden md:block text-muted-foreground">
-        Featured
-      </span>
+      <span className="hidden md:block">Featured</span>
     </div>
   );
 }

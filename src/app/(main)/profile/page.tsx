@@ -1,6 +1,6 @@
 import { ProfileForm } from "@/features/profiles/components/profile-form";
-import { getCurrentUser } from "@/features/profiles/api";
-import { getActiveSubscription } from "@/features/subscriptions/queries";
+import { getCurrentUser } from "@/features/profiles/api/get-current-user";
+import { getActiveSubscription } from "@/features/subscriptions/api/get-subscriptions";
 import { SubscriptionInfo } from "@/features/subscriptions/components/subscription-info";
 import { redirect } from "next/navigation";
 import { format } from "date-fns";

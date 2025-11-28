@@ -1,5 +1,5 @@
-import { Card } from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function LatestProductUpdatesSkeleton() {
   return (
@@ -24,3 +24,4 @@ export default function LatestProductUpdatesSkeleton() {
     </div>
   );
 }
+

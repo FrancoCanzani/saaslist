@@ -1,8 +1,8 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import ProductListSkeleton from "@/components/skeletons/product-list-skeleton";
-import LatestProductUpdatesSkeleton from "@/components/skeletons/product-updates-skeleton";
-import ProductsMarqueeSkeleton from "@/components/skeletons/products-marquee-skeleton";
+import ProductListSkeleton from "@/features/products/components/skeletons/product-list-skeleton";
+import LatestProductUpdatesSkeleton from "@/features/products/components/skeletons/product-updates-skeleton";
+import ProductsMarqueeSkeleton from "@/features/products/components/skeletons/products-marquee-skeleton";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import LatestProductUpdates from "@/features/products/components/latest-product-updates";

@@ -1,6 +1,6 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { LoadMoreButton } from "@/features/leaderboard/load-more-button";
-import { TimePeriodFilter } from "@/features/leaderboard/time-period-filter";
+import { LoadMoreButton } from "@/features/leaderboard/components/load-more-button";
+import { TimePeriodFilter } from "@/features/leaderboard/components/time-period-filter";
 import ProductCard from "@/features/products/components/product-card";
 import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";

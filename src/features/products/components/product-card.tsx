@@ -61,7 +61,7 @@ export default function ProductCard({
               return category ? (
                 <Badge
                   key={index}
-                  className="hover:underline rounded font-medium text-xs cursor-pointer"
+                  className="hover:underline cursor-pointer"
                   variant={"secondary"}
                   onClick={(e) =>
                     handleTagClick(e, category.slug, getTagSlug(tag))
@@ -70,7 +70,7 @@ export default function ProductCard({
                   {tag}
                 </Badge>
               ) : (
-                <Badge key={index} variant={"secondary"} className="text-xs">
+                <Badge key={index} variant={"secondary"}>
                   {tag}
                 </Badge>
               );
@@ -79,7 +79,7 @@ export default function ProductCard({
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          {product.is_featured && <FeaturedBadge />}
+          {product.is_featured && <FeaturedBadge className="h-7" />}
           <LikeButton product={product} size="xs" hideText />
         </div>
       </Card>

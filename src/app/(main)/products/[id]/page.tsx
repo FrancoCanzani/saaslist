@@ -1,4 +1,4 @@
-import { ProductViewTracker } from "@/components/product-view-tracker";
+import { ProductViewTracker } from "@/features/products/components/product-view-tracker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FeedSection } from "@/features/products/components/feed/feed-section";
@@ -10,7 +10,7 @@ import { ProductNavigation } from "@/features/products/components/product-naviga
 import { ProductShare } from "@/features/products/components/product-share";
 import ProductSidebar from "@/features/products/components/product-sidebar";
 import { Product } from "@/features/products/types";
-import { getCurrentUser } from "@/features/profiles/api";
+import { getCurrentUser } from "@/features/profiles/api/get-current-user";
 import { createClient } from "@/lib/supabase/server";
 import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
 import { formatDistanceToNowStrict } from "date-fns";

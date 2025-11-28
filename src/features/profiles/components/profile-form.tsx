@@ -9,6 +9,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -29,6 +30,7 @@ export function ProfileForm({ profile, userEmail }: ProfileFormProps) {
     defaultValues: {
       email: userEmail,
       name: profile?.name || "",
+      bio: profile?.bio || "",
       avatar_url: profile?.avatar_url || "",
       twitter: profile?.twitter || "",
       website: profile?.website || "",
@@ -38,6 +40,7 @@ export function ProfileForm({ profile, userEmail }: ProfileFormProps) {
         try {
           await updateProfileAction({
             name: value.name || undefined,
+            bio: value.bio || undefined,
             avatar_url: value.avatar_url || undefined,
             twitter: value.twitter || undefined,
             website: value.website || undefined,
@@ -46,7 +49,7 @@ export function ProfileForm({ profile, userEmail }: ProfileFormProps) {
           router.refresh();
         } catch (error) {
           toast.error(
-            error instanceof Error ? error.message : "Failed to update profile",
+            error instanceof Error ? error.message : "Failed to update profile"
           );
         }
       });
@@ -86,6 +89,27 @@ export function ProfileForm({ profile, userEmail }: ProfileFormProps) {
                 placeholder="Your name"
                 disabled={isPending}
                 className="text-sm"
+              />
+              <FieldError>{field.state.meta.errors}</FieldError>
+            </Field>
+          )}
+        </form.Field>
+
+        <form.Field name="bio">
+          {(field) => (
+            <Field>
+              <FieldLabel>Bio</FieldLabel>
+              <FieldDescription>
+                A short description about yourself (max 500 characters)
+              </FieldDescription>
+              <Textarea
+                value={field.state.value}
+                onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={field.handleBlur}
+                placeholder="Tell us about yourself..."
+                disabled={isPending}
+                className="text-sm resize-none"
+                rows={3}
               />
               <FieldError>{field.state.meta.errors}</FieldError>
             </Field>

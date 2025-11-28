@@ -4,41 +4,23 @@ import {
   MarqueeFade,
   MarqueeItem,
 } from "@/components/ui/marquee";
-import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
-import { Product } from "../types";
-
-async function getFeaturedProducts(): Promise<Product[]> {
-  const supabase = await createClient();
-
-  const { data: products, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("is_featured", true)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching featured products:", error);
-    return [];
-  }
-
-  return (products as Product[]) || [];
-}
+import { getFeaturedProducts } from "../api/get-featured-products";
 
 export default async function ProductsMarquee() {
   const products = await getFeaturedProducts();
 
-  if (products.length <= 4) {
+  if (products.length < 5) {
     return null;
   }
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
       <div className="space-y-6">
-        <h2 className="capitalize text-muted-foreground font-medium leading-tight text-center text-sm">
+        <p className="text-muted-foreground text-center text-sm">
           Trusted by these Featured Products
-        </h2>
+        </p>
         <div className="flex size-full items-center justify-center bg-background">
           <Marquee>
             <MarqueeFade side="left" />

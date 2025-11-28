@@ -28,7 +28,7 @@ export function TimePeriodFilter() {
     },
     {
       shallow: false,
-    },
+    }
   );
 
   const handlePeriodChange = (value: string) => {
@@ -56,3 +56,4 @@ export function TimePeriodFilter() {
     </div>
   );
 }
+

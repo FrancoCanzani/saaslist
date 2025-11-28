@@ -1,6 +1,5 @@
-import ProductCard from "@/features/products/components/product-card";
-import { Product } from "@/features/products/types";
-import { createClient } from "@/lib/supabase/server";
+import { getCategoryProducts } from "@/features/browse/api/get-category-products";
+import { CategoryContent } from "@/features/browse/components/category-content";
 import { categories } from "@/utils/constants";
 import { getCategoryBySlug } from "@/utils/helpers";
 import type { Metadata } from "next";
@@ -25,27 +24,11 @@ export async function generateMetadata({
   const category = getCategoryBySlug(categorySlug);
 
   if (!category) {
-    return {
-      title: "Category Not Found | SaasList",
-    };
+    return { title: "Category Not Found | SaasList" };
   }
 
-  const supabase = await createClient();
-  const categoryTagsLower = category.tags.map((tag) => tag.toLowerCase());
-
-  const { data: products } = await supabase
-    .from("products")
-    .select("id")
-    .order("created_at", { ascending: false });
-
-  const categoryProducts = (products || []).filter((product: any) => {
-    if (!product.tags || !Array.isArray(product.tags)) return false;
-    return product.tags.some((tag: string) =>
-      categoryTagsLower.includes(tag.toLowerCase()),
-    );
-  });
-
-  const productCount = categoryProducts.length;
+  const products = await getCategoryProducts(category.tags);
+  const productCount = products.length;
   const description = `${category.description} Discover ${productCount} ${productCount === 1 ? "product" : "products"} in ${category.name} on SaasList.`;
 
   return {
@@ -74,96 +57,13 @@ export default async function CategoryPage({
   params: Promise<{ category: string }>;
 }) {
   const { category: categorySlug } = await params;
-
   const category = getCategoryBySlug(categorySlug);
 
   if (!category) {
     notFound();
   }
 
-  const supabase = await createClient();
+  const products = await getCategoryProducts(category.tags);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const categoryTagsLower = category.tags.map((tag) => tag.toLowerCase());
-
-  const { data: products, error } = await supabase
-    .from("products")
-    .select(
-      `
-      *,
-      likes!left(user_id)
-    `,
-    )
-    .order("created_at", { ascending: false });
-
-  const categoryProducts = (products || [])
-    .filter((product: any) => {
-      if (!product.tags || !Array.isArray(product.tags)) return false;
-      return product.tags.some((tag: string) =>
-        categoryTagsLower.includes(tag.toLowerCase()),
-      );
-    })
-    .map((product: any) => {
-      const { likes_count, ...rest } = product;
-      return {
-        ...rest,
-        likes_count,
-        is_liked: user
-          ? product.likes?.some((like: any) => like.user_id === user.id)
-          : false,
-      };
-    }) as Product[];
-
-  const tagCounts = new Map<string, number>();
-  category.tags.forEach((tag) => {
-    const count = categoryProducts.filter((product) =>
-      product.tags?.some((t) => t.toLowerCase() === tag.toLowerCase()),
-    ).length;
-    if (count > 0) {
-      tagCounts.set(tag, count);
-    }
-  });
-
-  return (
-    <>
-      <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
-        <div className="flex items-center w-full justify-between gap-6">
-          <div>
-            <h1 className="text-xl font-medium">{category.name}</h1>
-            {category.description && (
-              <h2 className="text-muted-foreground text-sm">
-                {category.description}
-              </h2>
-            )}
-          </div>
-
-          <div className="text-xs text-muted-foreground">
-            {categoryProducts.length}{" "}
-            {categoryProducts.length === 1 ? "product" : "products"}
-          </div>
-        </div>
-
-        {categoryProducts.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground text-sm">
-              No products in this category yet.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-4 flex flex-col">
-            {categoryProducts.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                position={index + 1}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </>
-  );
+  return <CategoryContent category={category} products={products} />;
 }

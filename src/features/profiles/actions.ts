@@ -6,6 +6,7 @@ import { profileUpdateSchema } from "./schemas";
 
 export async function updateProfileAction(data: {
   name?: string;
+  bio?: string;
   avatar_url?: string;
   twitter?: string;
   website?: string;
@@ -25,6 +26,9 @@ export async function updateProfileAction(data: {
     const updates: Record<string, string | null> = {};
     if (validated.name !== undefined) {
       updates.name = validated.name || null;
+    }
+    if (validated.bio !== undefined) {
+      updates.bio = validated.bio || null;
     }
     if (validated.avatar_url !== undefined) {
       updates.avatar_url = validated.avatar_url || null;
@@ -62,4 +66,3 @@ export async function updateProfileAction(data: {
     throw new Error("Something went wrong");
   }
 }
-

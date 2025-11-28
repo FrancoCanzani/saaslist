@@ -3,14 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { parseAsInteger, useQueryState } from "nuqs";
 
-interface LoadMoreButtonProps {
-  currentPage: number;
-}
-
-export function LoadMoreButton({ currentPage }: LoadMoreButtonProps) {
+export function LoadMoreButton({ currentPage }: { currentPage: number }) {
   const [, setPage] = useQueryState(
     "page",
-    parseAsInteger.withDefault(1).withOptions({ shallow: false }),
+    parseAsInteger.withDefault(1).withOptions({ shallow: false })
   );
 
   const handleLoadMore = () => {
@@ -30,3 +26,4 @@ export function LoadMoreButton({ currentPage }: LoadMoreButtonProps) {
     </div>
   );
 }
+
