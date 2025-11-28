@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { techStackOptions } from "@/utils/constants";
+import { techStackCategories, getTechItem } from "@/utils/constants/tech-stack";
 import { X } from "lucide-react";
 import { useMemo, useState } from "react";
+import { TechIcon } from "../tech-icon";
 
 interface TechStackSelectorProps {
   selected: string[];
@@ -20,15 +21,20 @@ export function TechStackSelector({
 }: TechStackSelectorProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredTech = useMemo(() => {
+  const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) {
-      return techStackOptions;
+      return techStackCategories;
     }
 
     const query = searchQuery.toLowerCase();
-    return techStackOptions.filter((tech) =>
-      tech.toLowerCase().includes(query)
-    );
+    return techStackCategories
+      .map((category) => ({
+        ...category,
+        items: category.items.filter((item) =>
+          item.name.toLowerCase().includes(query)
+        ),
+      }))
+      .filter((category) => category.items.length > 0);
   }, [searchQuery]);
 
   const handleToggle = (tech: string) => {
@@ -44,23 +50,22 @@ export function TechStackSelector({
   };
 
   return (
-    <div className="space-y-3">
-      <div className="relative">
-        <Input
-          type="text"
-          placeholder="Search technologies..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
+    <div className="space-y-4">
+      <Input
+        type="text"
+        placeholder="Search technologies..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
 
       {selected.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {selected.map((tech) => (
             <div
               key={tech}
-              className="inline-flex items-center gap-1.5 bg-primary/10 border font-medium rounded-md px-2.5 py-1 text-sm"
+              className="inline-flex items-center gap-1.5 bg-primary/10 border font-medium rounded-md px-2 py-1 text-xs"
             >
+              <TechIcon name={tech} className="size-3.5" />
               <span>{tech}</span>
               <button
                 type="button"
@@ -74,32 +79,40 @@ export function TechStackSelector({
         </div>
       )}
 
-      <div>
-        <div className="flex flex-wrap gap-2">
-          {filteredTech.map((tech) => {
-            const isSelected = selected.includes(tech);
-            const isDisabled = !isSelected && selected.length >= maxTech;
+      <div className="space-y-4 max-h-[400px] overflow-y-auto">
+        {filteredCategories.map((category) => (
+          <div key={category.name}>
+            <h4 className="text-xs font-medium text-muted-foreground mb-2">
+              {category.name}
+            </h4>
+            <div className="flex flex-wrap gap-1.5">
+              {category.items.map((item) => {
+                const isSelected = selected.includes(item.name);
+                const isDisabled = !isSelected && selected.length >= maxTech;
 
-            return (
-              <Button
-                key={tech}
-                type="button"
-                onClick={() => handleToggle(tech)}
-                disabled={isDisabled}
-                size="sm"
-                variant={isSelected ? "default" : "outline"}
-                className={cn(
-                  "font-normal",
-                  isDisabled && "opacity-40 cursor-not-allowed"
-                )}
-              >
-                {tech}
-              </Button>
-            );
-          })}
-        </div>
+                return (
+                  <Button
+                    key={item.name}
+                    type="button"
+                    onClick={() => handleToggle(item.name)}
+                    disabled={isDisabled}
+                    size="sm"
+                    variant={isSelected ? "default" : "outline"}
+                    className={cn(
+                      "font-normal text-xs h-7 gap-1.5",
+                      isDisabled && "opacity-40 cursor-not-allowed"
+                    )}
+                  >
+                    <TechIcon name={item.name} className="size-3.5" grayscale={isSelected} />
+                    {item.name}
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
 
-        {filteredTech.length === 0 && (
+        {filteredCategories.length === 0 && (
           <div className="text-center py-4 text-sm text-muted-foreground">
             No technologies found
           </div>
@@ -114,4 +127,3 @@ export function TechStackSelector({
     </div>
   );
 }
-

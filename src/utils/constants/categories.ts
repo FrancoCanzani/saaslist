@@ -1,4 +1,4 @@
-import { Category } from "./types";
+import { Category } from "../types";
 
 export const categories: Category[] = [
   {
@@ -215,48 +215,3 @@ export const categories: Category[] = [
   slug: cat.slug || cat.name.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and"),
 }));
 
-export const techStackOptions = [
-  "React",
-  "Vue.js",
-  "Angular",
-  "Next.js",
-  "Svelte",
-  "Remix",
-  "Astro",
-  "Node.js",
-  "Python",
-  "Django",
-  "Flask",
-  "FastAPI",
-  "Ruby on Rails",
-  "PHP",
-  "Laravel",
-  "Go",
-  "Rust",
-  "Java",
-  "Spring Boot",
-  ".NET",
-  "PostgreSQL",
-  "MySQL",
-  "MongoDB",
-  "Redis",
-  "Supabase",
-  "Firebase",
-  "AWS",
-  "Vercel",
-  "Netlify",
-  "Docker",
-  "Kubernetes",
-  "Terraform",
-  "React Native",
-  "Flutter",
-  "Swift",
-  "Kotlin",
-  "TypeScript",
-  "GraphQL",
-  "REST API",
-  "WebSocket",
-  "Tailwind CSS",
-];
-
-export type TechStackOption = (typeof techStackOptions)[number];

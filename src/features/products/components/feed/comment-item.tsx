@@ -122,10 +122,10 @@ export default function CommentItem({
           </div>
         </div>
 
-        <div className="flex">
+        <div className="flex items-center justify-end space-x-1">
           {canReply && currentUserId && (
             <Button
-              variant="ghost"
+              variant="outline"
               size="xs"
               onClick={() => {
                 setIsReplying(!isReplying);
@@ -139,7 +139,7 @@ export default function CommentItem({
           {isOwner && (
             <>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="xs"
                 onClick={() => {
                   setIsReplying(false);
@@ -152,7 +152,7 @@ export default function CommentItem({
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="xs"
                     className="text-red-600 hover:text-red-700"
                   >
@@ -163,8 +163,8 @@ export default function CommentItem({
                   <AlertDialogHeader>
                     <AlertDialogTitle>Delete comment?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently
-                      delete your comment.
+                      This action cannot be undone. This will permanently delete
+                      your comment.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>

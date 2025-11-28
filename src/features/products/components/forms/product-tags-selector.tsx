@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { categories } from "@/utils/constants";
+import { categories } from "@/utils/constants/categories";
 import { X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
@@ -164,7 +164,7 @@ export default function ProductTagsSelector({
                 <AccordionItem
                   key={category.name}
                   value={category.name}
-                  className="overflow-hidden rounded border last:border-b"
+                  className="overflow-hidden rounded-xl border last:border-b"
                 >
                   <AccordionTrigger className="px-2 py-1">
                     <div className="flex items-center space-x-1 text-sm justify-start w-full">
@@ -190,7 +190,7 @@ export default function ProductTagsSelector({
                             className={cn(
                               "font-normal transition-all",
                               isSelected && "bg-accent",
-                              isDisabled && "opacity-40 cursor-not-allowed"
+                              isDisabled && "opacity-40 cursor-not-allowed",
                             )}
                           >
                             <span className="flex items-center gap-1">
@@ -225,4 +225,3 @@ export default function ProductTagsSelector({
     </div>
   );
 }
-

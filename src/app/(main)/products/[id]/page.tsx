@@ -9,6 +9,7 @@ import { ProductMediaCarousel } from "@/features/products/components/product-med
 import { ProductNavigation } from "@/features/products/components/product-navigation";
 import { ProductShare } from "@/features/products/components/product-share";
 import ProductSidebar from "@/features/products/components/product-sidebar";
+import { TechStackDisplay } from "@/features/products/components/tech-stack-display";
 import { Product } from "@/features/products/types";
 import { getCurrentUser } from "@/features/profiles/api/get-current-user";
 import { createClient } from "@/lib/supabase/server";
@@ -337,6 +338,9 @@ export default async function ProductPage({
           />
 
           <div className="block md:hidden space-y-6">
+            {processedProduct.techstack && processedProduct.techstack.length > 0 && (
+              <TechStackDisplay techstack={processedProduct.techstack} />
+            )}
             <ProductNavigation
               prevProduct={prevProduct ?? null}
               nextProduct={nextProduct ?? null}

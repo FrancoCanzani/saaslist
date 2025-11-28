@@ -1,4 +1,4 @@
-import { categories } from "./constants";
+import { categories } from "./constants/categories";
 import { Category } from "./types";
 
 export async function copyToClipboard(text: string): Promise<boolean> {

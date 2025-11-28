@@ -89,7 +89,7 @@ export default function ReviewItem({
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="xs"
                 className="text-red-600 hover:text-red-700"
                 disabled={isPending}

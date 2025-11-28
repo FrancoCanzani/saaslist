@@ -1,6 +1,6 @@
 import { getCategoryProducts } from "@/features/browse/api/get-category-products";
 import { CategoryContent } from "@/features/browse/components/category-content";
-import { categories } from "@/utils/constants";
+import { categories } from "@/utils/constants/categories";
 import { getCategoryBySlug } from "@/utils/helpers";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";

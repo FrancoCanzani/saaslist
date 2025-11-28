@@ -6,6 +6,7 @@ import { ProductNavigation } from "@/features/products/components/product-naviga
 import { ProductShare } from "@/features/products/components/product-share";
 import { Product } from "@/features/products/types";
 import { ArrowUpRight } from "lucide-react";
+import { TechStackDisplay } from "./tech-stack-display";
 
 interface NavigationProduct {
   id: string;
@@ -60,6 +61,10 @@ export default function ProductSidebar({
           {product.pricing_model}
         </Badge>
       </div>
+
+      {product.techstack && product.techstack.length > 0 && (
+        <TechStackDisplay techstack={product.techstack} />
+      )}
 
       {(product.twitter_url ||
         product.linkedin_url ||

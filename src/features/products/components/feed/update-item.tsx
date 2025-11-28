@@ -71,7 +71,7 @@ export function UpdateItem({ update, isOwner, productId }: UpdateItemProps) {
             {isOwner && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
+                  <Button variant="outline" size="icon" className="h-6 w-6">
                     <MoreHorizontal className="size-3.5" />
                   </Button>
                 </DropdownMenuTrigger>

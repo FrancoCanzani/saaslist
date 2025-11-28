@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { Separator } from "@/components/ui/separator";
+import { getProductById } from "@/features/products/api/get-product-by-id";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import DistributionChecklist from "../../../../../features/products/components/distribution-checklist";
 import ShareSection from "../../../../../features/products/components/share-section";
-import { Separator } from "@/components/ui/separator";
 
 export default async function ProductSuccessPage({
   params,
@@ -13,19 +13,14 @@ export default async function ProductSuccessPage({
 }) {
   const { id: productId } = await params;
 
-  const supabase = await createClient();
-  const { data: product, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("id", productId)
-    .single();
+  const product = await getProductById(productId);
 
-  if (error || !product) {
+  if (!product) {
     notFound();
   }
 
   return (
-    <main className="p-6 space-y-12 max-w-2xl mx-auto py-12">
+    <main className="p-6 space-y-12 max-w-2xl mx-auto py-12 w-full">
       <div className="text-center space-y-3">
         <h1 className="text-4xl font-medium tracking-tight">
           Product Submitted!

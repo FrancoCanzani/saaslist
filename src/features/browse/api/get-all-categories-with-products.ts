@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Product } from "@/features/products/types";
-import { categories } from "@/utils/constants";
+import { categories } from "@/utils/constants/categories";
 import { cache } from "react";
 
 interface CategoryWithProducts {
