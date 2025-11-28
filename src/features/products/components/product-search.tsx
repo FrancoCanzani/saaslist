@@ -1,19 +1,19 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useDebounce } from "use-debounce";
-import { Product } from "@/features/products/types";
-import { useState } from "react";
-import Link from "next/link";
+import { Input } from "@/components/ui/input";
 import ProductLogo from "@/features/products/components/product-logo";
-import { Button } from "@/components/ui/button";
+import { Product } from "@/features/products/types";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import { useState } from "react";
+import { useDebounce } from "use-debounce";
 
 async function searchProducts(query: string): Promise<Product[]> {
   if (!query.trim()) return [];
@@ -46,7 +46,7 @@ export function ProductSearchDialog() {
         variant="secondary"
         size="xs"
         onClick={() => setOpen(true)}
-        className="gap-2"
+        className="gap-2 hidden sm:block"
       >
         Search
       </Button>
@@ -110,4 +110,3 @@ export function ProductSearchDialog() {
     </>
   );
 }
-
