@@ -4,19 +4,21 @@ import { ProductForm } from "@/features/products/components/forms/product-form";
 import { useProduct } from "@/features/products/queries";
 import { useUpdateProduct } from "@/features/products/mutations";
 import { productSchema } from "@/features/products/schemas";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { getLoginUrl } from "@/utils/helpers";
 
 export default function EditProductPage() {
   const params = useParams();
   // fix this
   const productId = params?.id as string;
   const router = useRouter();
+  const pathname = usePathname();
   const updateProductMutation = useUpdateProduct();
 
   const { data: product, isLoading, error } = useProduct(productId);
@@ -31,7 +33,7 @@ export default function EditProductPage() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/login");
+        router.push(getLoginUrl(pathname));
         return;
       }
 
@@ -65,7 +67,7 @@ export default function EditProductPage() {
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes("logged in")) {
-          router.push("/login");
+          router.push(getLoginUrl(pathname));
         } else {
           toast.error(error.message);
         }

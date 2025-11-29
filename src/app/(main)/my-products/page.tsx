@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import { getLoginUrl } from "@/utils/helpers";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -30,7 +31,7 @@ export default async function MyProductsPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect(getLoginUrl("/my-products"));
   }
 
   const { data: products, error } = await supabase

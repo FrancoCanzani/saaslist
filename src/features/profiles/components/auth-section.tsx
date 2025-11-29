@@ -4,10 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ProductSearchDialog } from "@/features/products/components/product-search";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ProfileDropdown } from "./Profile-dropdown";
+import { getLoginUrl } from "@/utils/helpers";
 
 export function AuthSection() {
   const { data, isLoading } = useCurrentUser();
+  const pathname = usePathname();
 
   if (isLoading) {
     return <div className="w-7 h-7 rounded bg-muted animate-pulse" />;
@@ -30,7 +33,7 @@ export function AuthSection() {
 
   return (
     <Button asChild size="xs" variant="secondary" className="font-medium">
-      <Link href="/login">Sign In</Link>
+      <Link href={getLoginUrl(pathname)}>Sign In</Link>
     </Button>
   );
 }

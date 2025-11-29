@@ -46,3 +46,8 @@ export function shuffleArray<T>(array: T[]): T[] {
   }
   return shuffled;
 }
+
+export function getLoginUrl(currentPath: string): string {
+  const encodedPath = encodeURIComponent(currentPath);
+  return `/login?next=${encodedPath}`;
+}

@@ -3,12 +3,14 @@
 import { ProductForm } from "@/features/products/components/forms/product-form";
 import { useCreateProduct } from "@/features/products/mutations";
 import { productSchema } from "@/features/products/schemas";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
+import { getLoginUrl } from "@/utils/helpers";
 
 export default function NewProductPage() {
   const router = useRouter();
+  const pathname = usePathname();
   const createProductMutation = useCreateProduct();
 
   const handleSubmit = async (data: z.infer<typeof productSchema>) => {
@@ -19,7 +21,7 @@ export default function NewProductPage() {
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes("logged in")) {
-          router.push("/login");
+          router.push(getLoginUrl(pathname));
         } else {
           toast.error(error.message);
         }

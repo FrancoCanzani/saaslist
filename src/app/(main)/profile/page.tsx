@@ -5,6 +5,7 @@ import { SubscriptionInfo } from "@/features/subscriptions/components/subscripti
 import { redirect } from "next/navigation";
 import { format } from "date-fns";
 import type { Metadata } from "next";
+import { getLoginUrl } from "@/utils/helpers";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -24,7 +25,7 @@ export default async function ProfilePage() {
   const { user, profile } = await getCurrentUser();
 
   if (!user) {
-    redirect("/login");
+    redirect(getLoginUrl("/profile"));
   }
 
   const activeSubscription = await getActiveSubscription();

@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { Product, Comment, Review, Update } from "./types";
+import { Product, Comment, Review, Update, Platform } from "./types";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "@/utils/types";
 import { commentSchema, reviewSchema, updateSchema } from "./schemas";
@@ -821,24 +821,26 @@ export async function updateProductAction(
       finalImages = [...keptImages, ...newImageUrls];
     }
 
+    // Type for update data that allows null for nullable fields
     const updateData: Partial<Pick<Product, 
       | "name" 
       | "tagline" 
       | "description" 
       | "website_url" 
-      | "repo_url" 
-      | "logo_url" 
       | "images" 
-      | "demo_url" 
       | "pricing_model" 
       | "tags" 
       | "techstack" 
-      | "twitter_url" 
-      | "linkedin_url" 
-      | "instagram_url" 
-      | "platforms" 
       | "updated_at"
-    >> = {
+    >> & {
+      repo_url?: string | null;
+      logo_url?: string | null;
+      demo_url?: string | null;
+      twitter_url?: string | null;
+      linkedin_url?: string | null;
+      instagram_url?: string | null;
+      platforms?: Platform[];
+    } = {
       updated_at: new Date().toISOString(),
     };
 
@@ -856,7 +858,7 @@ export async function updateProductAction(
     if (data.twitter_url !== undefined) updateData.twitter_url = data.twitter_url || null;
     if (data.linkedin_url !== undefined) updateData.linkedin_url = data.linkedin_url || null;
     if (data.instagram_url !== undefined) updateData.instagram_url = data.instagram_url || null;
-    if (data.platforms !== undefined) updateData.platforms = data.platforms;
+    if (data.platforms !== undefined) updateData.platforms = data.platforms as Platform[];
 
     const { data: updatedProduct, error: updateError } = await supabase
       .from("products")

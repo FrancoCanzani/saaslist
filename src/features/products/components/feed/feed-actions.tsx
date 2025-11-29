@@ -3,9 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { CommentActionDialog } from "./comment-action-dialog";
 import { ReviewActionDialog } from "./review-action-dialog";
 import { UpdateActionDialog } from "./update-action-dialog";
+import { getLoginUrl } from "@/utils/helpers";
 
 interface FeedActionsProps {
   productId: string;
@@ -21,11 +23,12 @@ export function FeedActions({
   hasUserReviewed,
 }: FeedActionsProps) {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
 
   if (!currentUserId)
     return (
       <Button asChild size={"xs"} variant={"secondary"}>
-        <Link href="/login">Sign In to Post</Link>
+        <Link href={getLoginUrl(pathname)}>Sign In to Post</Link>
       </Button>
     );
 
