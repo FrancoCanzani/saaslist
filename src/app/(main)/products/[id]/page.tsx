@@ -44,7 +44,7 @@ export async function generateMetadata({
 
   const description = product.description
     ? `${product.description.substring(0, 155)}${product.description.length > 155 ? "..." : ""}`
-    : `${product.tagline} - Discover ${product.name} and other SaaS products on SaasList.`;
+    : `${product.tagline} - Discover ${product.name} and other products on SaasList.`;
 
   const imageUrl =
     product.logo_url || product.images?.[0] || `${baseUrl}/opengraph-image`;

@@ -36,23 +36,23 @@ export async function generateMetadata({
   };
 
   const periodTitle = periodTitles[period];
-  const description = `Discover the top liked SaaS products ${periodTitle.toLowerCase()}. See which products are trending and getting the most community support.`;
+  const description = `Discover the top liked products ${periodTitle.toLowerCase()}. See which products are trending and getting the most community support.`;
 
   return {
-    title: `Top SaaS Products Leaderboard ${periodTitle} | SaasList`,
+    title: `Top Products Leaderboard ${periodTitle} | SaasList`,
     description,
     alternates: {
       canonical: `${baseUrl}/leaderboard`,
     },
     openGraph: {
-      title: `Top SaaS Products Leaderboard ${periodTitle}`,
+      title: `Top Products Leaderboard ${periodTitle}`,
       description,
       type: "website",
       url: `${baseUrl}/leaderboard`,
     },
     twitter: {
       card: "summary_large_image",
-      title: `Top SaaS Products Leaderboard ${periodTitle}`,
+      title: `Top Products Leaderboard ${periodTitle}`,
       description,
     },
   };

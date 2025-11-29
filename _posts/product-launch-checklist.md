@@ -1,7 +1,7 @@
 ---
 title: "The No-BS Product Launch Checklist (From Someone Who's Done It Wrong)"
 date: "2024-11-25"
-excerpt: "Everything you actually need to do before launching your SaaS. Based on real launches, real mistakes, and lessons that cost real money."
+excerpt: "Everything you actually need to do before launching your product. Based on real launches, real mistakes, and lessons that cost real money."
 ---
 
 # The No-BS Product Launch Checklist
@@ -110,4 +110,3 @@ That's it. Everything else is optimization.
 ---
 
 *Launching soon? Submit your product on SaasList and we'll help you get discovered by people who actually want to find tools like yours.*
-

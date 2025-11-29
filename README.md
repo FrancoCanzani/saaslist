@@ -1,6 +1,6 @@
 # SaasList - Product Hunt for SaaS
 
-A modern platform for discovering and sharing SaaS products, built with Next.js and Supabase.
+A modern platform for discovering and sharing products, built with Next.js and Supabase.
 
 ## 🚀 Quick Start
 

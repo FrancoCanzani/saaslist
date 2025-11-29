@@ -32,20 +32,20 @@ export async function generateMetadata({
   const description = `${category.description} Discover ${productCount} ${productCount === 1 ? "product" : "products"} in ${category.name} on SaasList.`;
 
   return {
-    title: `Best ${category.name} SaaS Products | SaasList`,
+    title: `Best ${category.name} Products | SaasList`,
     description,
     alternates: {
       canonical: `${baseUrl}/browse/${categorySlug}`,
     },
     openGraph: {
-      title: `Best ${category.name} SaaS Products`,
+      title: `Best ${category.name} Products`,
       description,
       type: "website",
       url: `${baseUrl}/browse/${categorySlug}`,
     },
     twitter: {
       card: "summary_large_image",
-      title: `Best ${category.name} SaaS Products`,
+      title: `Best ${category.name} Products`,
       description,
     },
   };

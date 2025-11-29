@@ -16,9 +16,9 @@ import { Suspense } from "react";
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: "SaasList - Discover & Share the Best SaaS Products",
+  title: "SaasList - Discover & Share the Best Products",
   description:
-    "Discover and share the best SaaS products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
+    "Discover and share the best products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
   alternates: {
     canonical: baseUrl,
   },
@@ -43,8 +43,8 @@ export default async function Home() {
             Get Noticed. Get Users. Get Results.
           </h1>
           <p className="text-muted-foreground text-sm md:text-base text-balance">
-            Showcase your SaaS product to thousands of early adopters,
-            entrepreneurs, and tech enthusiasts.
+            Showcase your product to thousands of early adopters, entrepreneurs,
+            and tech enthusiasts.
           </p>
         </div>
         <div className="space-y-4 relative z-10">
@@ -54,7 +54,7 @@ export default async function Home() {
               size={"lg"}
               className="rounded-xl active:scale-98 border-primary bg-primary/75 text-primary-foreground hover:bg-primary/85 dark:bg-primary/90 dark:border-primary dark:hover:bg-primary border border-b-2 shadow-md shadow-zinc-950/20 ring ring-inset ring-white/15 transition-[filter,scale,background] duration-200 hover:brightness-110 dark:ring-transparent"
             >
-              <Link href={"/products/new"}>Submit your SaaS</Link>
+              <Link href={"/products/new"}>Submit your product</Link>
             </Button>
             <Button
               asChild

@@ -1,12 +1,12 @@
 ---
 title: "SaasList vs Product Hunt: Which Platform Should You Launch On?"
 date: "2024-11-28"
-excerpt: "An honest comparison of launching your SaaS on different platforms. What we learned building an alternative to the big guys."
+excerpt: "An honest comparison of launching your product on different platforms. What we learned building an alternative to the big guys."
 ---
 
 # SaasList vs Product Hunt: Which Platform Should You Launch On?
 
-Let's cut the bullshit. If you're launching a SaaS product in 2024, you've probably thought about Product Hunt. It's the obvious choice—everyone does it, your investors expect it, and there's that dopamine hit of seeing your product climb the leaderboard.
+Let's cut the bullshit. If you're launching a product in 2025, you've probably thought about Product Hunt. It's the obvious choice—everyone does it, your investors expect it, and there's that dopamine hit of seeing your product climb the leaderboard.
 
 But here's the thing: Product Hunt has changed. A lot.
 
@@ -69,4 +69,3 @@ We're still small. We're still figuring things out. But we're building something
 ---
 
 *Have thoughts on this? We'd genuinely love to hear them. We're building this platform for founders like you, and your feedback shapes what we build next.*
-

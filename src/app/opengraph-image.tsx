@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "SaasList - Discover & Share SaaS Products";
+export const alt = "SaasList - Discover & Share Products";
 export const size = {
   width: 1200,
   height: 630,
@@ -10,7 +10,7 @@ export const contentType = "image/png";
 
 export default async function Image() {
   const fontData = await fetch(
-    "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@500&display=swap"
+    "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@500&display=swap",
   ).then((res) => res.text());
 
   const fontUrl = fontData.match(/src: url\(([^)]+)\)/)?.[1];
@@ -59,6 +59,6 @@ export default async function Image() {
             },
           ]
         : undefined,
-    }
+    },
   );
 }

@@ -168,7 +168,7 @@ export default function AdvertisePage() {
           We've got a plan that's perfect for you
         </h1>
         <h2 className="text-muted-foreground text-sm md:text-base text-balance">
-          Get your SaaS in front of entrepreneurs and early adopters
+          Get your product in front of entrepreneurs and early adopters
         </h2>
       </div>
 

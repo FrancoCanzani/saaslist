@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Field,
+  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -10,7 +11,6 @@ import {
   FieldLegend,
   FieldSet,
   FieldTitle,
-  FieldContent,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,18 +20,18 @@ import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { z } from "zod";
 import { productSchema } from "../../schemas";
+import type { Platform, PricingModel } from "../../types";
 import { ImagesUpload } from "./images-upload";
 import { LogoUpload } from "./logo-upload";
 import ProductTagsSelector from "./product-tags-selector";
 import { TechStackSelector } from "./tech-stack-selector";
-import type { Platform, PricingModel } from "../../types";
 
 interface ProductFormProps {
   onSubmit: (
     data: z.infer<typeof productSchema> & {
       imagesToDelete?: string[];
       removeLogo?: boolean;
-    }
+    },
   ) => Promise<void>;
   defaultValues?: Partial<z.infer<typeof productSchema>>;
   existingImages?: string[];
@@ -145,7 +145,8 @@ export function ProductForm({
         }
       }
 
-      const fieldMeta = form.state.fieldMeta[fieldName as keyof typeof form.state.fieldMeta];
+      const fieldMeta =
+        form.state.fieldMeta[fieldName as keyof typeof form.state.fieldMeta];
       if (fieldMeta?.errors && fieldMeta.errors.length > 0) {
         return false;
       }
@@ -178,13 +179,13 @@ export function ProductForm({
 
   return (
     <div>
-        <div className="flex items-end justify-start space-x-2 mb-6">
-          <h2 className="text-xl leading-none font-medium capitalize">
-            {step_titles[currentStep]}
-          </h2>
-          <span className="text-xs text-muted-foreground">
-            {currentStep + 1} / {total_steps}
-          </span>
+      <div className="flex items-end justify-start space-x-2 mb-6">
+        <h2 className="text-xl leading-none font-medium capitalize">
+          {step_titles[currentStep]}
+        </h2>
+        <span className="text-xs text-muted-foreground">
+          {currentStep + 1} / {total_steps}
+        </span>
       </div>
 
       <form
@@ -215,7 +216,7 @@ export function ProductForm({
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
                         aria-invalid={isInvalid}
-                        placeholder="My Awesome SaaS"
+                        placeholder="My Awesome product"
                       />
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
@@ -265,7 +266,9 @@ export function ProductForm({
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field>
-                      <FieldLabel htmlFor="website_url">Website URL *</FieldLabel>
+                      <FieldLabel htmlFor="website_url">
+                        Website URL *
+                      </FieldLabel>
                       <Input
                         id="website_url"
                         type="url"
@@ -294,7 +297,9 @@ export function ProductForm({
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field>
-                      <FieldLabel htmlFor="description">Description *</FieldLabel>
+                      <FieldLabel htmlFor="description">
+                        Description *
+                      </FieldLabel>
                       <Textarea
                         id="description"
                         value={field.state.value}
@@ -328,7 +333,10 @@ export function ProductForm({
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
-                  const platformOptions: Array<{ value: Platform; label: string }> = [
+                  const platformOptions: Array<{
+                    value: Platform;
+                    label: string;
+                  }> = [
                     { value: "web", label: "Web" },
                     { value: "ios", label: "iOS" },
                     { value: "android", label: "Android" },
@@ -340,7 +348,9 @@ export function ProductForm({
                   const togglePlatform = (platform: Platform) => {
                     const current = field.state.value;
                     if (current.includes(platform)) {
-                      field.handleChange(current.filter((p: Platform) => p !== platform));
+                      field.handleChange(
+                        current.filter((p: Platform) => p !== platform),
+                      );
                     } else {
                       field.handleChange([...current, platform]);
                     }
@@ -518,9 +528,13 @@ export function ProductForm({
                     <Field>
                       <FieldLabel>Logo</FieldLabel>
                       <LogoUpload
-                        value={(field.state.value as unknown) as File | null}
+                        value={field.state.value as unknown as File | null}
                         onChange={(file) => {
-                          (field.handleChange as unknown as (value: File | null) => void)(file);
+                          (
+                            field.handleChange as unknown as (
+                              value: File | null,
+                            ) => void
+                          )(file);
                           if (file) {
                             setRemoveLogo(false);
                           }
@@ -532,7 +546,11 @@ export function ProductForm({
                         }
                         onExistingLogoRemove={() => {
                           setRemoveLogo(true);
-                          (field.handleChange as unknown as (value: File | null) => void)(null);
+                          (
+                            field.handleChange as unknown as (
+                              value: File | null,
+                            ) => void
+                          )(null);
                         }}
                         disabled={isSubmitting}
                       />
@@ -545,7 +563,9 @@ export function ProductForm({
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="logo_url">Or use a Logo URL</FieldLabel>
+                      <FieldLabel htmlFor="logo_url">
+                        Or use a Logo URL
+                      </FieldLabel>
                       <Input
                         id="logo_url"
                         type="url"
@@ -566,13 +586,19 @@ export function ProductForm({
                     <Field>
                       <FieldLabel>Product Images</FieldLabel>
                       <ImagesUpload
-                        value={(field.state.value as unknown) as File[]}
-                        onChange={(files) => (field.handleChange as unknown as (value: File[]) => void)(files)}
+                        value={field.state.value as unknown as File[]}
+                        onChange={(files) =>
+                          (
+                            field.handleChange as unknown as (
+                              value: File[],
+                            ) => void
+                          )(files)
+                        }
                         existingImages={keptExistingImages}
                         onExistingImagesChange={(images) => {
                           setKeptExistingImages(images);
                           const deleted = existingImages.filter(
-                            (url) => !images.includes(url)
+                            (url) => !images.includes(url),
                           );
                           setImagesToDelete(deleted);
                         }}
@@ -612,7 +638,9 @@ export function ProductForm({
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="twitter_url">Twitter/X URL</FieldLabel>
+                      <FieldLabel htmlFor="twitter_url">
+                        Twitter/X URL
+                      </FieldLabel>
                       <Input
                         id="twitter_url"
                         type="url"
@@ -630,7 +658,9 @@ export function ProductForm({
                 {(field) => {
                   return (
                     <Field>
-                      <FieldLabel htmlFor="linkedin_url">LinkedIn URL</FieldLabel>
+                      <FieldLabel htmlFor="linkedin_url">
+                        LinkedIn URL
+                      </FieldLabel>
                       <Input
                         id="linkedin_url"
                         type="url"
@@ -676,9 +706,7 @@ export function ProductForm({
                         type="url"
                         value={field.state.value || ""}
                         onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
+                        onChange={(e) => field.handleChange(e.target.value)}
                         placeholder="https://github.com/username/repo"
                       />
                       <FieldDescription className="text-xs">
