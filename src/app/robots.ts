@@ -9,9 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: [
           "/api/",
-          "/auth/",
           "/login",
-          "/logout",
           "/profile",
           "/my-products",
           "/products/new",
