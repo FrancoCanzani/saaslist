@@ -51,3 +51,23 @@ export function getLoginUrl(currentPath: string): string {
   const encodedPath = encodeURIComponent(currentPath);
   return `/login?next=${encodedPath}`;
 }
+
+export function getDeviceType(userAgent: string | null): string {
+  if (!userAgent) return "unknown";
+  const ua = userAgent.toLowerCase();
+  if (/mobile|android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua)) {
+    if (/ipad|tablet/i.test(ua)) return "tablet";
+    return "mobile";
+  }
+  return "desktop";
+}
+
+export function addRefParam(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    urlObj.searchParams.set("ref", "saaslist");
+    return urlObj.toString();
+  } catch {
+    return url;
+  }
+}

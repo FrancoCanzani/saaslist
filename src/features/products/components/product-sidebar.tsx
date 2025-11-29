@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ProductNavigation } from "@/features/products/components/product-navigation";
 import { ProductShare } from "@/features/products/components/product-share";
 import { Product } from "@/features/products/types";
+import { addRefParam } from "@/utils/helpers";
 import { ArrowUpRight } from "lucide-react";
 import { TechStackDisplay } from "./tech-stack-display";
 
@@ -135,7 +136,7 @@ export default function ProductSidebar({
           <h4 className="font-medium text-sm">Open Source</h4>
           <Button asChild variant={"secondary"} size={"xs"}>
             <a
-              href={product.repo_url}
+              href={addRefParam(product.repo_url)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-x-1"

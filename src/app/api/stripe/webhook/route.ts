@@ -67,6 +67,19 @@ export async function POST(request: NextRequest) {
       break;
     }
 
+    // Invoice events for recurring subscription payments
+    case "invoice.paid": {
+      const invoice = event.data.object as Stripe.Invoice;
+      await handleInvoicePaid(supabase, invoice);
+      break;
+    }
+
+    case "invoice.payment_failed": {
+      const invoice = event.data.object as Stripe.Invoice;
+      await handleInvoicePaymentFailed(supabase, invoice);
+      break;
+    }
+
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
@@ -190,7 +203,31 @@ async function handleSubscriptionUpdated(
     return;
   }
 
-  const status = subscription.status === "active" ? "active" : "cancelled";
+  // Map Stripe subscription statuses to our internal statuses
+  // Stripe statuses: incomplete, incomplete_expired, trialing, active, past_due, canceled, unpaid, paused
+  const mapStripeStatus = (stripeStatus: string): "active" | "cancelled" | "pending" => {
+    switch (stripeStatus) {
+      case "active":
+      case "trialing":
+        return "active";
+      case "past_due":
+        // Keep active while Stripe retries payment
+        return "active";
+      case "incomplete":
+        // Payment not yet completed
+        return "pending";
+      case "canceled":
+      case "unpaid":
+      case "incomplete_expired":
+      case "paused":
+        return "cancelled";
+      default:
+        console.log(`Unknown Stripe subscription status: ${stripeStatus}`);
+        return "cancelled";
+    }
+  };
+
+  const status = mapStripeStatus(subscription.status);
   const currentPeriodEnd = (subscription as any).current_period_end
     ? new Date((subscription as any).current_period_end * 1000).toISOString()
     : null;
@@ -203,6 +240,8 @@ async function handleSubscriptionUpdated(
       updated_at: new Date().toISOString(),
     })
     .eq("id", existingSubscription.id);
+
+  console.log(`📝 Subscription ${existingSubscription.id} updated: Stripe status "${subscription.status}" → internal status "${status}"`);
 }
 
 async function handleSubscriptionDeleted(
@@ -269,5 +308,116 @@ async function handlePaymentFailed(
     } else {
       console.log("❌ Subscription cancelled due to payment failure");
     }
+  }
+}
+
+// Invoice handlers for recurring subscription payments (monthly plans)
+async function handleInvoicePaid(supabase: any, invoice: Stripe.Invoice) {
+  // Get subscription ID from the invoice (handle different API versions)
+  const invoiceData = invoice as any;
+  const subscriptionId = invoiceData.subscription || invoiceData.subscription_id;
+  
+  // Skip if not a subscription invoice
+  if (!subscriptionId) {
+    console.log("Invoice is not for a subscription, skipping");
+    return;
+  }
+
+  const stripeSubscriptionId =
+    typeof subscriptionId === "string"
+      ? subscriptionId
+      : subscriptionId.id;
+
+  console.log("Processing invoice.paid for subscription:", stripeSubscriptionId);
+
+  const { data: existingSubscription } = await supabase
+    .from("subscriptions")
+    .select("id, status")
+    .eq("stripe_subscription_id", stripeSubscriptionId)
+    .single();
+
+  if (!existingSubscription) {
+    console.log("No subscription found for stripe_subscription_id:", stripeSubscriptionId);
+    return;
+  }
+
+  // Update subscription to active and extend the end_date
+  const periodEnd = invoiceData.lines?.data?.[0]?.period?.end;
+  const endDate = periodEnd
+    ? new Date(periodEnd * 1000).toISOString()
+    : null;
+
+  const { error } = await supabase
+    .from("subscriptions")
+    .update({
+      status: "active",
+      end_date: endDate,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", existingSubscription.id);
+
+  if (error) {
+    console.error("Error updating subscription on invoice.paid:", error);
+  } else {
+    console.log("✅ Subscription renewed via invoice.paid:", existingSubscription.id);
+  }
+}
+
+async function handleInvoicePaymentFailed(
+  supabase: any,
+  invoice: Stripe.Invoice,
+) {
+  // Get subscription ID from the invoice (handle different API versions)
+  const invoiceData = invoice as any;
+  const subscriptionId = invoiceData.subscription || invoiceData.subscription_id;
+  
+  // Skip if not a subscription invoice
+  if (!subscriptionId) {
+    console.log("Invoice is not for a subscription, skipping");
+    return;
+  }
+
+  const stripeSubscriptionId =
+    typeof subscriptionId === "string"
+      ? subscriptionId
+      : subscriptionId.id;
+
+  console.log("Processing invoice.payment_failed for subscription:", stripeSubscriptionId);
+
+  const { data: existingSubscription } = await supabase
+    .from("subscriptions")
+    .select("id, status")
+    .eq("stripe_subscription_id", stripeSubscriptionId)
+    .single();
+
+  if (!existingSubscription) {
+    console.log("No subscription found for stripe_subscription_id:", stripeSubscriptionId);
+    return;
+  }
+
+  // Check the attempt count to decide whether to cancel or just log
+  const attemptCount = invoiceData.attempt_count || 0;
+
+  if (attemptCount >= 3) {
+    // After 3 failed attempts, mark as cancelled
+    const { error } = await supabase
+      .from("subscriptions")
+      .update({
+        status: "cancelled",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", existingSubscription.id);
+
+    if (error) {
+      console.error("Error cancelling subscription on invoice.payment_failed:", error);
+    } else {
+      console.log("❌ Subscription cancelled after failed payment attempts:", existingSubscription.id);
+    }
+  } else {
+    // Log the failure but keep subscription active (Stripe will retry)
+    console.log(
+      `⚠️ Invoice payment failed (attempt ${attemptCount}/3) for subscription:`,
+      existingSubscription.id,
+    );
   }
 }

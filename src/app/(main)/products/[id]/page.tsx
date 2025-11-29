@@ -13,7 +13,7 @@ import { TechStackDisplay } from "@/features/products/components/tech-stack-disp
 import { Product } from "@/features/products/types";
 import { getCurrentUser } from "@/features/profiles/api/get-current-user";
 import { createClient } from "@/lib/supabase/server";
-import { getCategoryByTag, getTagSlug } from "@/utils/helpers";
+import { addRefParam, getCategoryByTag, getTagSlug } from "@/utils/helpers";
 import { formatDistanceToNowStrict } from "date-fns";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
@@ -244,7 +244,7 @@ export default async function ProductPage({
                 className="font-medium rounded-xl"
               >
                 <a
-                  href={product.website_url}
+                  href={addRefParam(product.website_url)}
                   className="flex items-center justify-start text-muted-foreground gap-x-1"
                   target="_blank"
                   rel="noopener"
@@ -287,7 +287,7 @@ export default async function ProductPage({
               className="font-medium rounded-xl"
             >
               <a
-                href={product.website_url}
+                href={addRefParam(product.website_url)}
                 className="flex items-center justify-start text-muted-foreground gap-x-1"
                 target="_blank"
                 rel="noopener"

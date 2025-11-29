@@ -36,7 +36,7 @@ export default function Footer({
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/#"
+                  href="/browse"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Browse
@@ -44,7 +44,7 @@ export default function Footer({
               </li>
               <li>
                 <Link
-                  href="/#"
+                  href="/leaderboard"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Leaderboard
@@ -74,15 +74,7 @@ export default function Footer({
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="/#"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Makers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#"
+                  href="/advertise"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Advertise
@@ -98,10 +90,18 @@ export default function Footer({
               </li>
               <li>
                 <Link
-                  href="/#"
+                  href="/blog/saaslist-vs-producthunt"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Help Center
+                  SaasList vs Product Hunt
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/blog/product-launch-checklist"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Launch Checklist
                 </Link>
               </li>
             </ul>

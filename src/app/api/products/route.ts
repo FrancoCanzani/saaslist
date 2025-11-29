@@ -42,6 +42,22 @@ export async function POST(request: NextRequest) {
 
     const { techstack, ...productData } = validationResult.data;
 
+    // Check for duplicate website URL
+    const { data: existingProduct } = await supabase
+      .from("products")
+      .select("id, name")
+      .eq("website_url", productData.website_url)
+      .single();
+
+    if (existingProduct) {
+      const response: ApiResponse<null> = {
+        data: null,
+        success: false,
+        error: "A product with this website URL has already been submitted",
+      };
+      return NextResponse.json(response, { status: 409 });
+    }
+
     const { data: product, error } = await supabase
       .from("products")
       .insert({

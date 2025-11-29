@@ -17,6 +17,8 @@ import { Profile } from "@/features/profiles/types";
 import { createClient } from "@/lib/supabase/client";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import { FeedbackDialog } from "@/features/feedback/components/feedback-dialog";
+import { useState } from "react";
 
 interface ProfileDropdownProps {
   profile: Profile;
@@ -26,6 +28,11 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
   const router = useRouter();
   const supabase = createClient();
   const { theme, setTheme } = useTheme();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+
+  const isFeatured =
+    profile.is_featured &&
+    (!profile.featured_until || new Date(profile.featured_until) > new Date());
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -95,6 +102,15 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
           My Products
         </DropdownMenuItem>
 
+        {isFeatured && (
+          <DropdownMenuItem
+            onClick={() => router.push("/my-products/analytics")}
+            className="cursor-pointer text-xs"
+          >
+            Analytics
+          </DropdownMenuItem>
+        )}
+
         <DropdownMenuSeparator />
 
         <DropdownMenuSub>
@@ -128,6 +144,15 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
+          onClick={() => setFeedbackOpen(true)}
+          className="cursor-pointer text-xs"
+        >
+          Feedback
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
           variant="destructive"
           onClick={handleSignOut}
           className="cursor-pointer text-xs"
@@ -135,6 +160,8 @@ export function ProfileDropdown({ profile }: ProfileDropdownProps) {
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
+
+      <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
     </DropdownMenu>
   );
 }

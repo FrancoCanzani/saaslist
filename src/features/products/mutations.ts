@@ -42,6 +42,10 @@ const createProduct = async (data: ProductFormData): Promise<Product> => {
         const errorMessage = result.details || result.error || 'Validation error';
         throw new Error(`Validation error: ${errorMessage}`);
       }
+
+      if (response.status === 409) {
+        throw new Error(result.error || 'A product with this website URL already exists');
+      }
       
       throw new Error(result.error || 'Failed to submit product');
     }
