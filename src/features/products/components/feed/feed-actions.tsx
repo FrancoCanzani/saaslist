@@ -34,19 +34,19 @@ export function FeedActions({
       {!hasUserReviewed && (
         <ReviewActionDialog productId={productId} isMobile={isMobile}>
           <Button size="xs" variant="outline">
-            Review
+            Add Review
           </Button>
         </ReviewActionDialog>
       )}
       <CommentActionDialog productId={productId} isMobile={isMobile}>
         <Button size="xs" variant="outline">
-          Comment
+          Add Comment
         </Button>
       </CommentActionDialog>
       {isOwner && (
         <UpdateActionDialog productId={productId} isMobile={isMobile}>
           <Button size="xs" variant="outline">
-            Update
+            Add Update
           </Button>
         </UpdateActionDialog>
       )}

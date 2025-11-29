@@ -13,7 +13,7 @@ const productLogoVariants = cva(
         xs: "size-4",
         sm: "size-6",
         md: "size-9",
-        lg: "size-12",
+        lg: "size-11",
         xl: "size-16",
       },
     },

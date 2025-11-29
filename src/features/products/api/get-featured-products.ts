@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
-import { cache } from "react";
 import { Product } from "../types";
 
-export const getFeaturedProducts = cache(async (): Promise<Product[]> => {
+export async function getFeaturedProducts(): Promise<Product[]> {
   const supabase = await createClient();
 
   const { data: products, error } = await supabase
@@ -17,5 +16,5 @@ export const getFeaturedProducts = cache(async (): Promise<Product[]> => {
   }
 
   return (products as Product[]) || [];
-});
+}
 

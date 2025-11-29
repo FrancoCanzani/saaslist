@@ -1,14 +1,14 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import ProductListSkeleton from "@/features/products/components/skeletons/product-list-skeleton";
-import LatestProductUpdatesSkeleton from "@/features/products/components/skeletons/product-updates-skeleton";
-import ProductsMarqueeSkeleton from "@/features/products/components/skeletons/products-marquee-skeleton";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import LatestProductUpdates from "@/features/products/components/latest-product-updates";
 import { ProductDiscoverySection } from "@/features/products/components/product-discovery-section";
 import ProductList from "@/features/products/components/product-list";
-import ProductsMarquee from "@/features/products/components/products-marquee";
+import ProductsLogoCloud from "@/features/products/components/products-logo-cloud";
+import ProductListSkeleton from "@/features/products/components/skeletons/product-list-skeleton";
+import LatestProductUpdatesSkeleton from "@/features/products/components/skeletons/product-updates-skeleton";
+import ProductsLogoCloudSkeleton from "@/features/products/components/skeletons/products-marquee-skeleton";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -28,8 +28,8 @@ export const revalidate = 600;
 
 export default async function Home() {
   return (
-    <div className="min-h-screen max-w-7xl relative space-y-8 mx-auto">
-      <Header containerClassName="max-w-7xl" />
+    <div className="min-h-screen max-w-6xl relative space-y-8 mx-auto">
+      <Header containerClassName="max-w-6xl" />
 
       <div className="w-full max-w-6xl mx-auto py-12 text-center flex-col md:px-6 flex items-center md:items-center justify-start gap-8 overflow-hidden relative">
         <Link
@@ -49,10 +49,19 @@ export default async function Home() {
         </div>
         <div className="space-y-4 relative z-10">
           <div className="space-x-2">
-            <Button asChild size={"lg"} className="rounded-xl">
+            <Button
+              asChild
+              size={"lg"}
+              className="rounded-xl active:scale-98 border-primary bg-primary/75 text-primary-foreground hover:bg-primary/85 dark:bg-primary/90 dark:border-primary dark:hover:bg-primary border border-b-2 shadow-md shadow-zinc-950/20 ring ring-inset ring-white/15 transition-[filter,scale,background] duration-200 hover:brightness-110 dark:ring-transparent"
+            >
               <Link href={"/products/new"}>Submit your SaaS</Link>
             </Button>
-            <Button asChild variant={"secondary"} size={"lg"}>
+            <Button
+              asChild
+              variant={"secondary"}
+              size={"lg"}
+              className="bg-muted hover:bg-background dark:bg-muted/25 dark:hover:bg-muted/50 dark:border-border inset-shadow-2xs inset-shadow-white dark:inset-shadow-transparent border border-zinc-300 shadow-sm shadow-zinc-950/10 ring-0 duration-150"
+            >
               <Link href={"/browse"}>Browse Products</Link>
             </Button>
           </div>
@@ -62,8 +71,8 @@ export default async function Home() {
         </div>
       </div>
 
-      <Suspense fallback={<ProductsMarqueeSkeleton />}>
-        <ProductsMarquee />
+      <Suspense fallback={<ProductsLogoCloudSkeleton />}>
+        <ProductsLogoCloud />
       </Suspense>
 
       <main className="p-4 sm:p-6 lg:p-8">

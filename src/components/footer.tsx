@@ -9,7 +9,11 @@ interface FooterProps {
   containerClassName?: string;
 }
 
-export default function Footer({ containerClassName }: FooterProps = {}) {
+export default function Footer({
+  containerClassName,
+}: {
+  containerClassName?: string;
+}) {
   const { theme, setTheme } = useTheme();
 
   return (

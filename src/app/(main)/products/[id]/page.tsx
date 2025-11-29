@@ -1,4 +1,3 @@
-import { ProductViewTracker } from "@/features/products/components/product-view-tracker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FeedSection } from "@/features/products/components/feed/feed-section";
@@ -9,6 +8,7 @@ import { ProductMediaCarousel } from "@/features/products/components/product-med
 import { ProductNavigation } from "@/features/products/components/product-navigation";
 import { ProductShare } from "@/features/products/components/product-share";
 import ProductSidebar from "@/features/products/components/product-sidebar";
+import { ProductViewTracker } from "@/features/products/components/product-view-tracker";
 import { TechStackDisplay } from "@/features/products/components/tech-stack-display";
 import { Product } from "@/features/products/types";
 import { getCurrentUser } from "@/features/profiles/api/get-current-user";
@@ -338,17 +338,19 @@ export default async function ProductPage({
           />
 
           <div className="block md:hidden space-y-6">
-            {processedProduct.techstack && processedProduct.techstack.length > 0 && (
-              <TechStackDisplay techstack={processedProduct.techstack} />
-            )}
-            <ProductNavigation
-              prevProduct={prevProduct ?? null}
-              nextProduct={nextProduct ?? null}
-            />
+            {processedProduct.techstack &&
+              processedProduct.techstack.length > 0 && (
+                <TechStackDisplay techstack={processedProduct.techstack} />
+              )}
+
             <ProductShare
               productId={product.id}
               productName={product.name}
               productTagline={product.tagline}
+            />
+            <ProductNavigation
+              prevProduct={prevProduct ?? null}
+              nextProduct={nextProduct ?? null}
             />
           </div>
         </main>

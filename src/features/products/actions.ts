@@ -821,7 +821,24 @@ export async function updateProductAction(
       finalImages = [...keptImages, ...newImageUrls];
     }
 
-    const updateData: any = {
+    const updateData: Partial<Pick<Product, 
+      | "name" 
+      | "tagline" 
+      | "description" 
+      | "website_url" 
+      | "repo_url" 
+      | "logo_url" 
+      | "images" 
+      | "demo_url" 
+      | "pricing_model" 
+      | "tags" 
+      | "techstack" 
+      | "twitter_url" 
+      | "linkedin_url" 
+      | "instagram_url" 
+      | "platforms" 
+      | "updated_at"
+    >> = {
       updated_at: new Date().toISOString(),
     };
 

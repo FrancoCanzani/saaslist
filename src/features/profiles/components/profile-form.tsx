@@ -49,7 +49,7 @@ export function ProfileForm({ profile, userEmail }: ProfileFormProps) {
           router.refresh();
         } catch (error) {
           toast.error(
-            error instanceof Error ? error.message : "Failed to update profile"
+            error instanceof Error ? error.message : "Failed to update profile",
           );
         }
       });
@@ -108,8 +108,8 @@ export function ProfileForm({ profile, userEmail }: ProfileFormProps) {
                 onBlur={field.handleBlur}
                 placeholder="Tell us about yourself..."
                 disabled={isPending}
-                className="text-sm resize-none"
-                rows={3}
+                className="text-sm resize-none min-h-20"
+                rows={8}
               />
               <FieldError>{field.state.meta.errors}</FieldError>
             </Field>

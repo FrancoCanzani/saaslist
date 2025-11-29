@@ -15,17 +15,15 @@ import { toast } from "sonner";
 import { subscribeToNewsletter } from "../actions";
 import { newsletterSubscriptionSchema } from "../schemas";
 
-interface NewsletterFormProps {
-  defaultName?: string;
-  defaultEmail?: string;
-  isLoggedIn?: boolean;
-}
-
 export function NewsletterForm({
   defaultName = "",
   defaultEmail = "",
   isLoggedIn = false,
-}: NewsletterFormProps) {
+}: {
+  defaultName?: string;
+  defaultEmail?: string;
+  isLoggedIn?: boolean;
+}) {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm({
@@ -63,7 +61,7 @@ export function NewsletterForm({
         }}
         className="max-w-xl mx-auto space-y-6"
       >
-        <div className="space-y-4 bg-neutral-50 dark:bg-background p-4 rounded border border-dashed">
+        <div className="space-y-4 bg-muted dark:bg-background p-4 rounded-xl border border-dashed">
           <div className="flex flex-col items-center gap-1">
             <p className="font-medium">{defaultName}</p>
             <p className="text-sm text-muted-foreground">{defaultEmail}</p>
