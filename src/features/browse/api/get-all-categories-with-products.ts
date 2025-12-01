@@ -23,6 +23,7 @@ export const getAllCategoriesWithProducts = cache(
     const { data: allProducts, error } = await supabase
       .from("products")
       .select(`*, likes!left(user_id)`)
+      .order("is_featured", { ascending: false })
       .order("likes_count", { ascending: false });
 
     if (error) {

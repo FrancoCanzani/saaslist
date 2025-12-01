@@ -15,6 +15,8 @@ export const getCategoryProducts = cache(
     const { data: products, error } = await supabase
       .from("products")
       .select(`*, likes!left(user_id)`)
+      .order("is_featured", { ascending: false })
+      .order("likes_count", { ascending: false })
       .order("created_at", { ascending: false });
 
     if (error) {

@@ -38,6 +38,12 @@ const distributionChannels: DistributionChannel[] = [
     category: "Directories",
   },
   {
+    id: "peerlist",
+    name: "Submit to Peerlist",
+    url: "https://peerlist.io/submit",
+    category: "Directories",
+  },
+  {
     id: "betalist",
     name: "Submit to Betalist",
     url: "https://betalist.com/submit",
@@ -50,44 +56,14 @@ const distributionChannels: DistributionChannel[] = [
     category: "Directories",
   },
   {
-    id: "uneed",
-    name: "Submit to Uneed",
-    url: "https://uneed.best/submit",
-    category: "Directories",
-  },
-  {
-    id: "tiny-startups",
-    name: "Submit to Tiny Startups",
-    url: "https://tinystartups.io/submit",
-    category: "Directories",
-  },
-  {
-    id: "startup-spotlight",
-    name: "Submit to Startup Spotlight",
-    url: "https://startupspotlight.net/submit",
-    category: "Directories",
-  },
-  {
-    id: "startups-fyi",
-    name: "Submit to Startups.fyi",
-    url: "https://startups.fyi/submit",
-    category: "Directories",
-  },
-  {
-    id: "launchday",
-    name: "Submit to LaunchDay",
-    url: "https://launchday.co/submit",
+    id: "crunchbase",
+    name: "Add to Crunchbase",
+    url: "https://www.crunchbase.com/discover/organization/new",
     category: "Directories",
   },
   {
     id: "other-directories",
     name: "Submit to other relevant directories",
-    category: "Directories",
-  },
-  {
-    id: "crunchbase",
-    name: "Add to Crunchbase",
-    url: "https://www.crunchbase.com/discover/organization/new",
     category: "Directories",
   },
   {
@@ -97,15 +73,9 @@ const distributionChannels: DistributionChannel[] = [
     category: "Communities",
   },
   {
-    id: "wip",
-    name: "Post on WIP (Work in Progress)",
-    url: "https://wip.co",
-    category: "Communities",
-  },
-  {
-    id: "levels-io",
-    name: "Post on Levels.io chat (/show and launch)",
-    url: "https://levels.io",
+    id: "indie-hackers",
+    name: "Post on Indie Hackers",
+    url: "https://www.indiehackers.com",
     category: "Communities",
   },
   {
@@ -133,6 +103,12 @@ const distributionChannels: DistributionChannel[] = [
     category: "Communities",
   },
   {
+    id: "reddit-saas",
+    name: "Post on Reddit r/SaaS",
+    url: "https://www.reddit.com/r/SaaS",
+    category: "Communities",
+  },
+  {
     id: "reddit-internet-is-beautiful",
     name: "Post on Reddit r/InternetIsBeautiful",
     url: "https://www.reddit.com/r/InternetIsBeautiful",
@@ -142,12 +118,6 @@ const distributionChannels: DistributionChannel[] = [
     id: "reddit-roast-my-startup",
     name: "Post on Reddit r/RoastMyStartup",
     url: "https://www.reddit.com/r/RoastMyStartup",
-    category: "Communities",
-  },
-  {
-    id: "reddit-freepromote",
-    name: "Post on Reddit r/Freepromote",
-    url: "https://www.reddit.com/r/Freepromote",
     category: "Communities",
   },
 ];

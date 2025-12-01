@@ -130,6 +130,7 @@ export default async function LeaderboardPage({
     error,
     count,
   } = await query
+    .order("is_featured", { ascending: false })
     .order("likes_count", { ascending: false })
     .range(offset, offset + limit - 1);
 

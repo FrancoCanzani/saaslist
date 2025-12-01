@@ -89,6 +89,34 @@ Required environment variables:
 - `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon/public key
 - `NEXT_PUBLIC_SITE_URL` - Your site URL (for production)
+- `CRON_SECRET` (optional) - Secret token for securing cron endpoints
+
+## ⏰ Cron Jobs
+
+The project uses Vercel cron jobs to automatically manage featured subscription status:
+
+### Featured Status Check (`/api/cron/check-featured-status`)
+
+Runs **daily at midnight UTC** (`0 0 * * *`) to:
+- ✅ Unfeature expired subscriptions (past `end_date`)
+- ✅ Activate subscriptions when `start_date` arrives (for daily passes)
+- ✅ Sync featured status between profiles and products
+- ✅ Handle subscriptions past their end date
+
+**Configuration:**
+- Defined in `vercel.json`
+- Schedule: `0 0 * * *` (daily at midnight UTC)
+- Endpoint: `/api/cron/check-featured-status`
+
+**Security:**
+- Automatically verifies Vercel cron user agent
+- Optional: Set `CRON_SECRET` environment variable for additional Bearer token auth
+
+**Testing locally:**
+```bash
+# Test the cron endpoint
+curl http://localhost:3000/api/cron/check-featured-status
+```
 
 ## 📄 License
 

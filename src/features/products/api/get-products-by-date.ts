@@ -47,6 +47,7 @@ export const getProductsByDate = cache(
     }
 
     const { data: products, error } = await query
+      .order("is_featured", { ascending: false })
       .order("likes_count", { ascending: false })
       .limit(10);
 

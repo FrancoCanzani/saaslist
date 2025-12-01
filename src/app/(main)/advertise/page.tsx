@@ -18,9 +18,12 @@ import {
 import { cn } from "@/lib/utils";
 import { addDays, differenceInDays, format } from "date-fns";
 import { Check, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { DateRange } from "react-day-picker";
 import { toast } from "sonner";
+import { useRouter, usePathname } from "next/navigation";
+import { getLoginUrl } from "@/utils/helpers";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const pricingPlans = [
   {
@@ -72,27 +75,32 @@ const faqs = [
   {
     question: "How quickly will my product be featured?",
     answer:
-      "Your product will be marked as featured within 24 hours of payment confirmation. We'll send you a confirmation email once it's active.",
+      "For monthly and lifetime plans, your product becomes featured immediately after payment confirmation (usually within minutes). For daily passes, your product will be featured starting on your selected start date. You'll see the featured status activate automatically.",
   },
   {
     question: "Where exactly will my product be featured?",
     answer:
-      "Featured products appear in the homepage marquee (rotating display of product logos) and display a featured badge on their product listing page. The featured badge helps your product stand out to visitors.",
+      "Featured products get premium placement across the platform: they appear at the top of homepage product lists, leaderboard, browse page, and category pages. They're also displayed in the homepage marquee (rotating logo display) and show a featured badge on product cards and listing pages for maximum visibility.",
   },
   {
     question: "What does the featured badge look like?",
     answer:
-      "The featured badge appears on your product card with a gold olive branch icon and 'Featured' text, making your product easily identifiable as a featured listing.",
+      "The featured badge appears on your product card with a gold olive branch icon and 'Featured' text, making your product easily identifiable as a featured listing. This badge appears everywhere your product is displayed.",
   },
   {
     question: "Can I pause or cancel my plan?",
     answer:
-      "Daily plans run for your selected dates and end automatically. Monthly plans can be cancelled anytime with no penalty. Lifetime plans are non-refundable but provide permanent featured status.",
+      "Daily plans run for your selected dates and end automatically. Monthly plans can be cancelled anytime with no penalty - your featured status will remain active until the end of your current billing period. Lifetime plans are non-refundable but provide permanent featured status.",
   },
   {
     question: "What makes this different from a free listing?",
     answer:
-      "Free listings are sorted by upvotes and recency, competing with all other products. Featured listings appear in the homepage marquee and display a featured badge, giving them increased visibility and credibility.",
+      "Free listings are sorted by upvotes and recency, competing with all other products. Featured listings are prioritized at the top of all product lists (homepage, leaderboard, browse, categories), appear in the homepage marquee, and display a featured badge - giving them significantly increased visibility and credibility.",
+  },
+  {
+    question: "Can I schedule my featured status for a future date?",
+    answer:
+      "Yes! With the Daily Boost plan, you can select any future date range. Your product will automatically become featured on your chosen start date. This is perfect for coordinating with product launches or marketing campaigns.",
   },
   {
     question: "Do you offer custom or enterprise plans?",
@@ -102,11 +110,20 @@ const faqs = [
 ];
 
 export default function AdvertisePage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 6),
   });
   const [processing, setProcessing] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isLoadingUser && !currentUser?.user) {
+      router.push(getLoginUrl(pathname));
+    }
+  }, [currentUser, isLoadingUser, router, pathname]);
 
   const calculateDailyPrice = () => {
     if (!dateRange?.from || !dateRange?.to) return 0;
@@ -144,6 +161,10 @@ export default function AdvertisePage() {
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 401) {
+          router.push(getLoginUrl(pathname));
+          return;
+        }
         throw new Error(data.error || "Failed to create checkout session");
       }
 
@@ -160,6 +181,16 @@ export default function AdvertisePage() {
       setProcessing(null);
     }
   };
+
+  if (isLoadingUser || !currentUser?.user) {
+    return (
+      <main className="py-12 max-w-5xl mx-auto space-y-8">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="py-12 max-w-5xl mx-auto space-y-8">

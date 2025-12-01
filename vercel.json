@@ -1,0 +1,9 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/check-featured-status",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}
+
