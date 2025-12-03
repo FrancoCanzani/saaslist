@@ -4,8 +4,8 @@ import Link from "next/link";
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | SaasList",
-  description: "SaasList terms of service. Read our terms and conditions for using our platform.",
+  title: "Terms of Service | saaslist",
+  description: "saaslist terms of service. Read our terms and conditions for using our platform.",
   alternates: {
     canonical: `${baseUrl}/terms`,
   },

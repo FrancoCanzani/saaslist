@@ -4,8 +4,8 @@ import Link from "next/link";
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | SaasList",
-  description: "SaasList privacy policy. Learn how we collect, use, and protect your personal information.",
+  title: "Privacy Policy | saaslist",
+  description: "saaslist privacy policy. Learn how we collect, use, and protect your personal information.",
   alternates: {
     canonical: `${baseUrl}/privacy`,
   },

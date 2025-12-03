@@ -24,45 +24,45 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "SaasList - Discover & Share the Best Products",
-    template: "%s | SaasList",
+    default: "saaslist - A curated directory of bootstrapped SaaS tools",
+    template: "%s | saaslist",
   },
   description:
-    "Discover and share the best products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
+    "A curated directory bootstrapped SaaS tools built by independent founders and small teams.",
   keywords: [
-    "SaaS",
-    "SaaS products",
+    "bootstrapped SaaS",
+    "indie SaaS",
     "SaaS tools",
-    "software discovery",
-    "Product Hunt alternative",
-    "SaaS reviews",
-    "best SaaS",
+    "founder-built",
+    "independent SaaS",
+    "bootstrapped products",
+    "small team SaaS",
   ],
-  authors: [{ name: "SaasList" }],
-  creator: "SaasList",
-  publisher: "SaasList",
+  authors: [{ name: "saaslist" }],
+  creator: "saaslist",
+  publisher: "saaslist",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: baseUrl,
-    siteName: "SaasList",
-    title: "SaasList - Discover & Share the Best Products",
+    siteName: "saaslist",
+    title: "saaslist - A curated directory of bootstrapped SaaS tools",
     description:
-      "Discover and share the best products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
+      "A curated directory bootstrapped SaaS tools built by independent founders and small teams.",
     images: [
       {
         url: new URL("/opengraph-image", baseUrl).toString(),
         width: 1200,
         height: 630,
-        alt: "SaasList - Discover & Share the Best Products",
+        alt: "saaslist - A curated directory of bootstrapped SaaS tools",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "SaasList - Discover & Share the Best Products",
+    title: "saaslist - A curated directory of bootstrapped SaaS tools",
     description:
-      "Discover and share the best products. Browse thousands of tools, read reviews, and find your next favorite software on SaasList.",
+      "A curated directory bootstrapped SaaS tools built by independent founders and small teams.",
     images: [new URL("/opengraph-image", baseUrl).toString()],
   },
   alternates: {

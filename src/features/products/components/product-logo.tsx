@@ -56,7 +56,7 @@ export default function ProductLogo({
           width={logoSize}
           height={logoSize}
           onError={() => setImageError(true)}
-          className="object-contain rounded-xl"
+          className="object-contain rounded-xl dark:grayscale"
         />
       ) : (
         <div

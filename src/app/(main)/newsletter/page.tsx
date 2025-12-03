@@ -5,9 +5,9 @@ import type { Metadata } from "next";
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: "Weekly Drops Newsletter | SaasList",
+  title: "Newsletter | saaslist",
   description:
-    "Get the best products of the week delivered to your inbox every Sunday. Stay updated with the latest tools and innovations.",
+    "Stay updated with bootstrapped SaaS tools. Discover independent products built by founders and small teams.",
   alternates: {
     canonical: `${baseUrl}/newsletter`,
   },

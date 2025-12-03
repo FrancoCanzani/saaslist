@@ -36,23 +36,23 @@ export async function generateMetadata({
   };
 
   const periodTitle = periodTitles[period];
-  const description = `Discover the top liked products ${periodTitle.toLowerCase()}. See which products are trending and getting the most community support.`;
+  const description = `Browse the most liked bootstrapped SaaS tools ${periodTitle.toLowerCase()}. Discover independent products built by founders and small teams.`;
 
   return {
-    title: `Top Products Leaderboard ${periodTitle} | SaasList`,
+    title: `Leaderboard ${periodTitle} | saaslist`,
     description,
     alternates: {
       canonical: `${baseUrl}/leaderboard`,
     },
     openGraph: {
-      title: `Top Products Leaderboard ${periodTitle}`,
+      title: `Leaderboard ${periodTitle}`,
       description,
       type: "website",
       url: `${baseUrl}/leaderboard`,
     },
     twitter: {
       card: "summary_large_image",
-      title: `Top Products Leaderboard ${periodTitle}`,
+      title: `Leaderboard ${periodTitle}`,
       description,
     },
   };
@@ -188,12 +188,8 @@ export default async function LeaderboardPage({
       ) : (
         <>
           <div className="space-y-4 flex flex-col">
-            {processedProducts.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                position={index + 1}
-              />
+            {processedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
           {hasMore && <LoadMoreButton currentPage={page} />}

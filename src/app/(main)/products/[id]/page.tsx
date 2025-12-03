@@ -38,19 +38,19 @@ export async function generateMetadata({
 
   if (!product) {
     return {
-      title: "Product Not Found | SaasList",
+      title: "Product Not Found | saaslist",
     };
   }
 
   const description = product.description
     ? `${product.description.substring(0, 155)}${product.description.length > 155 ? "..." : ""}`
-    : `${product.tagline} - Discover ${product.name} and other products on SaasList.`;
+    : `${product.name} is a bootstrapped SaaS tool built independently. View features, tech stack, and details.`;
 
   const imageUrl =
     product.logo_url || product.images?.[0] || `${baseUrl}/opengraph-image`;
 
   return {
-    title: `${product.name} - ${product.tagline} | SaasList`,
+    title: `${product.name} - ${product.tagline} | saaslist`,
     description,
     alternates: {
       canonical: `${baseUrl}/products/${id}`,

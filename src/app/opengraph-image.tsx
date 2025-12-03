@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "SaasList - Discover & Share Products";
+export const alt = "saaslist - A curated directory of bootstrapped SaaS tools";
 export const size = {
   width: 1200,
   height: 630,

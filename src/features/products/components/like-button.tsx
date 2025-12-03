@@ -69,9 +69,6 @@ export default function LikeButton({
       <span className={cn(hideText && "hidden md:inline")}>
         {optimisticProduct.is_liked ? "Liked" : "Like"}
       </span>
-      <span className={cn(hideText ? "md:border-l md:pl-2" : "border-l pl-2")}>
-        {optimisticProduct.likes_count}
-      </span>
     </Button>
   );
 }
