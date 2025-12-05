@@ -2,10 +2,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ProductActionsDropdown } from "@/features/products/components/product-actions-dropdown";
 import ProductLogo from "@/features/products/components/product-logo";
 import { createClient } from "@/lib/supabase/server";
+import { getLoginUrl } from "@/utils/helpers";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import type { Metadata } from "next";
-import { getLoginUrl } from "@/utils/helpers";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -40,7 +40,7 @@ export default async function MyProductsPage() {
     .order("created_at", { ascending: false });
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
+    <div className="p-4 sm:p-6  space-y-8 w-full">
       <div>
         <h1 className="text-xl font-medium">My Products</h1>
         <h2 className="text-muted-foreground text-sm">

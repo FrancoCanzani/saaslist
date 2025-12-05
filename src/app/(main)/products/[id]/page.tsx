@@ -135,7 +135,7 @@ export default async function ProductPage({
   const isOwner = user?.id === product.user_id;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
+    <div className="p-4 sm:p-6  space-y-8 w-full">
       <ProductViewTracker productId={id} />
       <div className="flex gap-6">
         <main className="flex-1 flex flex-col space-y-6">

@@ -44,14 +44,6 @@ export default function Footer({
               </li>
               <li>
                 <Link
-                  href="/leaderboard"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Leaderboard
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/products/new"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >

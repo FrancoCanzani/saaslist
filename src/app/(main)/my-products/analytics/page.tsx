@@ -1,10 +1,10 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import type { Metadata } from "next";
-import { getLoginUrl } from "@/utils/helpers";
-import { AnalyticsDashboard } from "@/features/products/components/analytics-dashboard";
 import { getProductsAnalytics } from "@/features/products/api/get-products-analytics";
+import { AnalyticsDashboard } from "@/features/products/components/analytics-dashboard";
+import { createClient } from "@/lib/supabase/server";
+import { getLoginUrl } from "@/utils/helpers";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -50,7 +50,7 @@ export default async function AnalyticsPage() {
 
   if (!analyticsData) {
     return (
-      <div className="p-4 sm:p-6 lg:p-8 w-full space-y-8">
+      <div className="p-4 sm:p-6  w-full space-y-8">
         <div>
           <h1 className="text-xl font-medium">Analytics</h1>
           <p className="text-muted-foreground text-sm">
@@ -67,7 +67,7 @@ export default async function AnalyticsPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 w-full space-y-8">
+    <div className="p-4 sm:p-6  w-full space-y-8">
       <div>
         <h1 className="text-xl font-medium">Analytics</h1>
         <p className="text-muted-foreground text-sm">

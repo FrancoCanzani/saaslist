@@ -3,10 +3,10 @@
 import { ProductForm } from "@/features/products/components/forms/product-form";
 import { useCreateProduct } from "@/features/products/mutations";
 import { productSchema } from "@/features/products/schemas";
-import { useRouter, usePathname } from "next/navigation";
+import { getLoginUrl } from "@/utils/helpers";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
-import { getLoginUrl } from "@/utils/helpers";
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -32,7 +32,7 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
+    <div className="p-4 sm:p-6  space-y-8 w-full">
       <div className="">
         <h1 className="text-xl font-medium">Submit a Product</h1>
         <h2 className="text-sm text-muted-foreground">

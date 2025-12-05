@@ -274,7 +274,6 @@ export async function deleteProductAction(
     revalidatePath("/my-products");
     revalidatePath("/");
     revalidatePath("/browse");
-    revalidatePath("/leaderboard");
     revalidatePath(`/products/${productId}`);
 
     return { success: true, action: "deleted" };

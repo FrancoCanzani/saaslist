@@ -20,7 +20,7 @@ export default async function MakerProfilePage({
   const { profile, products } = data;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
+    <div className="p-4 sm:p-6  space-y-8 w-full">
       <div>
         <div className="flex items-center justify-between space-x-2">
           <h1 className="text-xl leading-none font-medium">
@@ -85,7 +85,9 @@ export default async function MakerProfilePage({
                   size="md"
                 />
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-sm truncate">{product.name}</h3>
+                  <h3 className="font-medium text-sm truncate">
+                    {product.name}
+                  </h3>
                   {product.tagline && (
                     <p className="text-xs text-muted-foreground truncate">
                       {product.tagline}

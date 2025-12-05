@@ -47,7 +47,6 @@ export async function updateSession(request: NextRequest) {
     "/",
     "/newsletter",
     "/browse",
-    "/leaderboard",
     "/advertise",
     "/blog",
     "/login",

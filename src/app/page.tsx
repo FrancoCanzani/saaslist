@@ -33,8 +33,8 @@ export default async function Home() {
           Support SaasList by going Featured
         </Link>
         <div className="space-y-6 mx-auto w-full">
-          <h1 className="text-5xl sm:text-6xl xl:text-7xl leading-tight font-mono font-extralight capitalize text-balance tracking-tighter xl:leading-tight">
-            A curated directory of bootstrapped SaaS tools
+          <h1 className="text-5xl sm:text-6xl xl:text-7xl max-w-5xl text-center mx-auto leading-tight font-mono font-extralight capitalize text-balance tracking-tighter xl:leading-tight">
+            A curated directory of bootstrapped SaaS
           </h1>
           <p className="text-muted-foreground text-sm mx-auto text-balance max-w-3xl text-center w-full">
             Discover products built by independent founders. No funding, no
@@ -48,7 +48,7 @@ export default async function Home() {
               size={"lg"}
               className="rounded-xl active:scale-98 border-primary bg-primary/75 text-primary-foreground hover:bg-primary/85 dark:bg-primary/90 dark:border-primary dark:hover:bg-primary border border-b-2 shadow-md shadow-zinc-950/20 ring ring-inset ring-white/15 transition-[filter,scale,background] duration-200 hover:brightness-110 dark:ring-transparent"
             >
-              <Link href={"/browse"}>Browse the directory</Link>
+              <Link href={"/products/new"}>Submit a product</Link>
             </Button>
             <Button
               asChild
@@ -56,7 +56,7 @@ export default async function Home() {
               size={"lg"}
               className="bg-muted hover:bg-background dark:bg-muted/25 dark:hover:bg-muted/50 dark:border-border inset-shadow-2xs inset-shadow-white dark:inset-shadow-transparent border border-zinc-300 shadow-sm shadow-zinc-950/10 ring-0 duration-150"
             >
-              <Link href={"/products/new"}>Submit a product</Link>
+              <Link href={"/browse"}>Browse the directory</Link>
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
@@ -65,7 +65,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <main className="p-4 sm:p-6 lg:p-8">
+      <main className="p-4 sm:p-6 ">
         <Suspense fallback={<ProductGridSkeleton count={9} />}>
           <ProductGrid />
         </Suspense>

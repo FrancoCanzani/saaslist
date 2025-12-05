@@ -21,13 +21,18 @@ export function MobileNav() {
 
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem asChild>
-          <Link href="/browse" className="cursor-pointer text-xs">
-            Browse
+          <Link href="/browse/categories" className="cursor-pointer text-xs">
+            Browse - Categories
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/leaderboard" className="cursor-pointer text-xs">
-            Leaderboard
+          <Link href="/browse/all" className="cursor-pointer text-xs">
+            Browse - All
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/browse/tech-stacks" className="cursor-pointer text-xs">
+            Browse - Tech Stack
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

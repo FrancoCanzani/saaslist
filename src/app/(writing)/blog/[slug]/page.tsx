@@ -65,7 +65,7 @@ export default async function BlogPostPage({
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
+    <div className="p-4 sm:p-6  space-y-8 w-full">
       <Link
         href="/blog"
         className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"

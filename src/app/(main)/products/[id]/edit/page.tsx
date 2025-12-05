@@ -1,17 +1,17 @@
 "use client";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Spinner } from "@/components/ui/spinner";
 import { ProductForm } from "@/features/products/components/forms/product-form";
-import { useProduct } from "@/features/products/queries";
 import { useUpdateProduct } from "@/features/products/mutations";
+import { useProduct } from "@/features/products/queries";
 import { productSchema } from "@/features/products/schemas";
-import { useRouter, useParams, usePathname } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { getLoginUrl } from "@/utils/helpers";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/client";
-import { useEffect } from "react";
-import { Spinner } from "@/components/ui/spinner";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { getLoginUrl } from "@/utils/helpers";
 
 export default function EditProductPage() {
   const params = useParams();
@@ -50,7 +50,7 @@ export default function EditProductPage() {
     data: z.infer<typeof productSchema> & {
       imagesToDelete?: string[];
       removeLogo?: boolean;
-    }
+    },
   ) => {
     if (!productId || !product) {
       toast.error("Product information is missing. Please refresh the page.");
@@ -87,19 +87,19 @@ export default function EditProductPage() {
 
   if (error || !product) {
     return (
-<div className="flex items-center justify-center flex-1">
-<Alert className="max-w-lg mx-auto">
+      <div className="flex items-center justify-center flex-1">
+        <Alert className="max-w-lg mx-auto">
           <AlertDescription className="mx-auto text-balance text-center">
             The product you're trying to edit doesn't exist or you don't have
             permission to edit it.
           </AlertDescription>
         </Alert>
-</div>
+      </div>
     );
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8 w-full">
+    <div className="p-4 sm:p-6  space-y-8 w-full">
       <div>
         <h1 className="text-xl font-medium">Edit Product</h1>
         <h2 className="text-sm text-muted-foreground">
@@ -134,4 +134,3 @@ export default function EditProductPage() {
     </div>
   );
 }
-
