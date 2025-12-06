@@ -967,3 +967,81 @@ export async function toggleProductFeaturedAction(
     };
   }
 }
+
+export async function claimProductAction(
+  productId: string
+): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return {
+        success: false,
+        error: "You must be logged in to claim products",
+      };
+    }
+
+    const { data: product, error: productError } = await supabase
+      .from("products")
+      .select("user_id")
+      .eq("id", productId)
+      .single();
+
+    if (productError || !product) {
+      return {
+        success: false,
+        error: "Product not found",
+      };
+    }
+
+    const editorUserId = process.env.EDITOR_USER_ID;
+    if (!editorUserId || product.user_id !== editorUserId) {
+      return {
+        success: false,
+        error: "This product cannot be claimed",
+      };
+    }
+
+    if (product.user_id === user.id) {
+      return {
+        success: false,
+        error: "You already own this product",
+      };
+    }
+
+    const { error: updateError } = await supabase
+      .from("products")
+      .update({
+        user_id: user.id,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", productId);
+
+    if (updateError) {
+      return {
+        success: false,
+        error: "Failed to claim product. Please try again.",
+      };
+    }
+
+    revalidatePath("/my-products");
+    revalidatePath("/");
+    revalidatePath("/browse");
+    revalidatePath(`/products/${productId}`);
+
+    return {
+      success: true,
+      action: "claimed",
+    };
+  } catch (error) {
+    console.error("Claim product error:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Something went wrong",
+    };
+  }
+}

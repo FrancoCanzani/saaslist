@@ -233,7 +233,7 @@ export default function AdvertisePage() {
 
               <div className="space-y-1">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-3xl md:text-4xl font-semibold tracking-tight">
+                  <span className="text-3xl md:text-4xl font-medium tracking-tight">
                     ${price}
                   </span>
                   <div className="flex flex-col text-xs md:text-sm text-muted-foreground">
@@ -313,7 +313,7 @@ export default function AdvertisePage() {
               </Button>
 
               <div className="flex-1 space-y-3">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                   What's Included
                 </p>
                 <ul className="space-y-2.5">

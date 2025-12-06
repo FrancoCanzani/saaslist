@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link href={`/products/${product.id}`}>
-      <Card className="gap-4 w-80">
+      <Card className="gap-4 w-full max-w-sm h-full flex flex-col hover:shadow-lg transition-shadow duration-200">
         <ProductLogo
           logoUrl={product.logo_url}
           productName={product.name}

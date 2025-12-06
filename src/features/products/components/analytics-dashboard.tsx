@@ -498,7 +498,7 @@ function StatCard({
         <span className="text-muted-foreground">{icon}</span>
       </div>
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-2xl font-semibold tabular-nums">
+        <span className="text-2xl font-medium tabular-nums">
           {value.toLocaleString()}
         </span>
         {trend !== undefined && (

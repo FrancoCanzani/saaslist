@@ -65,7 +65,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <main className="p-4 sm:p-6 ">
+      <main className="p-4 sm:p-6 mx-auto">
         <Suspense fallback={<ProductGridSkeleton count={9} />}>
           <ProductGrid />
         </Suspense>

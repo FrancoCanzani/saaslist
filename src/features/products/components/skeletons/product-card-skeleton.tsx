@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductCardSkeleton() {
   return (
-    <Card className="gap-4">
+    <Card className="gap-4 w-full max-w-sm h-full flex flex-col">
       <Skeleton className="size-9 rounded-xl" />
       <div className="flex items-center justify-between">
         <Skeleton className="h-5 w-3/4 rounded" />

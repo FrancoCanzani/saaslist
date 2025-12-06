@@ -52,7 +52,7 @@ export function FounderHoverCard({
             </Avatar>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm leading-none font-semibold">
+                <h4 className="text-sm leading-none font-medium">
                   {profile.name || "User"}
                 </h4>
                 {(profile.twitter || profile.website) && (

@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ClaimProductBadge } from "@/features/products/components/claim-product-badge";
 import { FeedSection } from "@/features/products/components/feed/feed-section";
 import { FounderHoverCard } from "@/features/products/components/founder-hover-card";
 import LikeButton from "@/features/products/components/like-button";
@@ -133,6 +134,7 @@ export default async function ProductPage({
     .single();
 
   const isOwner = user?.id === product.user_id;
+  const isEditorProduct = product.user_id === process.env.EDITOR_USER_ID;
 
   return (
     <div className="p-4 sm:p-6  space-y-8 w-full">
@@ -142,14 +144,9 @@ export default async function ProductPage({
           {isOwner && !product.is_featured && (
             <Link
               href={"/advertise"}
-              className="text-center group bg-violet-50/50 hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 text-xs gap-x-1.5 p-2 outline-transparent not-disabled:cursor-pointer hover:not-disabled:outline-2 hover:not-disabled:outline-border/50 hover:not-disabled:border-ring focus-visible:outline-2 focus-visible:outline-border/50 focus-visible:border-ring flex w-full border rounded-xl font-medium flex-row justify-between items-center"
+              className="group bg-violet-50/50 hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 text-xs gap-x-1.5 p-2 outline-transparent not-disabled:cursor-pointer hover:not-disabled:outline-2 hover:not-disabled:outline-border/50 hover:not-disabled:border-ring focus-visible:outline-2 focus-visible:outline-border/50 focus-visible:border-ring flex w-full border rounded-xl font-medium flex-row justify-between items-center"
             >
-              <div className="flex items-center justify-start gap-x-1.5">
-                <span className="bg-black text-white px-1 rounded shadow">
-                  Add
-                </span>
-                Go Pro and unlock more reach and insights
-              </div>
+              <p>Go Pro and unlock more reach and insights</p>
               <div className="flex items-center justify-end gap-x-1.5">
                 More info
                 <ArrowRight className="size-3 opacity-0 group-hover:opacity-100 transition-all duration-300" />
@@ -171,8 +168,10 @@ export default async function ProductPage({
                 </h1>
                 {(product.twitter_url ||
                   product.linkedin_url ||
-                  product.instagram_url) && (
+                  product.instagram_url ||
+                  isEditorProduct) && (
                   <div className="md:hidden flex items-center gap-2">
+                    {isEditorProduct && <ClaimProductBadge productId={id} />}
                     {product.twitter_url && (
                       <Button asChild variant={"secondary"} size={"xs"}>
                         <a
@@ -236,6 +235,7 @@ export default async function ProductPage({
             </div>
 
             <div className="space-x-1.5 hidden xl:flex items-center justify-end">
+            {isEditorProduct && <ClaimProductBadge productId={id} />}
               <LikeButton product={processedProduct} variant={"secondary"} />
               <Button
                 asChild
@@ -256,23 +256,25 @@ export default async function ProductPage({
             </div>
           </div>
 
-          <div className="flex text-sm items-center gap-x-1 font-medium">
-            <span>Launched</span>
-            <span>
-              {formatDistanceToNowStrict(new Date(product.created_at), {
-                addSuffix: true,
-              })}
-            </span>
-            <span>by</span>
-            <FounderHoverCard userId={product.user_id}>
-              <Link
-                href={`/founders/${product.user_id}`}
-                className="underline hover:text-blue-600 transition-colors"
-              >
-                {processedProduct.founder_name || "Founder"}
-              </Link>
-            </FounderHoverCard>
-          </div>
+          {!isEditorProduct && (
+            <div className="flex text-sm items-center gap-x-1 font-medium">
+              <span>Launched</span>
+              <span>
+                {formatDistanceToNowStrict(new Date(product.created_at), {
+                  addSuffix: true,
+                })}
+              </span>
+              <span>by</span>
+              <FounderHoverCard userId={product.user_id}>
+                <Link
+                  href={`/founders/${product.user_id}`}
+                  className="underline hover:text-blue-600 transition-colors"
+                >
+                  {processedProduct.founder_name || "Founder"}
+                </Link>
+              </FounderHoverCard>
+            </div>
+          )}
 
           <div className="space-x-1.5 xl:hidden flex items-center justify-start">
             <LikeButton

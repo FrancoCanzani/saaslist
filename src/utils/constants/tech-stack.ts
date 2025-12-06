@@ -65,6 +65,7 @@ export const techStackCategories: TechCategory[] = [
       { name: "Flask", icon: "flask", color: "#000000" },
       { name: "FastAPI", icon: "fastapi", color: "#009688" },
       { name: "Laravel", icon: "laravel", color: "#FF2D20" },
+      { name: "WordPress", icon: "wordpress", color: "#21759B" },
       { name: "Ruby on Rails", icon: "rubyonrails", color: "#CC0000" },
       { name: "Spring Boot", icon: "springboot", color: "#6DB33F" },
       { name: "Go", icon: "go", color: "#00ADD8" },

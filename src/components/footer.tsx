@@ -32,7 +32,7 @@ export default function Footer({
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Product</h4>
+            <h4 className="font-medium mb-4">Product</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
@@ -62,7 +62,7 @@ export default function Footer({
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Resources</h4>
+            <h4 className="font-medium mb-4">Resources</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
@@ -100,7 +100,7 @@ export default function Footer({
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Legal</h4>
+            <h4 className="font-medium mb-4">Legal</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
