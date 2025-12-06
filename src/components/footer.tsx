@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 import Link from "next/link";
 
 interface FooterProps {
@@ -22,6 +23,13 @@ export default function Footer({
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
             <h3 className="font-mono font-medium text-xl">SaasList</h3>
+            <Image
+              src={"/flag-of-argentina.png"}
+              height={40}
+              width={80}
+              alt="Flag of Argentina"
+              className="rounded"
+            />
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >

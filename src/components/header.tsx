@@ -16,43 +16,50 @@ export default function Header({
   containerClassName?: string;
 } = {}) {
   return (
-    <header className="sticky top-0 z-50 w-full bg-surface/20 dark:bg-background/80 backdrop-blur-lg">
+    <header className="sticky top-0 z-50 w-full bg-surface/20 dark:bg-background/80 backdrop-blur-3xl">
       <div
         className={cn(
-          "max-w-6xl mx-auto p-4 sm:p-6 flex items-center justify-between text-sm w-full",
+          "mx-auto max-w-7xl px-6 py-2 lg:px-12",
           containerClassName,
         )}
       >
-        <Link href="/" className="font-mono font-medium text-3xl">
-          SaasList
-        </Link>
-        <div
-          className="inline-flex flex-1 items-center justify-center gap-6 *:font-medium
-          *:hidden *:md:flex *:hover:text-muted-foreground"
-        >
-          <DropdownMenu>
-            <DropdownMenuTrigger className="items-center gap-1 hover:text-muted-foreground">
-              Browse
-              <ChevronDown className="size-3.5" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="*:text-xs">
-              <DropdownMenuItem asChild>
-                <Link href="/browse/all">All</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/browse/categories">Categories</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/browse/tech-stacks">Tech Stack</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Link href="/newsletter">Newsletter</Link>
-          <Link href="/advertise">Advertise</Link>
-        </div>
-        <div className="flex items-center gap-4">
-          <MobileNav />
-          <AuthSection />
+        <div className="grid grid-cols-2 gap-12 items-end">
+          <div className="flex flex-col">
+            <Link
+              href="/"
+              className="font-mono leading-none font-medium text-3xl"
+            >
+              S
+            </Link>
+          </div>
+
+          <div className="flex items-end justify-between">
+            <nav className="flex gap-6 text-sm text-muted-foreground *:font-medium *:hidden *:md:flex *:hover:text-foreground *:transition-colors">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="items-center gap-1 hover:text-foreground">
+                  Browse
+                  <ChevronDown className="size-3.5" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="*:text-xs">
+                  <DropdownMenuItem asChild>
+                    <Link href="/browse/all">All</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/browse/categories">Categories</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/browse/tech-stacks">Tech Stack</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Link href="/newsletter">Newsletter</Link>
+              <Link href="/advertise">Advertise</Link>
+            </nav>
+            <div className="flex items-center gap-4">
+              <MobileNav />
+              <AuthSection />
+            </div>
+          </div>
         </div>
       </div>
     </header>

@@ -56,11 +56,11 @@ export default function ProductLogo({
           width={logoSize}
           height={logoSize}
           onError={() => setImageError(true)}
-          className="object-contain rounded-xl dark:grayscale"
+          className="object-contain rounded mix-blend-luminosity group-hover:brightness-120 transition-all duration-200"
         />
       ) : (
         <div
-          className="flex rounded-xl bg-surface items-center font-medium justify-center w-full h-full"
+          className="flex rounded bg-surface items-center font-medium justify-center w-full h-full mix-blend-luminosity group-hover:brightness-120 transition-all duration-200"
           style={{ fontSize: logoSize * 0.5 }}
         >
           {productName.split("")[0]}

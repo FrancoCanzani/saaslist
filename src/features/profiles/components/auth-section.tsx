@@ -1,12 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ProductSearchDialog } from "@/features/products/components/product-search";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { getLoginUrl } from "@/utils/helpers";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ProfileDropdown } from "./Profile-dropdown";
-import { getLoginUrl } from "@/utils/helpers";
 
 export function AuthSection() {
   const { data, isLoading } = useCurrentUser();
@@ -25,7 +24,6 @@ export function AuthSection() {
         >
           <Link href="/products/new">New Product</Link>
         </Button>
-        <ProductSearchDialog />
         <ProfileDropdown profile={data.profile} />
       </>
     );

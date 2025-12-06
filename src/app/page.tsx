@@ -3,6 +3,7 @@ import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import ProductGrid from "@/features/products/components/product-grid";
 import ProductGridSkeleton from "@/features/products/components/skeletons/product-grid-skeleton";
+import { ArrowDown } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -22,50 +23,53 @@ export const revalidate = 600;
 
 export default async function Home() {
   return (
-    <div className="min-h-screen max-w-6xl relative space-y-12 mx-auto">
-      <Header containerClassName="max-w-6xl" />
+    <div className="min-h-screen mx-auto">
+      <Header />
 
-      <div className="w-full mx-auto text-center flex-col md:px-6 flex items-center md:items-center justify-start gap-8 overflow-hidden relative">
-        <Link
-          href={"/advertise"}
-          className="leading-snug text-sm font-medium tracking-tight capitalize flex rounded-xl hover:underline dark:hover:no-underline items-center gap-x-2 dark:bg-background dark:border dark:border-violet-50/50 dark:hover:border-violet-50 transition-all duration-200 rounded px-2 py-0.5 dark:shadow-violet-50/10 dark:shadow-xl"
-        >
-          Support SaasList by going Featured
-        </Link>
-        <div className="space-y-6 mx-auto w-full">
-          <h1 className="text-5xl sm:text-6xl xl:text-7xl max-w-5xl text-center mx-auto leading-tight font-mono font-extralight capitalize text-balance tracking-tighter xl:leading-tight">
-            A curated directory of bootstrapped SaaS
-          </h1>
-          <p className="text-muted-foreground text-sm mx-auto text-balance max-w-3xl text-center w-full">
-            Discover products built by independent founders. No funding, no
-            noise, just simple, founder-built tools.
-          </p>
-        </div>
-        <div className="space-y-4 relative z-10">
-          <div className="space-x-2">
-            <Button
-              asChild
-              size={"lg"}
-              className="rounded-xl active:scale-98 border-primary bg-primary/75 text-primary-foreground hover:bg-primary/85 dark:bg-primary/90 dark:border-primary dark:hover:bg-primary border border-b-2 shadow-md shadow-zinc-950/20 ring ring-inset ring-white/15 transition-[filter,scale,background] duration-200 hover:brightness-110 dark:ring-transparent"
+      <div className="mx-auto max-w-7xl p-6 lg:px-12">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+          <div className="flex-col gap-4 hidden lg:flex">
+            <Link
+              href="/"
+              className="font-mono  leading-none font-medium text-3xl"
             >
-              <Link href={"/products/new"}>Submit a product</Link>
-            </Button>
-            <Button
-              asChild
-              variant={"secondary"}
-              size={"lg"}
-              className="bg-muted hover:bg-background dark:bg-muted/25 dark:hover:bg-muted/50 dark:border-border inset-shadow-2xs inset-shadow-white dark:inset-shadow-transparent border border-zinc-300 shadow-sm shadow-zinc-950/10 ring-0 duration-150"
-            >
-              <Link href={"/browse"}>Browse the directory</Link>
-            </Button>
+              SaasList
+            </Link>
+            <ArrowDown className="text-muted-foreground hover:text-black dark:hover:text-white" />
           </div>
-          <p className="text-xs text-muted-foreground">
-            Free to submit • No credit card required • No waitlist
-          </p>
+
+          <div className="flex flex-col">
+            <h1 className="text-5xl sm:text-6xl xl:text-7xl font-mono font-extralight leading-none tracking-tighter text-balance">
+              A curated directory of bootstrapped SaaS
+            </h1>
+
+            <p className="mt-6 text-balance lg:text-pretty text-sm sm:text-lg text-muted-foreground max-w-2xl">
+              Discover products built by independent founders. No funding, no
+              noise, just simple, founder-built tools.
+            </p>
+
+            <div className="flex mt-8 lg:hidden flex-wrap gap-3">
+              <Button
+                asChild
+                size={"lg"}
+                className="rounded-xl active:scale-98 border-primary bg-primary/75 text-primary-foreground hover:bg-primary/85 dark:bg-primary/90 dark:border-primary dark:hover:bg-primary border border-b-2 shadow-md shadow-zinc-950/20 ring ring-inset ring-white/15 transition-[filter,scale,background] duration-200 hover:brightness-110 dark:ring-transparent"
+              >
+                <Link href={"/products/new"}>Submit a product</Link>
+              </Button>
+              <Button
+                asChild
+                variant={"secondary"}
+                size={"lg"}
+                className="bg-muted hover:bg-background dark:bg-muted/25 dark:hover:bg-muted/50 dark:border-border inset-shadow-2xs inset-shadow-white dark:inset-shadow-transparent border border-zinc-300 shadow-sm shadow-zinc-950/10 ring-0 duration-150"
+              >
+                <Link href={"/browse"}>Browse the directory</Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <main className="p-4 sm:p-6 mx-auto">
+      <main className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
         <Suspense fallback={<ProductGridSkeleton count={9} />}>
           <ProductGrid />
         </Suspense>

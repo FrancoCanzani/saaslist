@@ -8,20 +8,22 @@ import Link from "next/link";
 export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link href={`/products/${product.id}`}>
-      <Card className="gap-4 w-full max-w-sm h-full flex flex-col hover:shadow-lg transition-shadow duration-200">
-        <ProductLogo
-          logoUrl={product.logo_url}
-          productName={product.name}
-          size="md"
-        />
-        <div className="flex items-center justify-between">
-          <span className="font-medium truncate">{product.name}</span>
-          {product.is_featured && <FeaturedBadge />}
+      <Card className="gap-5 rounded w-full max-w-sm h-full flex flex-col">
+        <div className="flex items-center justify-start gap-1.5">
+          <ProductLogo
+            logoUrl={product.logo_url}
+            productName={product.name}
+            size="sm"
+          />
+          <div className="flex items-center justify-between w-full">
+            <span className="font-medium truncate">{product.name}</span>
+            {product.is_featured && <FeaturedBadge />}
+          </div>
         </div>
 
         <p className="text-xs">{product.tagline}</p>
 
-        <p className="text-xs text-muted-foreground line-clamp-3 flex-1">
+        <p className="text-xs text-muted-foreground line-clamp-4 flex-1">
           {product.description}
         </p>
 
