@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 const productLogoVariants = cva(
-  "flex items-center justify-center shrink-0 rounded-xl overflow-hidden",
+  "flex items-center justify-center shrink-0 rounded-xl overflow-hidden dark:bg-zinc-50 dark:border dark:border-zinc-200/50 dark:p-0.5",
   {
     variants: {
       size: {

@@ -3,7 +3,7 @@ import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import ProductGrid from "@/features/products/components/product-grid";
 import ProductGridSkeleton from "@/features/products/components/skeletons/product-grid-skeleton";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -26,7 +26,7 @@ export default async function Home() {
     <div className="min-h-screen mx-auto">
       <Header />
 
-      <div className="mx-auto max-w-7xl p-6 lg:px-12">
+      <div className="mx-auto max-w-7xl p-6 lg:px-12 lg:pb-12">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           <div className="flex-col gap-4 hidden lg:flex">
             <Link
@@ -62,7 +62,7 @@ export default async function Home() {
                 size={"lg"}
                 className="bg-muted hover:bg-background dark:bg-muted/25 dark:hover:bg-muted/50 dark:border-border inset-shadow-2xs inset-shadow-white dark:inset-shadow-transparent border border-zinc-300 shadow-sm shadow-zinc-950/10 ring-0 duration-150"
               >
-                <Link href={"/browse"}>Browse the directory</Link>
+                <Link href={"/browse/all"}>Browse the directory</Link>
               </Button>
             </div>
           </div>
@@ -75,6 +75,14 @@ export default async function Home() {
         </Suspense>
       </main>
 
+      <div className="w-full py-12 text-sm flex items-center justify-center">
+        <Link href={"/browse/all"} className="group">
+          <span className="text-muted-foreground capitalize group-hover:text-foreground transition-colors flex items-center gap-1">
+            Browse the directory
+            <ArrowRight className="size-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+          </span>
+        </Link>
+      </div>
       <Footer />
     </div>
   );

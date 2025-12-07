@@ -26,7 +26,8 @@ export default function Footer({
             <Image
               src={"/flag-of-argentina.png"}
               height={40}
-              width={80}
+              width={60}
+              loading="lazy"
               alt="Flag of Argentina"
               className="rounded"
             />
