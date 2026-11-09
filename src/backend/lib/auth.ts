@@ -4,6 +4,7 @@ import { emailOTP } from "better-auth/plugins"
 
 import * as schema from "../db/schema"
 import { createDb } from "./db"
+import { devSignInPlugin } from "./dev-sign-in"
 import { deliverOtp } from "./otp"
 import { AUTH_BASE_PATH } from "./paths"
 
@@ -15,10 +16,20 @@ export function createAuth(env: Env, ctx?: WaitUntilCtx) {
   const db = createDb(env)
 
   return betterAuth({
-    baseURL: env.BETTER_AUTH_URL,
+    baseURL:
+      env.ENVIRONMENT === "development"
+        ? {
+            // Quick tunnels mint a hostname at startup, so development cannot pin one origin.
+            allowedHosts: ["localhost", "127.0.0.1", "*.trycloudflare.com"],
+            fallback: env.BETTER_AUTH_URL,
+          }
+        : env.BETTER_AUTH_URL,
     basePath: AUTH_BASE_PATH,
     secret: env.BETTER_AUTH_SECRET,
-    trustedOrigins: [env.BETTER_AUTH_URL],
+    trustedOrigins:
+      env.ENVIRONMENT === "development"
+        ? [env.BETTER_AUTH_URL, "https://*.trycloudflare.com"]
+        : [env.BETTER_AUTH_URL],
     database: drizzleAdapter(db, {
       provider: "sqlite",
       schema,
@@ -58,6 +69,8 @@ export function createAuth(env: Env, ctx?: WaitUntilCtx) {
           await deliverOtp(env, ctx, { email, otp, type })
         },
       }),
+      // The route is absent outside development, so production still requires a code.
+      ...(env.ENVIRONMENT === "development" ? [devSignInPlugin()] : []),
     ],
   })
 }

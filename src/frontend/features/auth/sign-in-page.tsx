@@ -8,6 +8,8 @@ import { safeInternalPath } from "@lib/safe-internal-path"
 
 const routeApi = getRouteApi("/sign-in")
 
+const DEV_SIGN_IN_EMAIL = "francocanzani@gmail.com"
+
 export function SignInPage() {
   const search = routeApi.useSearch()
   const [step, setStep] = useState<"email" | "code">("email")
@@ -20,6 +22,24 @@ export function SignInPage() {
     event.preventDefault()
     setPending(true)
     setError(null)
+    const normalized = email.trim().toLowerCase()
+    if (import.meta.env.DEV && normalized === DEV_SIGN_IN_EMAIL) {
+      const response = await fetch("/api/v1/auth/dev-sign-in", {
+        method: "POST",
+        credentials: "include",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: normalized }),
+      })
+      if (response.ok) {
+        window.location.assign(safeInternalPath(search.redirect))
+        return
+      }
+      if (response.status !== 404) {
+        setPending(false)
+        setError("Could not sign in.")
+        return
+      }
+    }
     const result = await authClient.emailOtp.sendVerificationOtp({
       email,
       type: "sign-in",
