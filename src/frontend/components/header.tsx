@@ -38,14 +38,12 @@ export function Header({
                   <ChevronDown className="size-3.5" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="*:text-xs">
-                  <DropdownMenuItem asChild>
-                    <Link to="/">All</Link>
+                  <DropdownMenuItem render={<Link to="/" />}>All</DropdownMenuItem>
+                  <DropdownMenuItem render={<Link to="/categories" />}>
+                    Categories
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/categories">Categories</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/tech-stacks">Tech Stack</Link>
+                  <DropdownMenuItem render={<Link to="/tech-stacks" />}>
+                    Tech Stack
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

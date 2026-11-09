@@ -45,20 +45,19 @@ export function ToolPage() {
             </div>
             <div className="hidden items-center justify-end space-x-1.5 xl:flex">
               <Button
-                asChild
                 variant="secondary"
                 size="xs"
                 className="rounded-xl font-medium"
+                render={
+                  <a
+                    href={product.websiteUrl}
+                    target="_blank"
+                    rel={product.sponsored ? "sponsored noopener" : "noopener"}
+                  />
+                }
               >
-                <a
-                  href={product.websiteUrl}
-                  className="flex items-center justify-start gap-x-1 text-muted-foreground"
-                  target="_blank"
-                  rel={product.sponsored ? "sponsored noopener" : "noopener"}
-                >
-                  Visit
-                  <ArrowUpRight className="size-3.5" />
-                </a>
+                Visit
+                <ArrowUpRight className="size-3.5" />
               </Button>
             </div>
           </div>
@@ -72,20 +71,19 @@ export function ToolPage() {
 
           <div className="flex items-center justify-start space-x-1.5 xl:hidden">
             <Button
-              asChild
               variant="secondary"
               size="sm"
               className="rounded-xl font-medium"
+              render={
+                <a
+                  href={product.websiteUrl}
+                  target="_blank"
+                  rel={product.sponsored ? "sponsored noopener" : "noopener"}
+                />
+              }
             >
-              <a
-                href={product.websiteUrl}
-                className="flex items-center justify-start gap-x-1 text-muted-foreground"
-                target="_blank"
-                rel={product.sponsored ? "sponsored noopener" : "noopener"}
-              >
-                Visit
-                <ArrowUpRight className="size-3.5" />
-              </a>
+              Visit
+              <ArrowUpRight className="size-3.5" />
             </Button>
           </div>
 

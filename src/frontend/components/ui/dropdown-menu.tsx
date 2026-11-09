@@ -1,20 +1,21 @@
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
-import type { ComponentProps } from "react"
+import { Menu } from "@base-ui/react/menu"
+import type { ComponentProps, ReactElement, ReactNode } from "react"
 
 import { cn } from "@lib/utils"
 
-function DropdownMenu(
-  props: ComponentProps<typeof DropdownMenuPrimitive.Root>,
-) {
-  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+function DropdownMenu(props: ComponentProps<typeof Menu.Root>) {
+  return <Menu.Root {...props} />
 }
 
-function DropdownMenuTrigger(
-  props: ComponentProps<typeof DropdownMenuPrimitive.Trigger>,
-) {
+function DropdownMenuTrigger({
+  className,
+  render,
+  ...props
+}: ComponentProps<typeof Menu.Trigger> & { render?: ReactElement }) {
   return (
-    <DropdownMenuPrimitive.Trigger
-      data-slot="dropdown-menu-trigger"
+    <Menu.Trigger
+      className={cn("inline-flex items-center", className)}
+      render={render}
       {...props}
     />
   )
@@ -22,62 +23,77 @@ function DropdownMenuTrigger(
 
 function DropdownMenuContent({
   className,
+  align = "center",
   sideOffset = 4,
-  ...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+  children,
+}: {
+  className?: string
+  align?: "start" | "center" | "end"
+  sideOffset?: number
+  children: ReactNode
+}) {
   return (
-    <DropdownMenuPrimitive.Portal>
-      <DropdownMenuPrimitive.Content
-        data-slot="dropdown-menu-content"
-        sideOffset={sideOffset}
-        className={cn(
-          "z-50 min-w-[8rem] overflow-hidden rounded-xl border bg-popover p-1 text-popover-foreground",
-          className,
-        )}
-        {...props}
-      />
-    </DropdownMenuPrimitive.Portal>
+    <Menu.Portal>
+      <Menu.Positioner align={align} sideOffset={sideOffset} className="z-50">
+        <Menu.Popup
+          className={cn(
+            "min-w-[8rem] overflow-hidden rounded-xl border bg-popover p-1 text-popover-foreground",
+            className,
+          )}
+        >
+          {children}
+        </Menu.Popup>
+      </Menu.Positioner>
+    </Menu.Portal>
   )
 }
 
+const itemClass =
+  "relative flex cursor-default items-center gap-2 rounded-lg px-2 py-1.5 text-sm outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
+
 function DropdownMenuItem({
   className,
+  render,
+  children,
   ...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Item>) {
+}: ComponentProps<typeof Menu.Item> & { render?: ReactElement }) {
+  if (render) {
+    return (
+      <Menu.LinkItem
+        className={cn(itemClass, className)}
+        closeOnClick
+        render={render}
+      >
+        {children}
+      </Menu.LinkItem>
+    )
+  }
+
   return (
-    <DropdownMenuPrimitive.Item
-      data-slot="dropdown-menu-item"
-      className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-lg px-2 py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        className,
-      )}
-      {...props}
-    />
+    <Menu.Item className={cn(itemClass, className)} {...props}>
+      {children}
+    </Menu.Item>
   )
 }
 
 function DropdownMenuLabel({
   className,
-  ...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Label>) {
+  children,
+}: {
+  className?: string
+  children: ReactNode
+}) {
   return (
-    <DropdownMenuPrimitive.Label
-      className={cn("px-2 py-1.5 text-sm font-medium", className)}
-      {...props}
-    />
+    <Menu.Group>
+      <Menu.GroupLabel className={cn("px-2 py-1.5 text-sm font-medium", className)}>
+        {children}
+      </Menu.GroupLabel>
+    </Menu.Group>
   )
 }
 
-function DropdownMenuSeparator({
-  className,
-  ...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
-  return (
-    <DropdownMenuPrimitive.Separator
-      className={cn("-mx-1 my-1 h-px bg-border", className)}
-      {...props}
-    />
-  )
+function DropdownMenuSeparator({ className }: { className?: string }) {
+  return <Menu.Separator className={cn("-mx-1 my-1 h-px bg-border", className)} />
 }
 
 export {

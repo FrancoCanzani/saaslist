@@ -98,10 +98,11 @@ export function AdvertisePage() {
                 </span>
               </div>
               <p className="text-sm text-muted-foreground">{plan.description}</p>
-              <Button asChild className="w-full">
-                <Link to="/sign-in" search={{ redirect: "/advertise" }}>
-                  Get started
-                </Link>
+              <Button
+                className="w-full"
+                render={<Link to="/sign-in" search={{ redirect: "/advertise" }} />}
+              >
+                Get started
               </Button>
               <ul className="space-y-2.5">
                 {plan.features.map((feature) => (

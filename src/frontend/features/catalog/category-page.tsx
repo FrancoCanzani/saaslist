@@ -1,7 +1,7 @@
 import { getRouteApi } from "@tanstack/react-router"
 
 import { PageFrame } from "@components/page-frame"
-import { ProductCard } from "@components/product-card"
+import { ProductRows } from "@components/product-row"
 import { Badge } from "@components/ui/badge"
 
 const routeApi = getRouteApi("/categories/$slug")
@@ -24,17 +24,7 @@ export function CategoryPage() {
             </Badge>
           ))}
         </div>
-        {directory.length === 0 ? (
-          <div className="py-12 text-center">
-            <p className="text-muted-foreground">No products found</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {directory.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
+        <ProductRows products={directory} />
       </div>
     </PageFrame>
   )

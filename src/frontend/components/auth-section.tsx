@@ -38,10 +38,13 @@ export function AuthSection({
 
   if (!session) {
     return (
-      <Button asChild size="xs" variant="secondary" className="font-medium">
-        <Link to="/sign-in" search={{ redirect: pathname }}>
-          Sign In
-        </Link>
+      <Button
+        size="xs"
+        variant="secondary"
+        className="font-medium"
+        render={<Link to="/sign-in" search={{ redirect: pathname }} />}
+      >
+        Sign In
       </Button>
     )
   }
@@ -55,20 +58,26 @@ export function AuthSection({
 
   return (
     <>
-      <Button asChild size="xs" className={raisedPrimaryClass}>
-        <Link to="/submit">New Product</Link>
+      <Button
+        size="xs"
+        className={raisedPrimaryClass}
+        render={<Link to="/submit" />}
+      >
+        New Product
       </Button>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            type="button"
-            className="flex size-7 items-center justify-center rounded bg-gray-200 transition-colors hover:bg-gray-300 focus:ring focus:ring-neutral-500 focus:ring-offset focus:outline-none"
-            aria-label="Profile menu"
-          >
-            <span className="text-sm font-medium text-muted-foreground">
-              {initials || "U"}
-            </span>
-          </button>
+        <DropdownMenuTrigger
+          render={
+            <button
+              type="button"
+              className="flex size-7 items-center justify-center rounded bg-gray-200 transition-colors hover:bg-gray-300 focus:ring focus:ring-neutral-500 focus:ring-offset focus:outline-none"
+              aria-label="Profile menu"
+            />
+          }
+        >
+          <span className="text-sm font-medium text-muted-foreground">
+            {initials || "U"}
+          </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel>
@@ -80,29 +89,32 @@ export function AuthSection({
             </span>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link to="/mine" className="cursor-pointer text-xs">
-              Your products
-            </Link>
+          <DropdownMenuItem
+            className="cursor-pointer text-xs"
+            render={<Link to="/mine" />}
+          >
+            Your products
           </DropdownMenuItem>
           {me.data?.editor ? (
             <>
-              <DropdownMenuItem asChild>
-                <Link to="/review" className="cursor-pointer text-xs">
-                  Review
-                </Link>
+              <DropdownMenuItem
+                className="cursor-pointer text-xs"
+                render={<Link to="/review" />}
+              >
+                Review
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/outreach" className="cursor-pointer text-xs">
-                  Outreach
-                </Link>
+              <DropdownMenuItem
+                className="cursor-pointer text-xs"
+                render={<Link to="/outreach" />}
+              >
+                Outreach
               </DropdownMenuItem>
             </>
           ) : null}
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="cursor-pointer text-xs"
-            onSelect={() => {
+            onClick={() => {
               void authClient.signOut().then(() => {
                 window.location.assign("/")
               })
@@ -119,36 +131,44 @@ export function AuthSection({
 export function MobileNav() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="md:hidden">
-        <Button variant="secondary" size="xs" aria-label="Navigation menu">
-          <Menu className="size-4" />
-        </Button>
+      <DropdownMenuTrigger
+        className="md:hidden"
+        render={
+          <Button variant="secondary" size="xs" aria-label="Navigation menu" />
+        }
+      >
+        <Menu className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem asChild>
-          <Link to="/categories" className="cursor-pointer text-xs">
-            Browse - Categories
-          </Link>
+        <DropdownMenuItem
+          className="cursor-pointer text-xs"
+          render={<Link to="/categories" />}
+        >
+          Browse - Categories
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/" className="cursor-pointer text-xs">
-            Browse - All
-          </Link>
+        <DropdownMenuItem
+          className="cursor-pointer text-xs"
+          render={<Link to="/" />}
+        >
+          Browse - All
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/tech-stacks" className="cursor-pointer text-xs">
-            Browse - Tech Stack
-          </Link>
+        <DropdownMenuItem
+          className="cursor-pointer text-xs"
+          render={<Link to="/tech-stacks" />}
+        >
+          Browse - Tech Stack
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/newsletter" className="cursor-pointer text-xs">
-            Newsletter
-          </Link>
+        <DropdownMenuItem
+          className="cursor-pointer text-xs"
+          render={<Link to="/newsletter" />}
+        >
+          Newsletter
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/advertise" className="cursor-pointer text-xs">
-            Advertise
-          </Link>
+        <DropdownMenuItem
+          className="cursor-pointer text-xs"
+          render={<Link to="/advertise" />}
+        >
+          Advertise
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
