@@ -1,3 +1,5 @@
 export function PendingScreen({ label }: { label: string }) {
-  return <p className="py-10 text-sm text-muted">{label}</p>
+  return (
+    <p className="px-6 py-10 font-mono text-sm text-muted-foreground">{label}</p>
+  )
 }

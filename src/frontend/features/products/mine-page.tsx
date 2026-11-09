@@ -1,15 +1,18 @@
 import { Link, getRouteApi } from "@tanstack/react-router"
 
+import { PageFrame } from "@components/page-frame"
+
 const routeApi = getRouteApi("/_authed/mine")
 
 export function MinePage() {
   const { products } = routeApi.useLoaderData()
 
   return (
-    <div>
-      <h1 className="text-3xl tracking-tight">Your products</h1>
+    <PageFrame>
+    <div className="w-full space-y-8 p-4 sm:p-6">
+      <h1 className="text-xl font-medium">Your products</h1>
       {products.length === 0 ? (
-        <p className="mt-4 text-muted">
+        <p className="mt-4 text-sm text-muted-foreground">
           Nothing submitted yet.{" "}
           <Link to="/submit" className="underline underline-offset-4">
             Submit one
@@ -17,14 +20,14 @@ export function MinePage() {
           .
         </p>
       ) : (
-        <ul className="mt-8 divide-y divide-line border-y border-line">
+        <ul className="mt-8 divide-y divide-border border-y border-border">
           {products.map((product) => (
             <li key={product.id} className="py-4">
               <div className="flex items-baseline justify-between gap-4">
                 <span className="text-lg">{product.name}</span>
-                <span className="text-sm text-muted">{product.status}</span>
+                <span className="text-sm text-muted-foreground">{product.status}</span>
               </div>
-              <p className="mt-1 text-sm text-muted">{product.tagline}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{product.tagline}</p>
               {product.reviewNote ? (
                 <p className="mt-2 text-sm">{product.reviewNote}</p>
               ) : null}
@@ -42,5 +45,6 @@ export function MinePage() {
         </ul>
       )}
     </div>
+    </PageFrame>
   )
 }

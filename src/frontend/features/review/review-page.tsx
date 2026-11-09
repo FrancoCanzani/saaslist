@@ -1,6 +1,7 @@
 import { getRouteApi, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
+import { PageFrame } from "@components/page-frame"
 import { Button } from "@components/ui/button"
 import { api } from "@lib/api"
 
@@ -28,28 +29,31 @@ export function ReviewPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl tracking-tight">Review</h1>
-      <p className="mt-2 text-muted">
-        Approve software from independent teams. Reject everything else.
-      </p>
+    <PageFrame>
+    <div className="w-full space-y-8 p-4 sm:p-6">
+      <div>
+        <h1 className="text-xl font-medium">Review</h1>
+        <p className="text-sm text-muted-foreground">
+          Approve software from independent teams. Reject everything else.
+        </p>
+      </div>
       {forbidden ? (
-        <p className="mt-8 text-muted">Only editors can review submissions.</p>
+        <p className="text-sm text-muted-foreground">Only editors can review submissions.</p>
       ) : null}
-      {error ? <p className="mt-4 text-sm text-danger">{error}</p> : null}
+      {error ? <p className="text-sm text-destructive">{error}</p> : null}
       {!forbidden && products.length === 0 ? (
-        <p className="mt-8 text-muted">The queue is empty.</p>
+        <p className="text-sm text-muted-foreground">The queue is empty.</p>
       ) : null}
       {!forbidden && products.length > 0 ? (
-        <ul className="mt-8 divide-y divide-line border-y border-line">
+        <ul className="divide-y divide-border border-y border-border">
           {products.map((product) => (
             <li key={product.id} className="py-5">
               <div className="flex items-baseline justify-between gap-4">
                 <h2 className="text-lg">{product.name}</h2>
-                <span className="text-sm text-muted">{product.categoryName}</span>
+                <span className="text-sm text-muted-foreground">{product.categoryName}</span>
               </div>
               <p className="mt-1 text-sm">{product.tagline}</p>
-              <p className="mt-3 text-sm leading-6 text-muted">
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 {product.description}
               </p>
               <p className="mt-2 text-sm">For {product.audience}</p>
@@ -69,7 +73,7 @@ export function ReviewPage() {
                   Approve
                 </Button>
                 <Button
-                  variant="danger"
+                  variant="destructive"
                   disabled={pendingId === product.id}
                   onClick={() => void decide(product.id, "reject")}
                 >
@@ -81,5 +85,6 @@ export function ReviewPage() {
         </ul>
       ) : null}
     </div>
+    </PageFrame>
   )
 }

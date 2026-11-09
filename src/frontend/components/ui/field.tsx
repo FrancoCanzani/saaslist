@@ -1,9 +1,7 @@
-import type {
-  InputHTMLAttributes,
-  ReactNode,
-  SelectHTMLAttributes,
-  TextareaHTMLAttributes,
-} from "react"
+import type { ComponentProps, ReactNode } from "react"
+
+const controlClass =
+  "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
 
 export function Field({
   label,
@@ -14,27 +12,24 @@ export function Field({
 }) {
   return (
     <label className="flex flex-col gap-1.5 text-sm">
-      <span className="text-muted">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       {children}
     </label>
   )
 }
 
-const controlClass =
-  "rounded-md border border-line bg-panel px-3 py-2 text-sm outline-none focus:border-accent"
-
-export function TextInput(props: InputHTMLAttributes<HTMLInputElement>) {
+export function TextInput(props: ComponentProps<"input">) {
   return <input className={controlClass} {...props} />
 }
 
-export function TextArea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea className={`${controlClass} min-h-28`} {...props} />
+export function TextArea(props: ComponentProps<"textarea">) {
+  return <textarea className={`${controlClass} min-h-28 py-2`} {...props} />
 }
 
 export function SelectInput({
   children,
   ...props
-}: SelectHTMLAttributes<HTMLSelectElement>) {
+}: ComponentProps<"select">) {
   return (
     <select className={controlClass} {...props}>
       {children}

@@ -1,6 +1,7 @@
 import { getRouteApi, useRouter } from "@tanstack/react-router"
 import { useState, type FormEvent } from "react"
 
+import { PageFrame } from "@components/page-frame"
 import { Button } from "@components/ui/button"
 import { Field, SelectInput, TextArea, TextInput } from "@components/ui/field"
 import { api } from "@lib/api"
@@ -71,13 +72,15 @@ export function SubmitPage() {
   }
 
   return (
-    <div className="max-w-xl">
-      <h1 className="text-3xl tracking-tight">Submit a product</h1>
-      <p className="mt-2 text-muted">
-        It stays private until someone approves it. Software only, built
-        without funding.
-      </p>
-      <form className="mt-8 flex flex-col gap-4" onSubmit={onSubmit}>
+    <PageFrame>
+    <div className="w-full space-y-8 p-4 sm:p-6">
+      <div>
+        <h1 className="text-xl font-medium">Submit a Product</h1>
+        <h2 className="text-sm text-muted-foreground">
+          It will only take a minute
+        </h2>
+      </div>
+      <form className="flex max-w-xl flex-col gap-4" onSubmit={onSubmit}>
         <Field label="Name">
           <TextInput name="name" required minLength={3} maxLength={80} />
         </Field>
@@ -116,7 +119,7 @@ export function SubmitPage() {
           </SelectInput>
         </Field>
         <fieldset className="flex flex-col gap-2 text-sm">
-          <legend className="text-muted">Platforms</legend>
+          <legend className="text-muted-foreground">Platforms</legend>
           {platformOptions.map(([value, label]) => (
             <label key={value} className="flex items-center gap-2">
               <input
@@ -129,7 +132,7 @@ export function SubmitPage() {
           ))}
         </fieldset>
         <fieldset className="flex flex-col gap-2 text-sm">
-          <legend className="text-muted">Tags, up to 3</legend>
+          <legend className="text-muted-foreground">Tags, up to 3</legend>
           {selected?.tags.map((tag) => (
             <label key={tag} className="flex items-center gap-2">
               <input
@@ -149,11 +152,12 @@ export function SubmitPage() {
             </label>
           ))}
         </fieldset>
-        {error ? <p className="text-sm text-danger">{error}</p> : null}
+        {error ? <p className="text-sm text-destructive">{error}</p> : null}
         <Button type="submit" disabled={pending || tags.length === 0 || platforms.length === 0}>
           {pending ? "Submitting…" : "Submit for review"}
         </Button>
       </form>
     </div>
+    </PageFrame>
   )
 }

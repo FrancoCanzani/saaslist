@@ -15,6 +15,7 @@ export const Route = createFileRoute("/categories/$slug")({
         slug: string
         name: string
         description: string
+        tags: string[]
         count: number
       }>
     }>(categoriesResponse)

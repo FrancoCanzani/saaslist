@@ -66,49 +66,63 @@ export function SignInPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md">
-      <h1 className="text-3xl tracking-tight">Sign in</h1>
-      <p className="mt-2 text-sm text-muted">
-        We email you a code. No password.
-      </p>
-      {step === "email" ? (
-        <form className="mt-8 flex flex-col gap-4" onSubmit={sendCode}>
-          <Field label="Email">
-            <TextInput
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </Field>
-          {error ? <p className="text-sm text-danger">{error}</p> : null}
-          <Button type="submit" disabled={pending}>
-            {pending ? "Sending…" : "Email me a code"}
-          </Button>
-        </form>
-      ) : (
-        <form className="mt-8 flex flex-col gap-4" onSubmit={verify}>
-          <Field label={`Code for ${email}`}>
-            <TextInput
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              required
-              value={otp}
-              onChange={(event) => setOtp(event.target.value)}
-            />
-          </Field>
-          {import.meta.env.DEV ? (
-            <p className="text-sm text-muted">
-              In development the code is printed in the server log.
-            </p>
-          ) : null}
-          {error ? <p className="text-sm text-danger">{error}</p> : null}
-          <Button type="submit" disabled={pending}>
-            {pending ? "Checking…" : "Sign in"}
-          </Button>
-        </form>
-      )}
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
+      <div className="w-full max-w-sm space-y-6">
+        <div className="mb-4 flex justify-center">
+          <div className="font-mono text-7xl font-bold text-foreground">S</div>
+        </div>
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-medium text-foreground">Join SaasList</h1>
+        </div>
+        {step === "email" ? (
+          <form className="space-y-3" onSubmit={sendCode}>
+            <Field label="Email">
+              <TextInput
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </Field>
+            {error ? <p className="text-sm text-destructive">{error}</p> : null}
+            <Button
+              type="submit"
+              size="lg"
+              disabled={pending}
+              className="h-12 w-full rounded-sm text-base font-normal dark:grayscale"
+            >
+              {pending ? "Sending…" : "Email me a code"}
+            </Button>
+          </form>
+        ) : (
+          <form className="space-y-3" onSubmit={verify}>
+            <Field label={`Code for ${email}`}>
+              <TextInput
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                required
+                value={otp}
+                onChange={(event) => setOtp(event.target.value)}
+              />
+            </Field>
+            {import.meta.env.DEV ? (
+              <p className="text-sm text-muted-foreground">
+                In development the code is printed in the server log.
+              </p>
+            ) : null}
+            {error ? <p className="text-sm text-destructive">{error}</p> : null}
+            <Button
+              type="submit"
+              size="lg"
+              disabled={pending}
+              className="h-12 w-full rounded-sm text-base font-normal dark:grayscale"
+            >
+              {pending ? "Checking…" : "Sign in"}
+            </Button>
+          </form>
+        )}
+      </div>
     </div>
   )
 }

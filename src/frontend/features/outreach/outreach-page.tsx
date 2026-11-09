@@ -1,6 +1,7 @@
 import { getRouteApi, useRouter } from "@tanstack/react-router"
 import { useState, type FormEvent } from "react"
 
+import { PageFrame } from "@components/page-frame"
 import { Button } from "@components/ui/button"
 import { Field, TextInput } from "@components/ui/field"
 import { api } from "@lib/api"
@@ -61,18 +62,21 @@ export function OutreachPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl tracking-tight">Outreach</h1>
-      <p className="mt-2 max-w-xl text-muted">
-        Add a company you saw on another board. Mark it ready, then send one
-        email. Nothing here is published until you approve a listing.
-      </p>
+    <PageFrame>
+    <div className="w-full space-y-8 p-4 sm:p-6">
+      <div>
+        <h1 className="text-xl font-medium">Outreach</h1>
+        <p className="max-w-xl text-sm text-muted-foreground">
+          Add a company you saw on another board. Mark it ready, then send one
+          email. Nothing here is published until you approve a listing.
+        </p>
+      </div>
       {forbidden ? (
-        <p className="mt-8 text-muted">Only editors can use the outreach desk.</p>
+        <p className="text-sm text-muted-foreground">Only editors can use the outreach desk.</p>
       ) : (
       <>
       <form
-        className="mt-8 grid gap-4 rounded-lg border border-line bg-panel p-4 sm:grid-cols-2"
+        className="grid gap-4 rounded-lg border border-border bg-card p-4 sm:grid-cols-2"
         onSubmit={addProspect}
       >
         <Field label="Product">
@@ -94,20 +98,20 @@ export function OutreachPage() {
           <TextInput name="tagline" />
         </Field>
         <div className="sm:col-span-2">
-          {error ? <p className="mb-3 text-sm text-danger">{error}</p> : null}
+          {error ? <p className="mb-3 text-sm text-destructive">{error}</p> : null}
           <Button type="submit" disabled={pending}>
             {pending ? "Adding…" : "Add to queue"}
           </Button>
         </div>
       </form>
-      <ul className="mt-8 divide-y divide-line border-y border-line">
+      <ul className="divide-y divide-border border-y border-border">
         {prospects.map((item) => (
           <li key={item.id} className="py-4">
             <div className="flex items-baseline justify-between gap-4">
               <h2 className="text-lg">{item.productName}</h2>
-              <span className="text-sm text-muted">{item.status}</span>
+              <span className="text-sm text-muted-foreground">{item.status}</span>
             </div>
-            <p className="mt-1 text-sm text-muted">
+            <p className="mt-1 text-sm text-muted-foreground">
               {item.source} · {item.contactEmail}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -143,5 +147,6 @@ export function OutreachPage() {
       </>
       )}
     </div>
+    </PageFrame>
   )
 }
