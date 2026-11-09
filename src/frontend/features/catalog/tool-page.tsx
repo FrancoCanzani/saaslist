@@ -1,6 +1,8 @@
 import { Link, getRouteApi } from "@tanstack/react-router"
 import { ArrowUpRight } from "lucide-react"
+import { useState } from "react"
 
+import { LikeButton } from "@components/like-button"
 import { PageFrame } from "@components/page-frame"
 import { ProductLogo } from "@components/product-logo"
 import { Badge } from "@components/ui/badge"
@@ -31,7 +33,17 @@ function launchedAgo(iso: string) {
 }
 
 export function ToolPage() {
-  const { product } = routeApi.useLoaderData()
+  const { product: loaded } = routeApi.useLoaderData()
+  const [like, setLike] = useState({
+    id: loaded.id,
+    likeCount: loaded.likeCount,
+    liked: loaded.liked,
+  })
+  const current =
+    like.id === loaded.id
+      ? like
+      : { id: loaded.id, likeCount: loaded.likeCount, liked: loaded.liked }
+  const product = { ...loaded, ...current }
 
   return (
     <PageFrame>
@@ -43,7 +55,13 @@ export function ToolPage() {
               <h1 className="text-xl font-medium xl:text-2xl">{product.name}</h1>
               <h2 className="text-sm text-muted-foreground">{product.tagline}</h2>
             </div>
-            <div className="hidden items-center justify-end space-x-1.5 xl:flex">
+            <div className="hidden items-center justify-end gap-2 xl:flex">
+              <LikeButton
+                slug={product.slug}
+                likeCount={product.likeCount}
+                liked={product.liked}
+                onChange={(next) => setLike({ id: product.id, ...next })}
+              />
               <Button
                 variant="secondary"
                 size="xs"
@@ -69,7 +87,13 @@ export function ToolPage() {
             <span className="underline">{product.founderName}</span>
           </div>
 
-          <div className="flex items-center justify-start space-x-1.5 xl:hidden">
+          <div className="flex items-center justify-start gap-2 xl:hidden">
+            <LikeButton
+              slug={product.slug}
+              likeCount={product.likeCount}
+              liked={product.liked}
+              onChange={(next) => setLike({ id: product.id, ...next })}
+            />
             <Button
               variant="secondary"
               size="sm"

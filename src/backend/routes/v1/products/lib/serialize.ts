@@ -22,12 +22,15 @@ export type PublicProduct = {
   reviewNote: string | null
   founderName: string
   sponsored: boolean
+  likeCount: number
+  liked: boolean
   createdAt: string
 }
 
 export function serializeProduct(
   row: ProductRecord,
   founderName: string,
+  liked = false,
 ): PublicProduct {
   const sponsoredUntil = row.sponsoredUntil?.getTime() ?? 0
 
@@ -48,6 +51,8 @@ export function serializeProduct(
     reviewNote: row.reviewNote,
     founderName,
     sponsored: sponsoredUntil > Date.now(),
+    likeCount: row.likeCount,
+    liked,
     createdAt: row.createdAt.toISOString(),
   }
 }

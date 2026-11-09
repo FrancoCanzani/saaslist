@@ -149,3 +149,20 @@ INSERT OR IGNORE INTO product (
   '["web"]', '["Hiring","HR"]', 'approved', 'bootstrapped',
   NULL, 'example-founder', 1729700000000, 1729700000000
 );
+
+UPDATE product SET like_count = 36 WHERE slug = 'kiln';
+UPDATE product SET like_count = 4 WHERE slug = 'shiplog';
+UPDATE product SET like_count = 11 WHERE slug = 'ledgerbird';
+UPDATE product SET like_count = 19 WHERE slug = 'patchbay';
+UPDATE product SET like_count = 28 WHERE slug = 'northwind-notes';
+UPDATE product SET like_count = 6 WHERE slug = 'harbor-forms';
+UPDATE product SET like_count = 15 WHERE slug = 'fieldnote';
+UPDATE product SET like_count = 31 WHERE slug = 'lumenboard';
+UPDATE product SET like_count = 9 WHERE slug = 'cobalt-auth';
+UPDATE product SET like_count = 22 WHERE slug = 'marlowe';
+UPDATE product SET like_count = 12 WHERE slug = 'splicekit';
+UPDATE product SET like_count = 27 WHERE slug = 'quietmile';
+UPDATE product SET like_count = 7 WHERE slug = 'waybill';
+UPDATE product SET like_count = 33 WHERE slug = 'stackline';
+UPDATE product SET like_count = 18 WHERE slug = 'primer';
+UPDATE product SET like_count = 41 WHERE slug = 'dockhand';

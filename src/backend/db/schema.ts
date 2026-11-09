@@ -109,6 +109,7 @@ export const product = sqliteTable(
     reviewNote: text("review_note"),
     funding: text("funding").notNull().default("bootstrapped"),
     sponsoredUntil: integer("sponsored_until", { mode: "timestamp_ms" }),
+    likeCount: integer("like_count").notNull().default(0),
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
@@ -119,6 +120,24 @@ export const product = sqliteTable(
     index("product_status_idx").on(table.status),
     index("product_userId_idx").on(table.userId),
     index("product_category_idx").on(table.category),
+  ],
+)
+
+export const productLike = sqliteTable(
+  "product_like",
+  {
+    id: text("id").primaryKey(),
+    productId: text("product_id")
+      .notNull()
+      .references(() => product.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+  },
+  (table) => [
+    uniqueIndex("product_like_product_user_idx").on(table.productId, table.userId),
+    index("product_like_user_idx").on(table.userId),
   ],
 )
 
