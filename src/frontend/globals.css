@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #1c1917;
+  --color-paper: #f6f4ef;
+  --color-panel: #fffdf8;
+  --color-line: #e4dfd6;
+  --color-muted: #6f675e;
+  --color-accent: #1f4d3a;
+  --color-accent-ink: #f6f4ef;
+  --color-danger: #8f2d2d;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
