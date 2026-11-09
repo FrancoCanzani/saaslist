@@ -1,123 +1,26 @@
-# SaasList - Product Hunt for SaaS
+# SaasList
 
-A modern platform for discovering and sharing products, built with Next.js and Supabase.
+Reviewed directory of bootstrapped software. Vite, React, Hono, and Cloudflare D1.
 
-## 🚀 Quick Start
+## Local
 
-### Prerequisites
-
-- Node.js 18+ or Bun
-- A Supabase account ([sign up here](https://supabase.com))
-
-### Setup
-
-1. **Clone and install dependencies:**
-   ```bash
-   bun install
-   ```
-
-2. **Set up Supabase:**
-   - Create a new project at [supabase.com](https://supabase.com)
-   - Go to Project Settings > API
-   - Copy your Project URL and anon/public key
-
-3. **Configure environment variables:**
-   ```bash
-   cp .env.local.example .env.local
-   ```
-
-   Then edit `.env.local` and add your Supabase credentials:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-4. **Enable Google OAuth in Supabase:**
-   - Go to Authentication > Providers in your Supabase dashboard
-   - Enable Google provider
-   - Add your OAuth credentials:
-     - Client ID
-     - Client Secret
-   - Add authorized redirect URL: `http://localhost:3000/auth/callback`
-
-5. **Run the development server:**
-   ```bash
-   bun dev
-   ```
-
-6. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 🔐 Authentication
-
-Currently supports:
-- ✅ Google Sign In/Up
-
-## 📁 Project Structure
-
-```
-src/
-├── app/                    # Next.js App Router pages
-│   ├── auth/              # Auth callback routes
-│   ├── login/             # Login page
-│   ├── profile/           # User profile page
-│   └── page.tsx           # Home page
-├── components/            # React components
-├── lib/
-│   └── supabase/         # Supabase client utilities
-│       ├── client.ts     # Browser client
-│       ├── server.ts     # Server client
-│       └── middleware.ts # Auth middleware
-└── middleware.ts         # Next.js middleware
-```
-
-## 🛠️ Tech Stack
-
-- **Framework:** Next.js 15 (App Router)
-- **Database & Auth:** Supabase
-- **Styling:** Tailwind CSS
-- **Language:** TypeScript
-
-## 📝 Development Plan
-
-See [plan.md](./plan.md) for the complete development roadmap.
-
-## 🔒 Environment Variables
-
-Required environment variables:
-
-- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon/public key
-- `NEXT_PUBLIC_SITE_URL` - Your site URL (for production)
-- `CRON_SECRET` (optional) - Secret token for securing cron endpoints
-
-## ⏰ Cron Jobs
-
-The project uses Vercel cron jobs to automatically manage featured subscription status:
-
-### Featured Status Check (`/api/cron/check-featured-status`)
-
-Runs **daily at midnight UTC** (`0 0 * * *`) to:
-- ✅ Unfeature expired subscriptions (past `end_date`)
-- ✅ Activate subscriptions when `start_date` arrives (for daily passes)
-- ✅ Sync featured status between profiles and products
-- ✅ Handle subscriptions past their end date
-
-**Configuration:**
-- Defined in `vercel.json`
-- Schedule: `0 0 * * *` (daily at midnight UTC)
-- Endpoint: `/api/cron/check-featured-status`
-
-**Security:**
-- Automatically verifies Vercel cron user agent
-- Optional: Set `CRON_SECRET` environment variable for additional Bearer token auth
-
-**Testing locally:**
 ```bash
-# Test the cron endpoint
-curl http://localhost:3000/api/cron/check-featured-status
+cp .dev.vars.example .dev.vars
+bun install
+bun run db:migrate:dev
+bun run dev
 ```
 
-## 📄 License
+Sign-in codes are printed in the dev server log. With `EDITOR_EMAILS` empty and `ENVIRONMENT=development`, any signed-in user can review and send outreach.
 
-MIT
+## Production
+
+Set `ENVIRONMENT` to `production`, point `BETTER_AUTH_URL` and `EMAIL_FROM` at the real domain, and set `EDITOR_EMAILS` to a comma-separated allowlist.
+
+```bash
+wrangler secret put BETTER_AUTH_SECRET
+bun run db:migrate
+bun run deploy
+```
+
+Outreach mail is sent only in production, and only after a prospect is marked ready. The daily cap is `DAILY_SEND_CAP`.

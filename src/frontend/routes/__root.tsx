@@ -1,0 +1,32 @@
+import type { QueryClient } from "@tanstack/react-query"
+import { createRootRouteWithContext } from "@tanstack/react-router"
+
+import { NotFoundScreen } from "@components/not-found-screen"
+import { PendingScreen } from "@components/pending-screen"
+import { RootLayout } from "@components/root-layout"
+import { authClient } from "@lib/auth/client"
+import { sessionQueryOptions } from "@lib/auth/session"
+
+import "@/globals.css"
+
+type Session = NonNullable<
+  Awaited<ReturnType<typeof authClient.getSession>>["data"]
+>
+
+export type RouterContext = {
+  queryClient: QueryClient
+  session: Session | null
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: async ({ context }) => {
+    const session = await context.queryClient.query({
+      ...sessionQueryOptions,
+      staleTime: "static",
+    })
+    return { session }
+  },
+  pendingComponent: () => <PendingScreen label="Loading…" />,
+  notFoundComponent: NotFoundScreen,
+  component: RootLayout,
+})
